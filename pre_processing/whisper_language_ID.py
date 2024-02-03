@@ -19,12 +19,12 @@ for path, subdirs, files in os.walk(root2):
         if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
-index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
+#index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
 
 names = []
 ids = []
 
-for audio_file in all_files_audio[index:]:
+for audio_file in all_files_audio[:2]:
 
         base_name = os.path.basename(audio_file).split(".wav")[0]
         print(base_name)
