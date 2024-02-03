@@ -15,7 +15,6 @@ text_dir_files = [os.path.join(text_dir, elem) for elem in sorted(os.listdir(tex
 df_tot = []
 for file in zip(sound_dir_files, text_dir_files):
     print(file)
-
     df = pd.DataFrame()
     attributes = {}
     sound = parselmouth.Sound(file[0])
@@ -45,7 +44,6 @@ for file in zip(sound_dir_files, text_dir_files):
 #
     spectrum_attributes = get_spectrum_attributes(sound)[0]
     attributes.update(spectrum_attributes)
-
     formant_attributes = get_formant_attributes(sound)[0]
     attributes.update(formant_attributes)
 #
@@ -61,7 +59,7 @@ for file in zip(sound_dir_files, text_dir_files):
     df['delta_delta_mfcc'] = None
     df.at[0, 'delta_mfcc'] = delta_mfcc_matrix
     df.at[0, 'delta_delta_mfcc'] = delta_delta_mfcc_matrix
-#
+
     for attribute in attributes:
         df.at[0, attribute] = attributes[attribute]
 
