@@ -33,34 +33,34 @@ for file in zip(sound_dir_files, text_dir_files):
     formant_attributes = get_formant_attributes(sound)[0]
     attributes.update(formant_attributes)
 
-    #hnr_attributes = get_harmonics_to_noise_ratio_attributes(sound)[0]
-    #gne_attributes = get_glottal_to_noise_ratio_attributes(sound)[0]
-    #attributes.update(hnr_attributes)
-    #attributes.update(gne_attributes)
+    hnr_attributes = get_harmonics_to_noise_ratio_attributes(sound)[0]
+    gne_attributes = get_glottal_to_noise_ratio_attributes(sound)[0]
+    attributes.update(hnr_attributes)
+    attributes.update(gne_attributes)
 #
-    #df['local_jitter'] = None
-    #df['local_shimmer'] = None
-    #df.at[0, 'local_jitter'] = get_local_jitter(sound)
-    #df.at[0, 'local_shimmer'] = get_local_shimmer(sound)
+    df['local_jitter'] = None
+    df['local_shimmer'] = None
+    df.at[0, 'local_jitter'] = get_local_jitter(sound)
+    df.at[0, 'local_shimmer'] = get_local_shimmer(sound)
 #
-    #spectrum_attributes = get_spectrum_attributes(sound)[0]
-    #attributes.update(spectrum_attributes)
+    spectrum_attributes = get_spectrum_attributes(sound)[0]
+    attributes.update(spectrum_attributes)
 
     formant_attributes = get_formant_attributes(sound)[0]
     attributes.update(formant_attributes)
 #
-   # lfcc_matrix, mfcc_matrix = get_lfcc(sound), get_mfcc(sound)
-   # df['lfcc'] = None
-   # df['mfcc'] = None
-   # df.at[0, 'lfcc'] = lfcc_matrix
-   # df.at[0, 'mfcc'] = mfcc_matrix
+    lfcc_matrix, mfcc_matrix = get_lfcc(sound), get_mfcc(sound)
+    df['lfcc'] = None
+    df['mfcc'] = None
+    df.at[0, 'lfcc'] = lfcc_matrix
+    df.at[0, 'mfcc'] = mfcc_matrix
 #
-   # delta_mfcc_matrix = get_delta(mfcc_matrix)
-   # delta_delta_mfcc_matrix = get_delta(delta_mfcc_matrix)
-   # df['delta_mfcc'] = None
-   # df['delta_delta_mfcc'] = None
-   # df.at[0, 'delta_mfcc'] = delta_mfcc_matrix
-   # df.at[0, 'delta_delta_mfcc'] = delta_delta_mfcc_matrix
+    delta_mfcc_matrix = get_delta(mfcc_matrix)
+    delta_delta_mfcc_matrix = get_delta(delta_mfcc_matrix)
+    df['delta_mfcc'] = None
+    df['delta_delta_mfcc'] = None
+    df.at[0, 'delta_mfcc'] = delta_mfcc_matrix
+    df.at[0, 'delta_delta_mfcc'] = delta_delta_mfcc_matrix
 #
     for attribute in attributes:
         df.at[0, attribute] = attributes[attribute]
