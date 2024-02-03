@@ -1,6 +1,7 @@
 
 fold = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_and_diarization/'
 out = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_diarization/'
+
 import json
 import os
 
