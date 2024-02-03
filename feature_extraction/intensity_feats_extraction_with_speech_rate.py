@@ -6,11 +6,11 @@ import os
 import parselmouth
 from feature_extraction_utils import *
 
-output_dir = '/export/b16/afavaro/PARKCELEB/experiments_english3/longitudinal_study/feats/after_10_above/CN/'
-sound_dir = '/export/b16/afavaro/PARKCELEB/experiments_english3/longitudinal_study/data/CN/after_10_above/'
-sound_dir_files = [os.path.join(sound_dir, elem) for elem in sorted(os.listdir(sound_dir)) if "concat" not in elem]
-text_dir = '/export/b16/afavaro/PARKCELEB/experiments_english3/longitudinal_study/transcripts2/CN/after_10_above/'
-text_dir_files = [os.path.join(text_dir, elem) for elem in sorted(os.listdir(text_dir)) if "concat" not in elem]
+output_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_feats/'
+sound_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train/'
+sound_dir_files = [os.path.join(sound_dir, elem) for elem in sorted(os.listdir(sound_dir)) if ".wav" in elem]
+text_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_diarization/'
+text_dir_files = [os.path.join(text_dir, elem) for elem in sorted(os.listdir(text_dir)) if ".txt" not in elem]
 
 df_tot = []
 for file in zip(sound_dir_files, text_dir_files):
