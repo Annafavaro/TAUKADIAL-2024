@@ -1,4 +1,4 @@
-OUT_PATH = '/scratch4/lmorove1/afavaro/Alzheimers_data/ADReSSo21/diagnosis_diarized/test-dist/transcripts/'
+OUT_PATH = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train_transcriptions_and_diarization/'
 
 import json
 import os
@@ -10,7 +10,7 @@ batch_size = 16  # reduce if low on GPU mem
 compute_type = "float16"
 model = whisperx.load_model("large-v2", device, compute_type=compute_type)
 
-root2 = '/scratch4/lmorove1/afavaro/Alzheimers_data/ADReSSo21/diagnosis_diarized/test-dist/audio/'
+root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
 
 all_files_audio = []
 for path, subdirs, files in os.walk(root2):
@@ -19,8 +19,6 @@ for path, subdirs, files in os.walk(root2):
         if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
-#path = os.path.join(root2, 'adrso074.mp3')
-#ind = all_files_audio.index(path)
 
 for audio_file in all_files_audio:
    # if 'adrso098' not in audio_file:
