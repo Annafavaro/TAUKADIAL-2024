@@ -9,8 +9,8 @@ from feature_extraction_utils import *
 output_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_feats/'
 sound_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train/'
 sound_dir_files = [os.path.join(sound_dir, elem) for elem in sorted(os.listdir(sound_dir)) if ".wav" in elem]
-text_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_diarization/'
-text_dir_files = [os.path.join(text_dir, elem) for elem in sorted(os.listdir(text_dir)) if ".txt" not in elem]
+text_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_no_diarized/'
+text_dir_files = [os.path.join(text_dir, elem) for elem in sorted(os.listdir(text_dir)) if ".txt" in elem]
 
 df_tot = []
 for file in zip(sound_dir_files, text_dir_files):
