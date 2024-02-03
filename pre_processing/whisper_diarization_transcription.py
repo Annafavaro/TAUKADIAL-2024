@@ -19,7 +19,7 @@ for path, subdirs, files in os.walk(root2):
         if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
-index = all_files_audio.index(os.path.join(root2, 'taukdial-110-2.wav'))
+index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
 
 for audio_file in all_files_audio[index:]:
 
@@ -37,7 +37,7 @@ for audio_file in all_files_audio[index:]:
 
         # 2. Align whisper output
         #model_a, metadata = whisperx.load_align_model(language_code='en', device=device)
-        if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file:
+        if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
             model_a, metadata = whisperx.load_align_model(language_code= 'zh', device=device)
         else:
             model_a, metadata = whisperx.load_align_model(language_code= result["language"], device=device)
