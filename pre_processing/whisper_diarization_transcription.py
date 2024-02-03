@@ -19,9 +19,10 @@ for path, subdirs, files in os.walk(root2):
         if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
+index = all_files_audio.index(os.path.join(root2, 'taukdial-004-1.wav'))
 
-for audio_file in all_files_audio:
-   # if 'adrso098' not in audio_file:
+for audio_file in all_files_audio[index:]:
+
         base_name = os.path.basename(audio_file).split(".wav")[0]
         print(base_name)
 
@@ -36,7 +37,10 @@ for audio_file in all_files_audio:
 
         # 2. Align whisper output
         #model_a, metadata = whisperx.load_align_model(language_code='en', device=device)
-        model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
+        if 'taukdial-004-1'  in audio_file:
+            model_a, metadata = whisperx.load_align_model(language_code='zh', device=device)
+        else:
+            model_a, metadata = whisperx.load_align_model(language_code=result["language"], device=device)
         result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
 
         # 3. Assign speaker labels
