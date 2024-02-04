@@ -15,6 +15,7 @@ smile = opensmile.Smile(
 dfs = []  # List to store DataFrames extracted from each audio file
 
 for file in all_files:
+    print(file)
     y = smile.process_file(file)
     dfs.append(pd.DataFrame(y))
 
