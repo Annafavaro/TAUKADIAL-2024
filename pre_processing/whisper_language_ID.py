@@ -24,7 +24,7 @@ for path, subdirs, files in os.walk(root2):
 names = []
 ids = []
 
-for audio_file in all_files_audio[:2]:
+for audio_file in all_files_audio:
 
         base_name = os.path.basename(audio_file).split(".wav")[0]
         print(base_name)
@@ -42,7 +42,7 @@ for audio_file in all_files_audio[:2]:
             result_lang = str(result["language"])
         ids.append(result_lang)
 
-dict = {'names': ids, 'lang': ids}
+dict = {'names': names, 'lang': ids}
 
 df = pd.DataFrame(dict)
 df.to_csv(os.path.join(OUT_PATH, 'lang_ids.csv'))
