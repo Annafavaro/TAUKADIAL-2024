@@ -3,8 +3,8 @@ import pandas as pd
 import os
 #conda activate opensmile
 
-input_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
-out_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/training/feats/compare/no_diarization/'
+input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
+out_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/compare/no_diarization/'
 
 all_files = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
 smile = opensmile.Smile(
