@@ -1,7 +1,7 @@
 import opensmile
 import pandas as pd
 import os
-
+#conds activate opensmile
 
 input_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
 out_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/training/feats/compare/no_diarization/'
