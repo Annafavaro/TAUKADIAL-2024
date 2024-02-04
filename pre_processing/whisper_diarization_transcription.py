@@ -19,9 +19,11 @@ for path, subdirs, files in os.walk(root2):
         if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
-index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
 
-for audio_file in all_files_audio[index:]:
+names = []
+ids = []
+#index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
+for audio_file in all_files_audio:
 
         base_name = os.path.basename(audio_file).split(".wav")[0]
         print(base_name)
@@ -33,7 +35,11 @@ for audio_file in all_files_audio[index:]:
 
         audio = whisperx.load_audio(audio_file)
         result = model.transcribe(audio, batch_size=batch_size)
-        # print(result["segments"]) # before alignment
+        if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
+            result_lang = 'zh'
+        else:
+            result_lang = str(result["language"])
+        ids.append(result_lang)
 
         # 2. Align whisper output
         #model_a, metadata = whisperx.load_align_model(language_code='en', device=device)
@@ -54,3 +60,7 @@ for audio_file in all_files_audio[index:]:
         diarize_segments.to_csv(csv_path)
         with open(json_path, "w") as outfile:
             json.dump(result, outfile)
+
+dict = {'names': names, 'lang': ids}
+df = pd.DataFrame(dict)
+df.to_csv(os.path.join(OUT_PATH, 'lang_ids.csv'))
