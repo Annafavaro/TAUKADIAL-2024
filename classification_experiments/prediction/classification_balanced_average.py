@@ -191,57 +191,57 @@ for feat_name in feats_names:
   # # #    best_param = mode(best_params)
   # # #    print(best_param)
 #
-  if feat_name == "whisper":
+    if feat_name == "whisper":
       best_param=30
-  else:
-      best_param = 30
-  # outer folds testing
-  thresholds = []
-  predictions = []
-  truth = []
-  test_scores = []
-  for i in range(1, 11):
-      print(i)
-      normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"), eval(f"data_test_{i}"))
-      y_test = y_test.tolist()
-      model = PCA_PLDA_EER_Classifier(PCA_n=best_param, normalize=0)
-      model.fit(normalized_train_X, y_train)
-      grid_predictions = model.predict(normalized_test_X)
-      print(model.eer_threshold)
-      grid_test_scores = model.predict_scores_list(normalized_test_X)
-      predictions = predictions + grid_predictions
-      truth = truth + y_test
-      print(classification_report(y_test, grid_predictions, output_dict=False))
-      test_scores += grid_test_scores[:, 0].tolist()
-      thresholds = thresholds + [model.eer_threshold]*len(y_test)
-     # print(len(y_test))
-     # print(len(thresholds))
-     # print(thresholds[:10])
-      #print(test_scores)
-  # report
-  print()
-  print('----------')
-  print('----------')
-  print("Final results")
-  print(classification_report(truth, predictions, output_dict=False))
-  print(confusion_matrix(truth, predictions))
-  tn, fp, fn, tp = confusion_matrix(truth, predictions).ravel()
-  specificity = tn / (tn + fp)
-  sensitivity = tp / (tp + fn)
-  print('specificity')
-  print(specificity)
-  print('sensitivity')
-  print(sensitivity)
-  print('ROC_AUC')
-  print(roc_auc_score(truth, test_scores))
-  print('*************')
-  print('*************')
-  report = classification_report(truth, predictions, output_dict=True)
-  df = pd.DataFrame(report).transpose()
-  df['best_PCA_param'] = best_param
-  df['AUROC'] = roc_auc_score(truth, test_scores)
-  df['sensitivity'] = sensitivity
-  df['specificity'] = specificity
-  file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
-  df.to_csv(file_out)
+    else:
+        best_param = 30
+    # outer folds testing
+    thresholds = []
+    predictions = []
+    truth = []
+    test_scores = []
+    for i in range(1, 11):
+        print(i)
+        normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"), eval(f"data_test_{i}"))
+        y_test = y_test.tolist()
+        model = PCA_PLDA_EER_Classifier(PCA_n=best_param, normalize=0)
+        model.fit(normalized_train_X, y_train)
+        grid_predictions = model.predict(normalized_test_X)
+        print(model.eer_threshold)
+        grid_test_scores = model.predict_scores_list(normalized_test_X)
+        predictions = predictions + grid_predictions
+        truth = truth + y_test
+        print(classification_report(y_test, grid_predictions, output_dict=False))
+        test_scores += grid_test_scores[:, 0].tolist()
+        thresholds = thresholds + [model.eer_threshold]*len(y_test)
+       # print(len(y_test))
+       # print(len(thresholds))
+       # print(thresholds[:10])
+        #print(test_scores)
+    # report
+    print()
+    print('----------')
+    print('----------')
+    print("Final results")
+    print(classification_report(truth, predictions, output_dict=False))
+    print(confusion_matrix(truth, predictions))
+    tn, fp, fn, tp = confusion_matrix(truth, predictions).ravel()
+    specificity = tn / (tn + fp)
+    sensitivity = tp / (tp + fn)
+    print('specificity')
+    print(specificity)
+    print('sensitivity')
+    print(sensitivity)
+    print('ROC_AUC')
+    print(roc_auc_score(truth, test_scores))
+    print('*************')
+    print('*************')
+    report = classification_report(truth, predictions, output_dict=True)
+    df = pd.DataFrame(report).transpose()
+    df['best_PCA_param'] = best_param
+    df['AUROC'] = roc_auc_score(truth, test_scores)
+    df['sensitivity'] = sensitivity
+    df['specificity'] = specificity
+    file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
+    df.to_csv(file_out)
 #
