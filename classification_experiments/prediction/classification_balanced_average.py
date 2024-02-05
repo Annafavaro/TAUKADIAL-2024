@@ -210,9 +210,9 @@ for feat_name in feats_names:
   # # #    print(best_param)
 #
     if feat_name == "whisper":
-      best_param=40
+      best_param=200
     else:
-        best_param = 40
+        best_param = 200
     # outer folds testing
     thresholds = []
     predictions = []
