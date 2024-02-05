@@ -79,7 +79,7 @@ def add_labels(df, path_labels):
 
     return df
 
-feats_names = ['xvector'] #'trillsson', 'hubert', 'wav2vec', 'whisper']
+feats_names = ['xvector', 'trillsson', 'wav2vec', 'clip_truncation', 'sentence_tr_multiling'] #'whisper']
 
 labels_df= pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
