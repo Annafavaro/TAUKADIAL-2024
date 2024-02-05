@@ -5,6 +5,7 @@ from classification_experiments.PCA_PLDA_EER_Classifier import PCA_PLDA_EER_Clas
 import random
 import pandas as pd
 import numpy as np
+from statistics import mode
 from sklearn.utils import shuffle
 import os
 import sys
@@ -15,7 +16,7 @@ random_seed = 20
 #np.random.seed(20)
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RepeatedStratifiedKFold
-
+test_only = 0
 
 # !/usr/bin/env python
 # coding: utf-8
@@ -182,37 +183,37 @@ for feat_name in feats_names:
 #
 #
     ##      # inner folds cross-validation - hyperparameter search
-  # # #if test_only == 0:
-  # # #    best_params = []
-  # # #    for i in range(1, 11):
-  # # #        print(i)
-  # # #        normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
-  # # #                                                                           eval(f"data_test_{i}"))
-  # # #        # %
-  # # #        tuned_params = {"PCA_n": [100, 200, 300, 400, 500]}
-  # # #        #tuned_params = {"PCA_n": [500]}
-  # # #        model = PCA_PLDA_EER_Classifier(normalize=0)
-  # # #        cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
-  # # #        grid_search = GridSearchCV(estimator=model, param_grid=tuned_params, n_jobs=-1, cv=cv, scoring='accuracy',
-  # # #                                   error_score=0)
-  # # #        grid_result = grid_search.fit(normalized_train_X, y_train)
-  # # #        # summarize result
-  # # #        # print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
-  # # #        print(grid_result.best_params_)
-  # # #        means = grid_result.cv_results_['mean_test_score']
-  # # #        stds = grid_result.cv_results_['std_test_score']
-  # # #        params = grid_result.cv_results_['params']
-  # # #        print(means)
-  # # #        best_params.append(grid_result.best_params_['PCA_n'])
-  # # #    # get best params
-  # # #    print('**********best pca n:')
-  # # #    best_param = mode(best_params)
+    if test_only == 0:
+        best_params = []
+        for i in range(1, 11):
+            print(i)
+            normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
+                                                                               eval(f"data_test_{i}"))
+            # %
+            tuned_params = {"PCA_n": [20, 30, 50, 100, 150, 200, 300]}
+            #tuned_params = {"PCA_n": [500]}
+            model = PCA_PLDA_EER_Classifier(normalize=0)
+            cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
+            grid_search = GridSearchCV(estimator=model, param_grid=tuned_params, n_jobs=-1, cv=cv, scoring='accuracy',
+                                       error_score=0)
+            grid_result = grid_search.fit(normalized_train_X, y_train)
+            # summarize result
+            # print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+            print(grid_result.best_params_)
+            means = grid_result.cv_results_['mean_test_score']
+            stds = grid_result.cv_results_['std_test_score']
+            params = grid_result.cv_results_['params']
+            print(means)
+            best_params.append(grid_result.best_params_['PCA_n'])
+        # get best params
+        print('**********best pca n:')
+        best_param = mode(best_params)
   # # #    print(best_param)
 #
-    if feat_name == "whisper":
-      best_param=30
-    else:
-        best_param = 30
+   #if feat_name == "whisper":
+   #  best_param=30
+   #else:
+   #    best_param = 30
     # outer folds testing
     thresholds = []
     predictions = []
