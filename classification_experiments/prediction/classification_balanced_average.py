@@ -1,7 +1,7 @@
 # coding: utf-8
 import sys
 sys.path.append("/export/b16/afavaro/TAUKADIAL-2024/")
-from statistics import mode
+from Experiments.Classification.after_diagnosis.PCA_PLDA_EER_Classifier import PCA_PLDA_EER_Classifier
 import random
 import pandas as pd
 import numpy as np
