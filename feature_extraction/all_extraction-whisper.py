@@ -89,7 +89,7 @@ def whisper_extraction(x,m): #x signal, m = model.
     x = x / (max(abs(x)))
     ind_range = get_all_sub_segment_inds(x, fs=16e3, dur=10)  # 10sec segments
 
-    embeddings = np.zeros(shape=(ind_range, 384)) #HEREE!!
+    embeddings = np.zeros(shape=(ind_range, 1280)) #HEREE!!
     for spec_ind in range(ind_range):
         seg = get_sub_segment(x, fs=16e3, dur=10, index=spec_ind)
         seg = torch.from_numpy(seg)
@@ -102,7 +102,7 @@ def whisper_extraction(x,m): #x signal, m = model.
     # average across embeddings of all sub-specs
     features_tmp = np.mean(embeddings, axis=0)
     #print(features_tmp.shape)
-    features_tmp = features_tmp.reshape(1, 384) ##change dim here
+    features_tmp = features_tmp.reshape(1, 1280) ##change dim here
 
     return features_tmp
 
