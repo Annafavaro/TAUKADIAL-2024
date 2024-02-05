@@ -1,3 +1,5 @@
+# conda activate mulitlingual_clip
+
 device = 'cpu'
 
 import torch
