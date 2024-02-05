@@ -21,5 +21,6 @@ if __name__ == "__main__":
             sentences = file.read().strip().lower()
             model = SentenceTransformer('sentence-transformers/stsb-xlm-r-multilingual')
             embeddings = model.encode(sentences)
-            numpy_array = embeddings.numpy()
-            save(output_dir + base_name + '.npy', numpy_array)
+            print(type(embeddings))
+            #numpy_array = embeddings.numpy()
+            save(output_dir + base_name + '.npy', embeddings)
