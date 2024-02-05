@@ -126,40 +126,40 @@ for feat_name in feats_names:
     #print(n_folds)
 #
     # PER SPEAKER
-    folds = []
-    for fold in n_folds:
-        names_all = []
-        data_fold = np.array(())  # %
-        data_i = df_pd[df_pd["names"].isin(fold)]
-        names = list(set(data_i['names'].tolist()))
-        for name in names:
-            names_all.append(name)
-            gr_sp = data_i.groupby('names').get_group(name)
-            label_row = (gr_sp['labels'].tolist())[0]
-            read_vect = [np.load(vec) for vec in gr_sp['path_feat'].tolist()]
-            read_vect = [vec / np.linalg.norm(vec) for vec in read_vect]
-            feat = np.mean(read_vect, axis=0)
-            feat = feat / np.linalg.norm(feat)
-            feat = np.append(feat, label_row)
-            data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
-        folds.append(data_fold)
-
-    ## PER FILE
     #folds = []
-    #for i in n_folds:
-    #    names = []
+    #for fold in n_folds:
+    #    names_all = []
     #    data_fold = np.array(())  # %
-    #    data_i = df_pd[df_pd["names"].isin(i)]
-    #    # % extract features from files
-    #    for index, row in data_i.iterrows():
-    #        label_row = row['labels']
-    #        feat = np.load(row['path_feat'])
-    #        path = row['path_feat']
-    #        # print(label_row, row['path_feat'])
-    #        feat = np.append(feat, label_row)  # attach label to the end of array [1, feat dim + 1]
+    #    data_i = df_pd[df_pd["names"].isin(fold)]
+    #    names = list(set(data_i['names'].tolist()))
+    #    for name in names:
+    #        names_all.append(name)
+    #        gr_sp = data_i.groupby('names').get_group(name)
+    #        label_row = (gr_sp['labels'].tolist())[0]
+    #        read_vect = [np.load(vec) for vec in gr_sp['path_feat'].tolist()]
+    #        read_vect = [vec / np.linalg.norm(vec) for vec in read_vect]
+    #        feat = np.mean(read_vect, axis=0)
+    #        feat = feat / np.linalg.norm(feat)
+    #        feat = np.append(feat, label_row)
     #        data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
-    #        names.append(path)
     #    folds.append(data_fold)
+#
+    ## PER FILE
+    folds = []
+    for i in n_folds:
+        names = []
+        data_fold = np.array(())  # %
+        data_i = df_pd[df_pd["names"].isin(i)]
+        # % extract features from files
+        for index, row in data_i.iterrows():
+            label_row = row['labels']
+            feat = np.load(row['path_feat'])
+            path = row['path_feat']
+            # print(label_row, row['path_feat'])
+            feat = np.append(feat, label_row)  # attach label to the end of array [1, feat dim + 1]
+            data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
+            names.append(path)
+        folds.append(data_fold)
 
 #
     data_train_1 = np.concatenate(folds[:9])
