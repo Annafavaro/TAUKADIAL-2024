@@ -192,7 +192,7 @@ for feat_name in feats_names:
             normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
                                                                                eval(f"data_test_{i}"))
             # %
-            tuned_params = {"PCA_n": [20, 30, 50, 100, 150, 200, 250, 300]}
+            tuned_params = {"PCA_n": [10, 20, 30, 50, 100, 150, 200, 250, 300]}
             #tuned_params = {"PCA_n": [500]}
             model = PCA_PLDA_EER_Classifier(normalize=0)
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
