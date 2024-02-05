@@ -174,7 +174,7 @@ def feature_extraction_db_extra(sdir, task_inds, id_inds, out_dir, db_name, tril
     # dicts of all wav filenames in the selected folder
 
     ## skip concatenated recordings
-    wav_dicts = [f for f in list(os.scandir(sdir)) if f.name.endswith('.wav') if "concatenated" not in f.name if 'Pope_Benedetto_XVI' in f.name]
+    wav_dicts = [f for f in list(os.scandir(sdir)) if f.name.endswith('.wav') if "concatenated" not in f.name]
     
     # pretrained model
 
