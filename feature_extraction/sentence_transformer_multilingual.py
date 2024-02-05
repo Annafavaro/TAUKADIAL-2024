@@ -11,8 +11,8 @@ if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
-    all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
 
+    all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
     for sentences in all_sents:
         base_name = os.path.basename(sentences).split(".txt")[0]
         print(base_name)
