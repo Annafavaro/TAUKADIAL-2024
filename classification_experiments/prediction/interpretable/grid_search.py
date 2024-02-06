@@ -1,4 +1,10 @@
-import pandas as pd
+
+SVM_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/SVM/SVM.txt'
+MLP_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/MLP/MLP.txt'
+RF_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/RF/RF.txt'
+XG_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/XG/XG.txt'
+BAGG_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/BAGG/BAGG.txt'
+
 import os
 import nltk
 import os
@@ -6,8 +12,7 @@ from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
 from sklearn.svm import SVC
 from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import BaggingClassifier
+
 import numpy as np
 import pandas as pd
 import random
@@ -231,20 +236,13 @@ data_train_10 = np.concatenate(folds[9:] + folds[:8])
 data_test_10 = np.concatenate(folds[8:9])
 
 
-SVM_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/SVM/SVM.txt'
-MLP_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/MLP/MLP.txt'
-RF_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/RF/RF.txt'
-XG_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/XG/XG.txt'
-BAGG_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/BAGG/BAGG.txt'
-
-
 ################################################################################################################
 
 svm_parameters = {}
+mlp_paramters = {}
 rf_paramters = {}
-mlp_paramters = {}
 xg_paramters = {}
-mlp_paramters = {}
+bagg_paramters = {}
 
 for i in range(1, 11):
 
@@ -302,7 +300,7 @@ for i in range(1, 11):
     params = grid_result.cv_results_['params']
     for mean, config in zip(means, params):
         config = str(config)
-        if config in knn_paramters:
+        if config in mlp_paramters:
             mlp_paramters[config].append(mean)
         else:
             mlp_paramters[config] = [mean]
@@ -384,8 +382,8 @@ for i in range(1, 11):
 for k in svm_parameters.keys():
     svm_parameters[k] = np.array(svm_parameters[k]).mean()
 
-for k in knn_paramters.keys():
-    knn_paramters[k] = np.array(knn_paramters[k]).mean()
+for k in mlp_paramters.keys():
+    mlp_paramters[k] = np.array(mlp_paramters[k]).mean()
 
 for k in rf_paramters.keys():
     rf_paramters[k] = np.array(rf_paramters[k]).mean()
@@ -400,8 +398,8 @@ fo = open(SVM_OUT_PATH, "w")
 for k, v in svm_parameters.items():
     fo.write(str(k) + ' >>> '+ str(v) + '\n\n')
 
-fo = open(KNN_OUT_PATH, "w")
-for k, v in knn_paramters.items():
+fo = open(MLP_OUT_PATH, "w")
+for k, v in mlp_paramters.items():
     fo.write(str(k) + ' >>> '+ str(v) + '\n\n')
 
 fo = open(RF_OUT_PATH, "w")
