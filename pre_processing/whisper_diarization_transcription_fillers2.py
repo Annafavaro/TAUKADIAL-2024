@@ -42,7 +42,7 @@ for audio_file in all_files_audio[:1]:
 
         # if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
         #    result_lang = 'zh'
-        )
+      #  )
      # if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
      #     result_lang = 'zh'
      # else:
