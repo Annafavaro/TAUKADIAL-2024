@@ -5,17 +5,9 @@ RF_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/result
 XG_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/XG/XG.txt'
 BAGG_OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_grid_search_classification/BAGG/BAGG.txt'
 
-import os
-import nltk
-import os
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.feature_selection import SelectFromModel
-from sklearn.svm import SVC
-from sklearn.neural_network import MLPClassifier
 
-import numpy as np
+from sklearn.neural_network import MLPClassifier
 import pandas as pd
-import random
 import numpy as np
 import random
 import os
@@ -25,12 +17,9 @@ from sklearn.svm import SVC
 from sklearn.ensemble import GradientBoostingClassifier
 from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RepeatedStratifiedKFold
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.metrics import roc_auc_score
+
 
 
 def add_labels(df, path_labels):
