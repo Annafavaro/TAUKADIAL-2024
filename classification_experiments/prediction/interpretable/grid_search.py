@@ -244,7 +244,7 @@ svm_parameters = {}
 rf_paramters = {}
 mlp_paramters = {}
 xg_paramters = {}
-bagg_paramters = {}
+mlp_paramters = {}
 
 for i in range(1, 11):
 
