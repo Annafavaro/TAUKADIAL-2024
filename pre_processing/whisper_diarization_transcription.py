@@ -47,8 +47,9 @@ for audio_file in all_files_audio[:1]:
             model_a, metadata = whisperx.load_align_model(language_code= 'zh', device=device)
         else:
             model_a, metadata = whisperx.load_align_model(language_code= result["language"], device=device)
-        result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
-        print(result["segments"])
+            print(result["segments"])
+     #   result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
+      # print(result["segments"])
         # 3. Assign speaker labels
       # diarize_model = whisperx.DiarizationPipeline(use_auth_token=YOUR_HF_TOKEN, device=device)
 
