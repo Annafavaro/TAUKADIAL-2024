@@ -88,7 +88,7 @@ lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_tr
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
     feat_pth_pd = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/{feat_name}/'
-    out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/'
+    out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_classification/non_interpretable/'
     print(f"The output directory exists--> {os.path.isdir(out_path)}")
    # test_only = 0
 
@@ -201,7 +201,7 @@ for feat_name in feats_names:
                                        error_score=0)
             grid_result = grid_search.fit(normalized_train_X, y_train)
             # summarize result
-            # print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
+            print("Best: %f using %s" % (grid_result.best_score_, grid_result.best_params_))
             print(grid_result.best_params_)
             means = grid_result.cv_results_['mean_test_score']
             stds = grid_result.cv_results_['std_test_score']
