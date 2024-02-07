@@ -35,19 +35,20 @@ for audio_file in all_files_audio[:1]:
 
         audio = whisperx.load_audio(audio_file)
         result = model.transcribe(audio, batch_size=batch_size)
-        if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
-            result_lang = 'zh'
-        else:
-            result_lang = str(result["language"])
-        ids.append(result_lang)
-
-        # 2. Align whisper output
-        #model_a, metadata = whisperx.load_align_model(language_code='en', device=device)
-        if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
-            model_a, metadata = whisperx.load_align_model(language_code= 'zh', device=device)
-        else:
-            model_a, metadata = whisperx.load_align_model(language_code= result["language"], device=device)
-            print(result["segments"])
+        print(result)
+      #  if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
+      #      result_lang = 'zh'
+      #  else:
+      #      result_lang = str(result["language"])
+      #  ids.append(result_lang)
+#
+      #  # 2. Align whisper output
+      #  #model_a, metadata = whisperx.load_align_model(language_code='en', device=device)
+      #  if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
+      #      model_a, metadata = whisperx.load_align_model(language_code= 'zh', device=device)
+      #  else:
+      #      model_a, metadata = whisperx.load_align_model(language_code= result["language"], device=device)
+      #      print(result["segments"])
      #   result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
       # print(result["segments"])
         # 3. Assign speaker labels
