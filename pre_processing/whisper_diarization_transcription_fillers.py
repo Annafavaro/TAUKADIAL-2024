@@ -50,17 +50,17 @@ for audio_file in all_files_audio:
         result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
 
         # 3. Assign speaker labels
-        diarize_model = whisperx.DiarizationPipeline(use_auth_token=YOUR_HF_TOKEN, device=device)
+       # diarize_model = whisperx.DiarizationPipeline(use_auth_token=YOUR_HF_TOKEN, device=device)
+#
+       # # add min/max number of speakers if known
+       # diarize_segments = diarize_model(audio_file)
+       # result = whisperx.assign_word_speakers(diarize_segments, result)
+       # ##print(diarize_segments)
+       # # print(result["segments"]) #
+       # diarize_segments.to_csv(csv_path)
+       # with open(json_path, "w") as outfile:
+       #     json.dump(result, outfile)
 
-        # add min/max number of speakers if known
-        diarize_segments = diarize_model(audio_file)
-        result = whisperx.assign_word_speakers(diarize_segments, result)
-        ##print(diarize_segments)
-        # print(result["segments"]) #
-        diarize_segments.to_csv(csv_path)
-        with open(json_path, "w") as outfile:
-            json.dump(result, outfile)
-
-dict = {'names': names, 'lang': ids}
-df = pd.DataFrame(dict)
-df.to_csv(os.path.join(OUT_PATH, 'lang_ids.csv'))
+#dict = {'names': names, 'lang': ids}
+#df = pd.DataFrame(dict)
+#df.to_csv(os.path.join(OUT_PATH, 'lang_ids.csv'))

@@ -1,14 +1,20 @@
-OUT_PATH = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train_transcriptions_and_diarization/'
+OUT_PATH = '/data/lmorove1/afavaro/data/IS_2024/transcripts_with_prompts/'
 
-import json
+from openai import OpenAI  # for making OpenAI API calls
+import urllib  # for downloading example audio files
 import os
-import whisperx
+token= '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'
 
-YOUR_HF_TOKEN = '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'
-device = "cuda"
-batch_size = 16  # reduce if low on GPU mem
-compute_type = "float16"
-model = whisperx.load_model("large-v2", device, compute_type=compute_type)
+
+# define a wrapper function for seeing how prompts affect transcriptions
+def transcribe(audio_filepath, prompt: str) -> str:
+    """Given a prompt, transcribe the audio file."""
+    transcript = client.audio.transcriptions.create(
+        file=open(audio_filepath, "rb"),
+        model="whisper-1",
+        prompt=prompt,
+    )
+    return transcript.text
 
 root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
 
@@ -19,54 +25,15 @@ for path, subdirs, files in os.walk(root2):
         if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
-
 names = []
 ids = []
 #index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
-for audio_file in all_files_audio[:1]:
+for audio_file in all_files_audio:
 
         base_name = os.path.basename(audio_file).split(".wav")[0]
-        print(base_name)
-
-        csv_path = os.path.join(OUT_PATH, base_name + ".csv")
-        print(csv_path)
-        json_path = os.path.join(OUT_PATH, base_name + ".json")
-        print(json_path)
-
-        audio = whisperx.load_audio(audio_file)
-        result = model.transcribe(audio, batch_size=batch_size,
-                                  prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter, so, um, I think someone might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
-
-        print(result["segments"])
-
-
-        # if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
-        #    result_lang = 'zh'
-      #  )
-     # if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
-     #     result_lang = 'zh'
-     # else:
-     #     result_lang = str(result["language"])
-     # ids.append(result_lang)
-
-     # # 2. Align whisper output
-     # #model_a, metadata = whisperx.load_align_model(language_code='en', device=device)
-     # if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
-     #     model_a, metadata = whisperx.load_align_model(language_code= 'zh', device=device)
-     # else:
-     #     model_a, metadata = whisperx.load_align_model(language_code= result["language"], device=device)
-     # result = whisperx.align(result["segments"], model_a, metadata, audio, device, return_char_alignments=False)
-
-     # # 3. Assign speaker labels
-     # diarize_model = whisperx.DiarizationPipeline(use_auth_token=YOUR_HF_TOKEN, device=device)
-
-     # # add min/max number of speakers if known
-     # diarize_segments = diarize_model(audio_file)
-     # result = whisperx.assign_word_speakers(diarize_segments, result)
-     # ##print(diarize_segments)
-     # # print(result["segments"]) #
-     # diarize_segments.to_csv(csv_path)
-     # with open(json_path, "w") as outfile:
-     #     json.dump(result, outfile)
-
-##df.to_csv(os.path.join(OUT_PATH, 'lang_ids.csv'))
+        OUT_PATH_FILE = os.path.join()
+        transcript = transcribe(audio_file,
+                   prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter, so, ah, I think someone might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
+       # with open(OUT_PATH_FILE,'w') as output:
+         #   for line in transcript:
+             #   output.write(line)
