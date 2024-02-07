@@ -33,7 +33,7 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join()
         transcript = transcribe(audio_file,
-                   prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter, so, ah, I think someone might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
+                   prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
        # with open(OUT_PATH_FILE,'w') as output:
          #   for line in transcript:
              #   output.write(line)
