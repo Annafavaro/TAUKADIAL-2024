@@ -5,7 +5,7 @@ from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
 import os
 token =
-token = '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'
+token = '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'
 #token = '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'
 #token= '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'
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
