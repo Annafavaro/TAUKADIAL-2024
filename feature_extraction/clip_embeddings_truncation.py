@@ -37,7 +37,7 @@ def get_stats_data(transcripts_path, output_dir):
 
     all_sents = sorted([os.path.join(transcripts_path, elem) for elem in os.listdir(transcripts_path)])
 
-    for sentences in all_sents:
+    for sentences in all_sents[30:]:
 
         base_name = os.path.basename(sentences).split(".txt")[0]
         print(base_name)
