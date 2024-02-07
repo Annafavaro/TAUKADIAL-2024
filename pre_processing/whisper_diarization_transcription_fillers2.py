@@ -8,8 +8,8 @@ import os
 
 #token = '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'
 #token = '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'
-#token = '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'
-token= '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'
+token = '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'
+#token= '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'
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 limit_mb=25
 
@@ -33,7 +33,7 @@ for path, subdirs, files in os.walk(root2):
 names = []
 ids = []
 #index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
-for audio_file in all_files_audio[370:]:
+for audio_file in all_files_audio[377:]:
         print(audio_file)
         file_size_bytes = os.path.getsize(audio_file)
         file_size_mb = file_size_bytes / (1024 * 1024)
