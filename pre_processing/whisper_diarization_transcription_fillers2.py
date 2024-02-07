@@ -28,7 +28,7 @@ all_files_audio = []
 for path, subdirs, files in os.walk(root2):
     #print(path)
     for name in files:
-        if name.endswith(".wav"):
+        if name.endswith(".ogg"):
             all_files_audio.append(os.path.join(path, name))
 
 names = []
@@ -41,7 +41,7 @@ ids = []
 
 for audio in all_files_audio:
    # audio_file_complete = os.path.join(root2, audio +'.wav')
-    base_name = os.path.basename(audio).split(".wav")[0]
+    base_name = os.path.basename(audio).split(".ogg")[0]
     OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
     transcript = transcribe(audio,
                             prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
