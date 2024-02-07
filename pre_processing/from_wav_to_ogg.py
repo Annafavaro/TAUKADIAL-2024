@@ -9,7 +9,7 @@ def convert_wav_to_ogg(input_file, output_file):
     sound = AudioSegment.from_wav(input_file)
     sound = sound.set_frame_rate(16000)
     # Export the audio in OGG format
-    sound.export(output_file, format="ogg", codec="opus")
+    sound.export(output_file, format="ogg", codec="libopus")
 
 
 
