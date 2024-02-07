@@ -80,7 +80,7 @@ def add_labels(df, path_labels):
 
     return df
 
-feats_names = ['xvector', 'trillsson', 'clip_truncation', 'sentence_tr_multiling'] #'whisper']
+feats_names = ['xvector', 'trillsson', 'clip_truncation', 'sentence_tr_multiling', 'whisper']
 
 labels_df= pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
@@ -193,7 +193,7 @@ for feat_name in feats_names:
                                                                                eval(f"data_test_{i}"))
             # %
            # tuned_params = {"PCA_n": [10, 20, 30, 50, 100, 150, 200, 250, 300]} #per file
-            tuned_params = {"PCA_n": [10, 20, 30, 40, 50, 100]}  # per speaker
+            tuned_params = {"PCA_n": [10, 20, 30, 40, 50, 100, 400]}  # per speaker
             #tuned_params = {"PCA_n": [500]}
             model = PCA_PLDA_EER_Classifier(normalize=0)
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
