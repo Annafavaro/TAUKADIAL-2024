@@ -41,15 +41,15 @@ to_do_list = list(set(base_audios)^set(present_tr))
 
 for audio in to_do_list:
     audio_file_complete = os.path.join(root2, audio +'.wav')
+    base_name = os.path.basename(audio_file_complete).split(".wav")[0]
+    OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
+    transcript = transcribe(audio_file_complete,
+                            prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
+    with open(OUT_PATH_FILE, 'w') as output:
+        for line in transcript:
+            output.write(line)
 #for audio_file in all_files_audio[377:]:
         #print(audio_file)
        # file_size_bytes = os.path.getsize(audio_file)
         #file_size_mb = file_size_bytes / (1024 * 1024)
        # if file_size_mb <= limit_mb:
-            base_name = os.path.basename(audio_file_complete).split(".wav")[0]
-            OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-            transcript = transcribe(audio_file_complete,
-                                    prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
-            with open(OUT_PATH_FILE,'w') as output:
-                for line in transcript:
-                    output.write(line)
