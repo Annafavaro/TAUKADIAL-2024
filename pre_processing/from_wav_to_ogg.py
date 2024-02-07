@@ -35,6 +35,6 @@ def convert_wav_to_ogg(input_file, output_file):
 all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
 for audio in all_audios:
     print(audio)
-    base = os.path.basename(audio)
-    out_file = os.path.join(out, base)
+    base = os.path.basename(audio).split('.wav')[0]
+    out_file = os.path.join(out, base+'.ogg')
     convert_wav_to_ogg(audio, out_file)
