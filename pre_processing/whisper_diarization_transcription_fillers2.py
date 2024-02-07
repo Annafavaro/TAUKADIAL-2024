@@ -1,5 +1,6 @@
 OUT_PATH = '/data/lmorove1/afavaro/data/IS_2024/transcripts_with_prompts/'
-root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
+#root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
+root2 = '/data/lmorove1/afavaro/data/IS_2024/audios_compressed/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -33,17 +34,16 @@ for path, subdirs, files in os.walk(root2):
 names = []
 ids = []
 
+#base_audios = [os.path.basename(audio).split('.wav')[0] for audio in all_files_audio]
+#present_tr = [os.path.basename(tr).split('.txt')[0] for tr in os.listdir(OUT_PATH)]
+#
+#to_do_list = list(set(base_audios)^set(present_tr))
 
-base_audios = [os.path.basename(audio).split('.wav')[0] for audio in all_files_audio]
-present_tr = [os.path.basename(tr).split('.txt')[0] for tr in os.listdir(OUT_PATH)]
-
-to_do_list = list(set(base_audios)^set(present_tr))
-
-for audio in to_do_list:
-    audio_file_complete = os.path.join(root2, audio +'.wav')
-    base_name = os.path.basename(audio_file_complete).split(".wav")[0]
+for audio in all_files_audio:
+   # audio_file_complete = os.path.join(root2, audio +'.wav')
+    base_name = os.path.basename(audio).split(".wav")[0]
     OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-    transcript = transcribe(audio_file_complete,
+    transcript = transcribe(audio,
                             prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
     with open(OUT_PATH_FILE, 'w') as output:
         for line in transcript:
