@@ -9,10 +9,11 @@ def convert_wav_to_ogg(input_file, output_file):
     sound = AudioSegment.from_wav(input_file)
 
     # Export the audio in OGG format
-    sound.export(output_file, format="ogg", codec="libvorbis")
+    sound.export(output_file, format="ogg")
 
 all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
 for audio in all_audios:
+    print(audio)
     base = os.path.basename(audio)
     out_file = os.path.join(out, base)
     convert_wav_to_ogg(audio, out_file)
