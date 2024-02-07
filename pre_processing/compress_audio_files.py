@@ -29,5 +29,6 @@ to_do_list = list(set(base_audios)^set(present_tr))
 for audio in to_do_list:
     audio_file_complete = os.path.join(root2, audio +'.wav')
     base_name = os.path.basename(audio_file_complete).split(".wav")[0]
-    OUT_PATH_FILE = os.path.join(OUT_PATH2, base_name + '.wav')
-    compress_audio(audio_file_complete, OUT_PATH_FILE, target_size_mb)
+    print(base_name)
+    #OUT_PATH_FILE = os.path.join(OUT_PATH2, base_name + '.wav')
+   # compress_audio(audio_file_complete, OUT_PATH_FILE, target_size_mb)
