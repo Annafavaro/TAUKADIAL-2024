@@ -30,7 +30,7 @@ for path, subdirs, files in os.walk(root2):
 names = []
 ids = []
 #index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
-for audio_file in all_files_audio[150:]:
+for audio_file in all_files_audio[260:]:
         print(audio_file)
         file_size_bytes = os.path.getsize(audio_file)
         file_size_mb = file_size_bytes / (1024 * 1024)
