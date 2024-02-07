@@ -26,7 +26,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
 
 all_files_audio = []
 for path, subdirs, files in os.walk(root2):
-    #print(path)
+    print(path)
     for name in files:
         if name.endswith(".ogg"):
             all_files_audio.append(os.path.join(path, name))
