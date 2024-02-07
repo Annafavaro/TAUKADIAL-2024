@@ -11,6 +11,7 @@ client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 def transcribe(audio_filepath, prompt: str) -> str:
     """Given a prompt, transcribe the audio file."""
     transcript = client.audio.transcriptions.create(
+        {maxBodyLength: 25 * 1024 * 1024},
         file=open(audio_filepath, "rb"),
         model="whisper-1",
         prompt=prompt,
