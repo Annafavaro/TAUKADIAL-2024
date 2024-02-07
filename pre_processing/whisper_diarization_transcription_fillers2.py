@@ -27,7 +27,7 @@ for path, subdirs, files in os.walk(root2):
 names = []
 ids = []
 #index = all_files_audio.index(os.path.join(root2, 'taukdial-161-3.wav'))
-for audio_file in all_files_audio:
+for audio_file in all_files_audio[33:]:
 
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
