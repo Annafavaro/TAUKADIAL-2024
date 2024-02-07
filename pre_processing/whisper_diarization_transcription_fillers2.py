@@ -1,4 +1,5 @@
 OUT_PATH = '/data/lmorove1/afavaro/data/IS_2024/transcripts_with_prompts/'
+root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -15,8 +16,6 @@ def transcribe(audio_filepath, prompt: str) -> str:
         prompt=prompt,
     )
     return transcript.text
-
-root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
 
 all_files_audio = []
 for path, subdirs, files in os.walk(root2):
