@@ -32,7 +32,7 @@ for audio_file in all_files_audio[121+2:]:
         print(audio_file)
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-        transcript = transcribe(maxBodyLength, audio_file,
+        transcript = transcribe(audio_file,
                    prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
         with open(OUT_PATH_FILE,'w') as output:
             for line in transcript:
