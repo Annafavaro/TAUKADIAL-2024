@@ -6,15 +6,15 @@ import urllib  # for downloading example audio files
 import os
 token= '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'
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
-maxBodyLength = 25 * 1024 * 1024
+
 # define a wrapper function for seeing how prompts affect transcriptions
-def transcribe(maxBodyLength, audio_filepath, prompt: str) -> str:
+def transcribe(audio_filepath, prompt: str) -> str:
     """Given a prompt, transcribe the audio file."""
     transcript = client.audio.transcriptions.create(
-        {maxBodyLength},
         file=open(audio_filepath, "rb"),
         model="whisper-1",
         prompt=prompt,
+        maxBodyLength=25 * 1024 * 1024
     )
     return transcript.text
 
