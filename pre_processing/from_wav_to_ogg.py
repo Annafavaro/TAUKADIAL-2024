@@ -2,7 +2,7 @@ from pydub import AudioSegment
 import os
 
 out = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diatization_ogg/'
-input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
+input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_original/'
 
 def convert_wav_to_ogg(input_file, output_file):
     # Load the WAV file
