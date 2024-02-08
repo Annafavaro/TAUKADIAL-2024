@@ -20,6 +20,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     transcript = client.audio.transcriptions.create(
         file=open(audio_filepath, "rb"),
         model="whisper-1",
+        language ='zh',
         prompt=prompt,
     )
     return transcript.text
