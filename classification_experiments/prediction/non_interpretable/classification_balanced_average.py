@@ -80,12 +80,11 @@ def add_labels(df, path_labels):
 
     return df
 
-feats_names = ['distiluse-base-multilingual-cased-v2']
 
-#feats_names = ['all-distilroberta-v1', 'all-MiniLM-L6-v2', 'all-MiniLM-L12-v2', 'all-mpnet-base-v2',
-           #    'distiluse-base-multilingual-cased-v1', 'distiluse-base-multilingual-cased-v2',
-            #   'stsb-xlm-r-multilingual', 'XLM-Roberta-Large-Vit-L-14']
-#['xvector', 'trillsson', 'clip_truncation', 'sentence_tr_multiling', 'whisper']
+feats_names = ['xvector', 'XLM-Roberta-Large-Vit-L-14','whisper', 'trillsson',
+               'stsb-xlm-r-multilingual','distiluse-base-multilingual-cased-v2',
+               'distiluse-base-multilingual-cased-v1', 'all-mpnet-base-v2',
+               'all-MiniLM-L12-v2', 'all-MiniLM-L6-v2', 'all-distilroberta-v1']
 
 labels_df= pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
