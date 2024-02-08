@@ -234,7 +234,7 @@ for feat_name in feats_names:
     data_test_10 = np.concatenate(folds[8:9])
 
     # Set random seed for reproducibility
-    num_epochs = 5
+    num_epochs = 50
     learning_rate = 0.0001
     batch_size = 32  # Change this to match the dimensionality of your embeddings
     hidden_size = 50
