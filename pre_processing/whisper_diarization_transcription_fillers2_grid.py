@@ -41,7 +41,7 @@ ids = []
 #to_do_list = list(set(base_audios)^set(present_tr))
 
 
-names = ['taukdial-161-1']
+names = ['taukdial-161-1', 'taukdial-132-3', 'taukdial-107-3', 'taukdial-105-1']
 
 
 for audio in all_files_audio:
