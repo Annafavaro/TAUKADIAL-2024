@@ -1,6 +1,6 @@
-OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/ogg/temp/'
+OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/temp/'
 #root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
-root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/ogg/'
+root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -28,7 +28,7 @@ all_files_audio = []
 for path, subdirs, files in os.walk(root2):
     print(path)
     for name in files:
-        if name.endswith(".ogg"):
+        if name.endswith(".wav"):
             all_files_audio.append(os.path.join(path, name))
 
 names = []
@@ -39,15 +39,27 @@ ids = []
 #
 #to_do_list = list(set(base_audios)^set(present_tr))
 
+
+names = ['taukdial-003-3', 'taukdial-006-2', 'taukdial-006-3', 'taukdial-007-1',
+'taukdial-007-2', 'taukdial-007-3', 'taukdial-023-3', 'taukdial-024-2',
+'taukdial-039-2', 'taukdial-048-3', 'taukdial-065-1', 'taukdial-072-1',
+'taukdial-072-3', 'taukdial-080-3', 'taukdial-093-3', 'taukdial-097-1',
+'taukdial-097-2', 'taukdial-097-3', 'taukdial-109-1', 'taukdial-110-1',
+'taukdial-110-2', 'taukdial-111-2', 'taukdial-131-1', 'taukdial-131-2',
+'taukdial-136-2', 'taukdial-141-2', 'taukdial-157-1', 'taukdial-157-2',
+'taukdial-157-3', 'taukdial-159-1', 'taukdial-159-2', 'taukdial-159-3']
+
+
 for audio in all_files_audio:
    # audio_file_complete = os.path.join(root2, audio +'.wav')
-    base_name = os.path.basename(audio).split(".ogg")[0]
-    OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-    transcript = transcribe(audio,
-                            prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
-    with open(OUT_PATH_FILE, 'w') as output:
-        for line in transcript:
-            output.write(line)
+    base_name = os.path.basename(audio).split(".wav")[0]
+    if base_name in names:
+        OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
+        transcript = transcribe(audio,
+                                prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
+        with open(OUT_PATH_FILE, 'w') as output:
+            for line in transcript:
+                output.write(line)
 #for audio_file in all_files_audio[377:]:
         #print(audio_file)
        # file_size_bytes = os.path.getsize(audio_file)
