@@ -261,7 +261,7 @@ for feat_name in feats_names:
 
         # Initialize model
         # model = ComplexNet(input_size, hidden_size)
-        model = SimpleNet(input_size)
+       # model = SimpleNet(input_size)
 
         # Define optimizer for each fold
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
