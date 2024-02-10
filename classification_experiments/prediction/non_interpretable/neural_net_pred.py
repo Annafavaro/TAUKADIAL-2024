@@ -68,42 +68,41 @@ def add_labels(df, path_labels):
     return df
 
 
-# class Classifier(nn.Module):
-#    def __init__(self,  input_dim):
+class Classifier(nn.Module):
+   def __init__(self,  input_dim):
+       super().__init__()
+       self.hidden = nn.Linear(input_dim, 180)
+       self.relu = nn.ReLU()
+       self.output = nn.Linear(180, 1)
+       self.sigmoid = nn.Sigmoid()
+   def forward(self, x):
+       x = self.relu(self.hidden(x))
+       x = self.sigmoid(self.output(x))
+       return x
+
+
+#class Classifier(nn.Module):
+#    def __init__(self, input_dim):
 #        super().__init__()
-#        self.hidden = nn.Linear(input_dim, 180)
-#        self.relu = nn.ReLU()
-#        self.output = nn.Linear(180, 1)
-#        self.sigmoid = nn.Sigmoid()
+#        # Increase depth and width
+#        self.hidden1 = nn.Linear(input_dim, 256)
+#        self.bn1 = nn.BatchNorm1d(256)  # Batch normalization
+#        self.hidden2 = nn.Linear(256, 128)
+#        self.bn2 = nn.BatchNorm1d(128)
+#        self.hidden3 = nn.Linear(128, 64)
+#        self.dropout = nn.Dropout(0.5)  # Dropout for regularization
+#        self.output = nn.Linear(64, 1)
+#        # Using LeakyReLU as an alternative to ReLU
+#        self.leaky_relu = nn.LeakyReLU(0.01)
 #
 #    def forward(self, x):
-#        x = self.relu(self.hidden(x))
-#        x = self.sigmoid(self.output(x))
+#        x = self.leaky_relu(self.bn1(self.hidden1(x)))
+#        x = self.leaky_relu(self.bn2(self.hidden2(x)))
+#        x = self.dropout(x)
+#        x = self.leaky_relu(self.hidden3(x))
+#        x = torch.sigmoid(self.output(x))
 #        return x
-
-
-class Classifier(nn.Module):
-    def __init__(self, input_dim):
-        super().__init__()
-        # Increase depth and width
-        self.hidden1 = nn.Linear(input_dim, 256)
-        self.bn1 = nn.BatchNorm1d(256)  # Batch normalization
-        self.hidden2 = nn.Linear(256, 128)
-        self.bn2 = nn.BatchNorm1d(128)
-        self.hidden3 = nn.Linear(128, 64)
-        self.dropout = nn.Dropout(0.5)  # Dropout for regularization
-        self.output = nn.Linear(64, 1)
-        # Using LeakyReLU as an alternative to ReLU
-        self.leaky_relu = nn.LeakyReLU(0.01)
-
-    def forward(self, x):
-        x = self.leaky_relu(self.bn1(self.hidden1(x)))
-        x = self.leaky_relu(self.bn2(self.hidden2(x)))
-        x = self.dropout(x)
-        x = self.leaky_relu(self.hidden3(x))
-        x = torch.sigmoid(self.output(x))
-        return x
-
+#
 
 def reset_weights(m):
     for layer in m.children():
