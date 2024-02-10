@@ -212,7 +212,7 @@ for feat_name in feats_names:
 
         # DATA
         Xtrain, Xtest, y_train, y_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
-        print(len(Xtrain), len(Xtest))
+       # print(len(Xtrain), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
 
         for epoch in range(n_epochs):
