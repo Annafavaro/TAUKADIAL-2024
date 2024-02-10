@@ -216,6 +216,7 @@ for feat_name in feats_names:
         batches_per_epoch = len(Xtrain) // batch_size
 
         for epoch in range(n_epochs):
+            model.train()
             for i in range(batches_per_epoch):
                 optimizer.zero_grad()
                 start = i * batch_size
