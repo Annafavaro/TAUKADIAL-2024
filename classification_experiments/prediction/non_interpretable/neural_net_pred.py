@@ -1,56 +1,12 @@
-import pandas as pd
 import os
-import nltk
-import os
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.feature_selection import SelectFromModel
-from sklearn.svm import SVC
-from sklearn.neural_network import MLPClassifier
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import BaggingClassifier
-import numpy as np
 import pandas as pd
-import random
-import numpy as np
-import random
 import torch
 import torch.nn as nn
 import numpy as np
 from sklearn.metrics import accuracy_score
-import os
-from sklearn.ensemble import ExtraTreesClassifier
-from sklearn.feature_selection import SelectFromModel
-from sklearn.svm import SVC
-from sklearn.ensemble import GradientBoostingClassifier
-from sklearn.ensemble import BaggingClassifier
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.neighbors import KNeighborsClassifier
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import RepeatedStratifiedKFold
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.metrics import classification_report, confusion_matrix
-from sklearn.metrics import roc_auc_score
-# coding: utf-8
-import sys
 
-import pandas as pd
-import numpy as np
-from statistics import mode
-from sklearn.utils import shuffle
-import os
-import sys
-from pathlib import Path
-from sklearn.metrics import classification_report, confusion_matrix, roc_auc_score
-random_state = 20
-random_seed = 20
-#np.random.seed(20)
-from sklearn.model_selection import GridSearchCV
-from sklearn.model_selection import RepeatedStratifiedKFold
-test_only = 0
+torch.manual_seed(19)
 
-
-# !/usr/bin/env python
-# coding: utf-8
 
 def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
@@ -112,39 +68,48 @@ def add_labels(df, path_labels):
     return df
 
 
-# Define your model
-class SimpleNet(nn.Module):
-    def __init__(self, input_size):
-        super(SimpleNet, self).__init__()
-        self.fc = nn.Linear(input_size, 1)  # Fully connected layer
-        self.layer_norm = nn.LayerNorm(1)  # Layer normalization
-        self.sigmoid = nn.Sigmoid()  # Sigmoid activation function
+# class Classifier(nn.Module):
+#    def __init__(self,  input_dim):
+#        super().__init__()
+#        self.hidden = nn.Linear(input_dim, 180)
+#        self.relu = nn.ReLU()
+#        self.output = nn.Linear(180, 1)
+#        self.sigmoid = nn.Sigmoid()
+#
+#    def forward(self, x):
+#        x = self.relu(self.hidden(x))
+#        x = self.sigmoid(self.output(x))
+#        return x
+
+
+class Classifier(nn.Module):
+    def __init__(self, input_dim):
+        super().__init__()
+        # Increase depth and width
+        self.hidden1 = nn.Linear(input_dim, 256)
+        self.bn1 = nn.BatchNorm1d(256)  # Batch normalization
+        self.hidden2 = nn.Linear(256, 128)
+        self.bn2 = nn.BatchNorm1d(128)
+        self.hidden3 = nn.Linear(128, 64)
+        self.dropout = nn.Dropout(0.5)  # Dropout for regularization
+        self.output = nn.Linear(64, 1)
+        # Using LeakyReLU as an alternative to ReLU
+        self.leaky_relu = nn.LeakyReLU(0.01)
 
     def forward(self, x):
-        x = self.fc(x)
-        x = self.layer_norm(x)
-        x = self.sigmoid(x)
+        x = self.leaky_relu(self.bn1(self.hidden1(x)))
+        x = self.leaky_relu(self.bn2(self.hidden2(x)))
+        x = self.dropout(x)
+        x = self.leaky_relu(self.hidden3(x))
+        x = torch.sigmoid(self.output(x))
         return x
 
 
-class ComplexNet(nn.Module):
-    def __init__(self, input_size, hidden_size):
-        super(ComplexNet, self).__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)  # First fully connected layer
-        self.fc2 = nn.Linear(hidden_size, 1)  # Second fully connected layer
-        self.layer_norm1 = nn.LayerNorm(hidden_size)  # Layer normalization for first hidden layer
-        self.layer_norm2 = nn.LayerNorm(1)  # Layer normalization for second hidden layer
-        self.relu = nn.ReLU()  # ReLU activation function
-        self.sigmoid = nn.Sigmoid()  # Sigmoid activation function
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.layer_norm1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        x = self.layer_norm2(x)
-        x = self.sigmoid(x)
-        return x
+def reset_weights(m):
+    for layer in m.children():
+        if hasattr(layer, 'reset_parameters'):
+            #  print(f'Reset trainable parameters of layer = {layer}')
+            layer.reset_parameters()
 
 
 feats_names = ['xvector', 'XLM-Roberta-Large-Vit-L-14', 'whisper', 'trillsson',
@@ -158,9 +123,6 @@ lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_tr
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
     feat_pth_pd = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/{feat_name}/'
-    # out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_classification/non_interpretable/'
-    #  print(f"The output directory exists--> {os.path.isdir(out_path)}")
-    # test_only = 0
 
     path_files = [os.path.join(feat_pth_pd, elem) for elem in sorted(os.listdir(feat_pth_pd))]
     names = ['taukdial-' + os.path.basename(elem).rsplit('-', -1)[1] for elem in path_files]
@@ -176,10 +138,10 @@ for feat_name in feats_names:
     df_pd = pd.DataFrame(list(zip(names, path_files, labels)), columns=['names', 'path_feat', 'labels'])
     #
     arrayOfSpeaker_cn = sorted(list(set(df_pd.groupby('labels').get_group(1)['names'].tolist())))
-    random.Random(random_seed).shuffle(arrayOfSpeaker_cn)
+    # random.Random(random_seed).shuffle(arrayOfSpeaker_cn)
     ##
     arrayOfSpeaker_pd = sorted(list(set(df_pd.groupby('labels').get_group(0)['names'].tolist())))
-    random.Random(random_seed).shuffle(arrayOfSpeaker_pd)
+    #    random.Random(random_seed).shuffle(arrayOfSpeaker_pd)
 
     print(arrayOfSpeaker_pd)
     print(arrayOfSpeaker_cn)
@@ -191,7 +153,6 @@ for feat_name in feats_names:
     for cn_sp, pd_sp in zip(sorted(cn_sps, key=len), sorted(pd_sps, key=len, reverse=True)):
         data.append(cn_sp + pd_sp)
     n_folds = sorted(data, key=len, reverse=True)
-    # print(n_folds)
 
     #
     ## PER FILE
@@ -233,73 +194,65 @@ for feat_name in feats_names:
     data_train_10 = np.concatenate(folds[9:] + folds[:8])
     data_test_10 = np.concatenate(folds[8:9])
 
-    # Set random seed for reproducibility
-    num_epochs = 50
-    learning_rate = 0.0001
-    batch_size = 32  # Change this to match the dimensionality of your embeddings
-    hidden_size = 50
-    # Define loss function
-    criterion = nn.BCELoss()
+    n_epochs = 30
+    batch_size = 32
+    input_dim = data_train_1.shape[1] - 1  # Subtract 1 for the label column
+    print(input_dim)
+    hidden_dim = 256  # Hidden dimension of the fully connected layer
+    output_dim = 1  # Output dimension for binary classification (1 for binary)
+    learning_rate = 0.01
+    # Define loss function and optimizer
+    criterion = nn.BCELoss()  # Binary Cross Entropy Loss
 
-    # Perform cross-validation
-    fold_accuracies = []
-    for i in range(1, 11):
-        print(i)
-        normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
-                                                                           eval(f"data_test_{i}"))
-        #  y_val = y_val.tolist()
-        input_size = normalized_train_X[0].shape[0]
-        print(input_size)
-        # Convert inputs and labels to tensors
-        X_train_tensor = torch.FloatTensor(normalized_train_X)
-        print(X_train_tensor.shape)
-        y_train_tensor = torch.FloatTensor(y_train).view(-1, 1)
-        print(X_train_tensor.shape)
-        X_val_tensor = torch.FloatTensor(normalized_test_X)
-        print(X_val_tensor.shape)
-        y_val_tensor = torch.FloatTensor(y_test).view(-1, 1)
-
-        # Initialize model
-        # model = ComplexNet(input_size, hidden_size)
-       # model = SimpleNet(input_size)
-
-        # Define optimizer for each fold
+    results = {}
+    for n_fold in range(1, 11):
+        print(n_fold)
+        model = Classifier(input_dim)
+        model.apply(reset_weights)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-        # Training loop
-        for epoch in range(num_epochs):
-            model.train()
-            running_loss = 0.0
-            for j in range(0, len(X_train_tensor), batch_size):  # Use a different variable name for the inner loop
-                inputs = X_train_tensor[j:j + batch_size]
-                labels = y_train_tensor[j:j + batch_size]
+        # DATA
+        Xtrain, Xtest, y_train, y_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
+        print(len(Xtrain), len(Xtest))
+        batches_per_epoch = len(Xtrain) // batch_size
 
-                # Forward pass
-                outputs = model(inputs)
-
-                # Compute loss
-                loss = criterion(outputs, labels)
-
-                # Backward pass and optimization
+        for epoch in range(n_epochs):
+            for i in range(batches_per_epoch):
                 optimizer.zero_grad()
+                start = i * batch_size
+                # take a batch
+                Xbatch = Xtrain[start:start + batch_size]
+                ybatch = y_train[start:start + batch_size]
+                Xbatch = torch.tensor(Xbatch, dtype=torch.float32)
+                ybatch = torch.tensor(ybatch, dtype=torch.float32)
+
+                # forward pass
+                y_pred = model(Xbatch)
+                loss = criterion(y_pred.flatten(), ybatch)
+                # backward pass
+                acc = (y_pred.round() == ybatch).float().mean()
                 loss.backward()
+                # update weights
                 optimizer.step()
+        #  print(f"epoch {epoch} step {i} loss {loss} accuracy {acc}")
 
-                running_loss += loss.item()
-            #
-            print(f"Epoch {epoch + 1}/{num_epochs}, Loss: {running_loss}")
-
-        # Validation
-        model.eval()
+        # evaluate trained model with test set
+        correct, total = 0, 0
         with torch.no_grad():
-            outputs = model(X_val_tensor)
-            predicted_labels = (outputs > 0.5).float()
-            accuracy = accuracy_score(y_val_tensor, predicted_labels)
-            print(f"Validation Accuracy: {accuracy}")
-            fold_accuracies.append(accuracy)
+            Xtest = torch.tensor(Xtest, dtype=torch.float32)
+            y_test = torch.tensor(y_test, dtype=torch.float32)
+            y_pred = model(Xtest)
+        accuracy = (y_pred.round() == y_test).float().mean()
 
-    # Calculate and print average cross-validation accuracy
-    avg_accuracy = sum(fold_accuracies) / len(fold_accuracies)
-    print(f"Average Cross-Validation Accuracy: {avg_accuracy}")
+        # Print accuracy
+        # print(f'Accuracy for fold {n_fold} is {accuracy}')
+        # print('--------------------------------')
+        results[n_fold] = accuracy
 
-
+    print(f'K-FOLD CROSS VALIDATION RESULTS FOR 10 FOLDS')
+    print('--------------------------------')
+    sum = 0.0
+    for key, value in results.items():
+        print(f'Fold {key}: {value} %')
+        sum += value
+    print(f'Average: {sum / len(results.items())} %')
