@@ -34,37 +34,6 @@ def get_n_folds(arrayOfSpeaker):
         n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
     return n_folds
 
-def create_n_folds_names(data_frame):
-    # generate outer folds data
-    data = []
-
-    data_grouped = data_frame.groupby('labels')
-    ctrl_ = data_grouped.get_group(1)
-    pd_ = data_grouped.get_group(0)
-
-    arrayOfSpeaker_cn = ctrl_['names'].unique()
-    #random.shuffle(arrayOfSpeaker_cn)
-
-    arrayOfSpeaker_pd = pd_['names'].unique()
-    #random.shuffle(arrayOfSpeaker_pd)
-
-    cn_sps = get_n_folds(arrayOfSpeaker_cn)
-    pd_sps = get_n_folds(arrayOfSpeaker_pd)
-
-    for cn_sp, pd_sp in zip(sorted(cn_sps, key=len), sorted(pd_sps, key=len, reverse=True)):
-        data.append(cn_sp + pd_sp)
-    n_folds = sorted(data, key=len, reverse=True)
-    print(n_folds)
-
-    folds_names = []
-    for i in n_folds:
-        names = []
-        data_i = data_frame[data_frame["names"].isin(i)]
-        for index, row in data_i.iterrows():
-            names.append(row['path_feat'])
-        folds_names.append(names)
-
-    return folds_names
 
 def normalize(train_split, test_split):
     train_set = train_split
@@ -172,7 +141,7 @@ for feat_name in feats_names:
             # print(label_row, row['path_feat'])
             feat = np.append(feat, label_row)  # attach label to the end of array [1, feat dim + 1]
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
-            names.append(path)
+            names.append(os.path.basename(path).split('.npy')[0])
         folds.append(data_fold)
         folds_names.append(names)
 
