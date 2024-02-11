@@ -356,14 +356,14 @@ for feat_name in feats_names:
     for key, value in results.items():
         #   print(f'Fold {key}: {value} %')
         sum += value
-    avg_mmse = round(sum / len(results.items()), 2)
+    avg_mmse = sum / len(results.items())
     print(f'Average R2: {avg_mmse}')
 
     sum = 0.0
     for key, value in results_2.items():
         #   print(f'Fold {key}: {value} %')
         sum += value
-    avg_R2 = round(sum / len(results_2.items()), 2)
+    avg_R2 = sum / len(results_2.items())
     print(f'Average R2: {avg_R2}')
 
     dict = {'rmse': avg_mmse, 'r2': avg_R2}
