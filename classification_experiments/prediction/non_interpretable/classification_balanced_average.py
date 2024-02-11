@@ -165,6 +165,17 @@ for feat_name in feats_names:
     data_test_9 = np.concatenate(folds[7:8])
     data_train_10 = np.concatenate(folds[9:] + folds[:8])
     data_test_10 = np.concatenate(folds[8:9])
+
+    data_test_1_names = np.concatenate(folds[-1:])
+    data_test_2_names = np.concatenate(folds[:1])
+    data_test_3_names = np.concatenate(folds[1:2])
+    data_test_4_names = np.concatenate(folds[2:3])
+    data_test_5_names = np.concatenate(folds[3:4])
+    data_test_6_names = np.concatenate(folds[4:5])
+    data_test_7_names = np.concatenate(folds[5:6])
+    data_test_8_names = np.concatenate(folds[6:7])
+    data_test_9_names = np.concatenate(folds[7:8])
+    data_test_10_names = np.concatenate(folds[8:9])
 #
 #
     ##      # inner folds cross-validation - hyperparameter search
@@ -240,7 +251,12 @@ for feat_name in feats_names:
     file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
     df.to_csv(file_out)
 #
-    dict = {'truth': truth, 'predictions': predictions, 'score': test_scores}
+    all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \
+                + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
+                + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \
+                + list(data_test_10_names)
+
+    dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
     df2 = pd.DataFrame(dict)
     file_out2 = os.path.join(out_path_scores,  feat_name + '.csv')
     df2.to_csv(file_out2)
