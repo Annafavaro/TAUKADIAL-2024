@@ -34,6 +34,37 @@ def get_n_folds(arrayOfSpeaker):
         n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
     return n_folds
 
+def create_n_folds_names(data_frame):
+    # generate outer folds data
+    data = []
+
+    data_grouped = data_frame.groupby('labels')
+    ctrl_ = data_grouped.get_group(1)
+    pd_ = data_grouped.get_group(0)
+
+    arrayOfSpeaker_cn = ctrl_['names'].unique()
+    #random.shuffle(arrayOfSpeaker_cn)
+
+    arrayOfSpeaker_pd = pd_['names'].unique()
+    #random.shuffle(arrayOfSpeaker_pd)
+
+    cn_sps = get_n_folds(arrayOfSpeaker_cn)
+    pd_sps = get_n_folds(arrayOfSpeaker_pd)
+
+    for cn_sp, pd_sp in zip(sorted(cn_sps, key=len), sorted(pd_sps, key=len, reverse=True)):
+        data.append(cn_sp + pd_sp)
+    n_folds = sorted(data, key=len, reverse=True)
+    print(n_folds)
+
+    folds_names = []
+    for i in n_folds:
+        names = []
+        data_i = data_frame[data_frame["names"].isin(i)]
+        for index, row in data_i.iterrows():
+            names.append(row['path_feat'])
+        folds_names.append(names)
+
+    return folds_names
 
 def normalize(train_split, test_split):
     train_set = train_split
@@ -110,10 +141,8 @@ for feat_name in feats_names:
     df_pd = pd.DataFrame(list(zip(names, path_files, labels)), columns = ['names', 'path_feat', 'labels'])
 #
     arrayOfSpeaker_cn = sorted(list(set(df_pd.groupby('labels').get_group(1)['names'].tolist())))
-    random.Random(random_seed).shuffle(arrayOfSpeaker_cn)
     ##
     arrayOfSpeaker_pd =  sorted(list(set(df_pd.groupby('labels').get_group(0)['names'].tolist())))
-    random.Random(random_seed).shuffle(arrayOfSpeaker_pd)
 
     print(arrayOfSpeaker_pd)
     print(arrayOfSpeaker_cn)
@@ -129,6 +158,8 @@ for feat_name in feats_names:
 #
     ## PER FILE
     folds = []
+    folds_names = []
+
     for i in n_folds:
         names = []
         data_fold = np.array(())  # %
@@ -143,6 +174,7 @@ for feat_name in feats_names:
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
             names.append(path)
         folds.append(data_fold)
+        folds_names.append(names)
 
 #
     data_train_1 = np.concatenate(folds[:9])
@@ -166,16 +198,16 @@ for feat_name in feats_names:
     data_train_10 = np.concatenate(folds[9:] + folds[:8])
     data_test_10 = np.concatenate(folds[8:9])
 
-    data_test_1_names = np.concatenate(folds[-1:])
-    data_test_2_names = np.concatenate(folds[:1])
-    data_test_3_names = np.concatenate(folds[1:2])
-    data_test_4_names = np.concatenate(folds[2:3])
-    data_test_5_names = np.concatenate(folds[3:4])
-    data_test_6_names = np.concatenate(folds[4:5])
-    data_test_7_names = np.concatenate(folds[5:6])
-    data_test_8_names = np.concatenate(folds[6:7])
-    data_test_9_names = np.concatenate(folds[7:8])
-    data_test_10_names = np.concatenate(folds[8:9])
+    data_test_1_names = np.concatenate(folds_names[-1:])
+    data_test_2_names = np.concatenate(folds_names[:1])
+    data_test_3_names = np.concatenate(folds_names[1:2])
+    data_test_4_names = np.concatenate(folds_names[2:3])
+    data_test_5_names = np.concatenate(folds_names[3:4])
+    data_test_6_names = np.concatenate(folds_names[4:5])
+    data_test_7_names = np.concatenate(folds_names[5:6])
+    data_test_8_names = np.concatenate(folds_names[6:7])
+    data_test_9_names = np.concatenate(folds_names[7:8])
+    data_test_10_names = np.concatenate(folds_names[8:9])
 #
 #
     ##      # inner folds cross-validation - hyperparameter search
