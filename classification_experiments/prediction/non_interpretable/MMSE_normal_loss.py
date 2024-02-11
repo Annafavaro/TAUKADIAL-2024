@@ -357,7 +357,7 @@ for feat_name in feats_names:
         #   print(f'Fold {key}: {value} %')
         sum += value
     avg_mmse = sum / len(results.items())
-    print(f'Average R2: {avg_mmse}')
+    print(f'Average MMSE: {avg_mmse}')
 
     sum = 0.0
     for key, value in results_2.items():
