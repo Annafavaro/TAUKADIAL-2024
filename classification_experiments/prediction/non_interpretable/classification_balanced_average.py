@@ -93,6 +93,7 @@ for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
     feat_pth_pd = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/{feat_name}/'
     out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_classification/non_interpretable/'
+    out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/non_interpretable/classification/'
     print(f"The output directory exists--> {os.path.isdir(out_path)}")
    # test_only = 0
 
@@ -106,7 +107,7 @@ for feat_name in feats_names:
     else:
         print('error in the labels order')
     #labels_pd = [0]*len(path_files_pd)
-    df_pd = pd.DataFrame(list(zip(names, path_files, labels)), columns =['names', 'path_feat', 'labels'])
+    df_pd = pd.DataFrame(list(zip(names, path_files, labels)), columns = ['names', 'path_feat', 'labels'])
 #
     arrayOfSpeaker_cn = sorted(list(set(df_pd.groupby('labels').get_group(1)['names'].tolist())))
     random.Random(random_seed).shuffle(arrayOfSpeaker_cn)
@@ -116,10 +117,7 @@ for feat_name in feats_names:
 
     print(arrayOfSpeaker_pd)
     print(arrayOfSpeaker_cn)
-   ## print('experimental groups length')
-  # # print(len(spain.groupby('labels').get_group(1)))
-  # # print(len(spain.groupby('labels').get_group(0)))
-  # # print(len(arrayOfSpeaker_pd), len(arrayOfSpeaker_cn))
+
     cn_sps = get_n_folds(arrayOfSpeaker_cn)
     pd_sps = get_n_folds(arrayOfSpeaker_pd)
 #
@@ -127,7 +125,6 @@ for feat_name in feats_names:
     for cn_sp, pd_sp in zip(sorted(cn_sps, key=len), sorted(pd_sps, key=len, reverse=True)):
         data.append(cn_sp + pd_sp)
     n_folds = sorted(data, key=len, reverse=True)
-    #print(n_folds)
 
 #
     ## PER FILE
@@ -178,9 +175,7 @@ for feat_name in feats_names:
             normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
                                                                                eval(f"data_test_{i}"))
             # %
-           # tuned_params = {"PCA_n": [10, 20, 30, 50, 100, 150, 200, 250, 300]} #per file
-            tuned_params = {"PCA_n": [30, 40, 50, 70, 100, 150, 160, 170, 200, 300, 350]}  # per speaker
-            #tuned_params = {"PCA_n": [500]}
+            tuned_params = {"PCA_n": [30, 40, 50, 70, 100, 150, 160, 170, 200, 290]}  # per speaker
             model = PCA_PLDA_EER_Classifier(normalize=0)
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
             grid_search = GridSearchCV(estimator=model, param_grid=tuned_params, n_jobs=-1, cv=cv, scoring='accuracy',
@@ -197,13 +192,8 @@ for feat_name in feats_names:
         # get best params
         print('**********best pca n:')
         best_param = mode(best_params)
-  # # #    print(best_param)
-#
-   #if feat_name == "whisper":
-   #  best_param=30
-   #else:
-   #    best_param = 30
-    # outer folds testing
+
+
     thresholds = []
     predictions = []
     truth = []
@@ -222,10 +212,7 @@ for feat_name in feats_names:
         print(classification_report(y_test, grid_predictions, output_dict=False))
         test_scores += grid_test_scores[:, 0].tolist()
         thresholds = thresholds + [model.eer_threshold]*len(y_test)
-       # print(len(y_test))
-       # print(len(thresholds))
-       # print(thresholds[:10])
-        #print(test_scores)
+
     # report
     print()
     print('----------')
@@ -253,3 +240,7 @@ for feat_name in feats_names:
     file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
     df.to_csv(file_out)
 #
+    dict = {'truth': truth, 'predictions': predictions, 'score': test_scores}
+    df2 = pd.DataFrame(dict)
+    file_out2 = os.path.join(out_path_scores,  feat_name + '.csv')
+    df2.to_csv(file_out2)
