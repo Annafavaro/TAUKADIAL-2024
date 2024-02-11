@@ -367,9 +367,9 @@ for feat_name in feats_names:
     print(f'Average R2: {avg_R2}')
 
     dict = {'rmse': avg_mmse, 'r2': avg_R2}
-    df2 = pd.DataFrame(dict)
+    df = pd.DataFrame(dict, index=[0])
     file_out = os.path.join(out_path, feat_name + "_" + ".csv")
-
+    df.to_csv(file_out)
     #######################################################################################################
 
     all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \
