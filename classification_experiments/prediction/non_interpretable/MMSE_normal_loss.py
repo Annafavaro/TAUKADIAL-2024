@@ -172,11 +172,11 @@ class MMSE_ModelBasic(nn.Module):
 seed = 19
 torch.manual_seed(seed)
 
-feats_names = ['wav2vec']
-#['xvector', 'XLM-Roberta-Large-Vit-L-14', 'whisper', 'trillsson',
-              # 'stsb-xlm-r-multilingual', 'distiluse-base-multilingual-cased-v2',
-              # 'distiluse-base-multilingual-cased-v1', 'all-mpnet-base-v2',
-              # 'all-MiniLM-L12-v2', 'all-MiniLM-L6-v2', 'all-distilroberta-v1']
+feats_names = ['paraphrase-multilingual-MiniLM-L12-v2', 'paraphrase-multilingual-mpnet-base-v2']
+    #['xvector', 'XLM-Roberta-Large-Vit-L-14','whisper', 'trillsson',
+              # 'stsb-xlm-r-multilingual','distiluse-base-multilingual-cased-v2',
+             #  'distiluse-base-multilingual-cased-v1', 'paraphrase-multilingual-mpnet-base-v2',
+              # 'paraphrase-multilingual-MiniLM-L12-v2', 'all-MiniLM-L6-v2', 'all-distilroberta-v1', 'wav2vec']
 
 labels_df = pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
