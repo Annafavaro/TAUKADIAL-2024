@@ -81,7 +81,7 @@ def add_labels(df, path_labels):
     return df
 
 
-feats_names = ['stsb-xlm-r-multilingual']
+feats_names = ['wav2vec']
     #['xvector', 'XLM-Roberta-Large-Vit-L-14','whisper', 'trillsson',
               # 'stsb-xlm-r-multilingual','distiluse-base-multilingual-cased-v2',
              #  'distiluse-base-multilingual-cased-v1', 'all-mpnet-base-v2',
