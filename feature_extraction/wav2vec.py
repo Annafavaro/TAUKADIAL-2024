@@ -1,17 +1,8 @@
-import os
-import librosa
-import torch
-from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
 import numpy as np
 import math
 import os
-import sys
 from numpy import save
-import torch
-import tensorflow as tf
-import tensorflow_hub as hub
 from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
-import torch
 import librosa
 
 path_audios = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
