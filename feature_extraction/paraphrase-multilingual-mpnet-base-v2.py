@@ -18,7 +18,7 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            model = SentenceTransformer('sentence-transformers/all-mpnet-base-v2')
+            model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-mpnet-base-v2')
             embeddings = model.encode(sentences)
             print(type(embeddings))
             #numpy_array = embeddings.numpy()
