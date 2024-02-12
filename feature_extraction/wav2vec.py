@@ -73,7 +73,7 @@ for audio in all_audios:
         embeddings[spec_ind,:] = hidden_states['extract_features'].squeeze().mean(dim=0).detach().numpy()
         # This gives you the sequence of features from the last convolutional layer of the model.
 
-    hidden_layer_avg = np.mean(embeddings, axis=0) # (768,)
-    hidden_layer_avg = hidden_layer_avg.reshape((1,512))
+    hidden_layer_avg = np.mean(embeddings, axis=0)
+    hidden_layer_avg = hidden_layer_avg.reshape((1, 512))
     out_path = os.path.join(output_path, base + '.npy')
     save(out_path, hidden_layer_avg)
