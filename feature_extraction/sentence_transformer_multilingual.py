@@ -51,6 +51,7 @@ if __name__ == "__main__":
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
 
     for sentences in all_sents:
+        print(sentences)
         base_name = os.path.basename(sentences).split(".txt")[0]
         sentences = open(sentences, 'r', encoding="utf-8").read().strip().lower()
         if '.' in sentences:
