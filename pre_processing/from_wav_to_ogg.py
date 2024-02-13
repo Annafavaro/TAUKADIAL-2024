@@ -1,7 +1,7 @@
 from pydub import AudioSegment
 import os
 import subprocess
-out = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios_ogg/english/'
+out_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios_ogg/english/'
 input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/english/'
 
 def convert_wav_to_ogg(input_file, output_file):
@@ -48,11 +48,16 @@ all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
 for audio in all_audios:
     print(audio)
     base = os.path.basename(audio).split('.wav')[0]
-    out_file = os.path.join(out, base+'.ogg')
-    try:
-        audio = AudioSegment.from_file(audio, "wav")
-    except:
-        audio = AudioSegment.from_file(audio, format="mp4")
-    song = AudioSegment.from_wav(audio)
-    song = song.set_channels(1)
-    song.export(out_file, format="ogg")
+    out_file = os.path.join(out_dir, base+'.ogg')
+
+    # Construct FFmpeg command
+    ffmpeg_cmd = [
+        "ffmpeg",
+        "-i", audio,
+        "-acodec", "libvorbis",  # Use libvorbis codec for OGG
+        "-q:a", "6",  # Set quality (1-10, 10 being highest quality)
+        out_file
+    ]
+
+    # Run FFmpeg command
+    subprocess.run(ffmpeg_cmd, check=True)
