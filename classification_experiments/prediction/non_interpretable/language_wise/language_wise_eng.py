@@ -120,6 +120,7 @@ for feat_name in feats_names:
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
+    print(folds[0])
     data_train_1 = np.concatenate(folds[:9])
     data_test_1 = np.concatenate(folds[-1:])
     data_train_2 = np.concatenate(folds[1:])
