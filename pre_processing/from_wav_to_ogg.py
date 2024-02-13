@@ -1,8 +1,8 @@
 from pydub import AudioSegment
 import os
 import subprocess
-out = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diatization_ogg/'
-input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_original/'
+out = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios_ogg/english/'
+input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/english/'
 
 def convert_wav_to_ogg(input_file, output_file):
     # Load the WAV file
@@ -32,9 +32,21 @@ def convert_wav_to_ogg(input_file, output_file):
 #
 
 
+#all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
+#for audio in all_audios:
+#    print(audio)
+#    base = os.path.basename(audio).split('.wav')[0]
+#    out_file = os.path.join(out, base+'.ogg')
+#    convert_wav_to_ogg(audio, out_file)
+
+import os, sys
+from pydub import AudioSegment
+
+
 all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
+
 for audio in all_audios:
-    print(audio)
     base = os.path.basename(audio).split('.wav')[0]
     out_file = os.path.join(out, base+'.ogg')
-    convert_wav_to_ogg(audio, out_file)
+    song = AudioSegment.from_ogg(audio)
+    song.export(out_file, format="wav")
