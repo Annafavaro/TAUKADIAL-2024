@@ -40,7 +40,11 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="So, um, there's this group of people, right? And, uh, they're all, like, driving in a car. It kinda looks like it's from, you know, a while back, maybe even from, like, an early reader book or something. In the lower picture, everyone seems pretty chill, just, you know, looking out the window. There's this boy and a girl looking out, and, uh, there's a dog, and a man driving, and, um, a woman who looks like she's asleep with a kid next to her in the car, between her and the driver. And there are, um, two people in the back seat, probably a grandma and a kid.")
+        prompt="So, um, there is this group of people, right? \
+        And, uh, they are all, like, driving in a car. \
+        In the lower picture, everyone seems pretty chill, just, you know, looking out the window. There is this boy and a girl, a girl looking out, and, uh, there is a dog, \
+        and a man driving, and, um, a woman, a woman who looks like she is asleep with a kid next to her in the car. \
+        And there are, um, two people in the back seat, probably a grandma and a kid.")
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
