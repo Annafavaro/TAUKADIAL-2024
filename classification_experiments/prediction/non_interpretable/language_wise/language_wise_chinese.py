@@ -119,7 +119,6 @@ def create_fold_lang(path_dict):
 
 
 chinese_sps_folds = create_fold_lang(chinese_sps)
-english_sps_folds = create_fold_lang(english_sps)
 labels_df= pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 
 for feat_name in feats_names:
