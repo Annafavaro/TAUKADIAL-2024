@@ -5,7 +5,6 @@ out_svm = ''
 out_bagg  = ''
 chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
-labels_df= pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 feats_names = ['trillsson']
 
@@ -93,7 +92,7 @@ def create_fold_lang(path_dict):
 
 chinese_sps_folds = create_fold_lang(chinese_sps)
 english_sps_folds = create_fold_lang(english_sps)
-
+labels_df= pd.read_csv('/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv')
 
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
