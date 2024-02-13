@@ -138,7 +138,7 @@ for feat_name in feats_names:
     data_test_10 = np.concatenate(folds[8:9])
 
     print(folds[0])
-    1 / 0
+
     data_test_1_names = np.concatenate(n_folds_names[-1:])
     data_test_2_names = np.concatenate(n_folds_names[:1])
     data_test_3_names = np.concatenate(n_folds_names[1:2])
