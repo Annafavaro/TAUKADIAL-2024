@@ -26,16 +26,16 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RepeatedStratifiedKFold
 test_only = 0
 
-def normalize(train_split, test_split):
+def normalize(train_split, test_split): ## when prediction
     train_set = train_split
     test_set = test_split
 
-    feat_train = train_set[:, :-1]
-    lab_train = train_set[:, -1:]
+    feat_train = train_set[:, :-2]
+    lab_train = train_set[:, -2:-1]
     lab_train = lab_train.astype('int')
 
-    feat_test = test_set[:, :-1]
-    lab_test = test_set[:, -1:]
+    feat_test = test_set[:, :-2]
+    lab_test = test_set[:, -2:-1]
     lab_test = lab_test.astype('int')
 
     # X = StandardScaler().fit_transform(matrix_feat)
