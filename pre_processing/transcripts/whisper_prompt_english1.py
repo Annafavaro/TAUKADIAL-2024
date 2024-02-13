@@ -31,6 +31,7 @@ all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.
 convert_to_ogg = []
 
 for audio_file in all_files_audio:
+    print(audio_file)
     file_size_bytes = os.path.getsize(audio_file)
     file_size_mb = file_size_bytes / (1024 * 1024)
     if file_size_mb <= limit_mb:
@@ -45,9 +46,10 @@ for audio_file in all_files_audio:
             for line in transcript:
                 output.write(line)
     if file_size_mb > limit_mb:
+        print(f"This file is too big: {audio_file})
         convert_to_ogg.append(audio_file)
 
-    print(convert_to_ogg)
+print(convert_to_ogg)
 
 
 
