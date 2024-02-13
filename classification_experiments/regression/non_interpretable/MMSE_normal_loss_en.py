@@ -47,22 +47,20 @@ def get_n_folds(arrayOfSpeaker):
 def normalize(train_split, test_split):
     feat_train = train_split[:, :-2]
     lab_train_mmse = train_split[:, -2:-1].astype('int').ravel()
-    lab_train_mmse_binned = train_split[:, -1:].astype('int').ravel()
 
     feat_test = test_split[:, :-2]
     lab_test_mmse = test_split[:, -2:-1].astype('int').ravel()
-    lab_test_mmse_binned = test_split[:, -1:].astype('int').ravel()
 
     # X = StandardScaler().fit_transform(matrix_feat)
 
-    X_train, X_test, y_train, y_test, y_train_binned, y_test_binned = feat_train, feat_test, lab_train_mmse, lab_test_mmse, lab_train_mmse_binned, lab_test_mmse_binned
+    X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train_mmse, lab_test_mmse
 
     X_train = X_train.astype('float')
     X_test = X_test.astype('float')
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
     normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
-    return normalized_train_X, normalized_test_X, y_train, y_test, y_train_binned, y_test_binned
+    return normalized_train_X, normalized_test_X, y_train, y_test
 
 def normalize(train_split, test_split): ## when prediction
     train_set = train_split
@@ -223,8 +221,7 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
-        Xtrain, Xtest, mmse_labels_train, mmse_labels_test, \
-        bins_labels_train, bins_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
+        Xtrain, Xtest, mmse_labels_train, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
 
         print(len(Xtrain), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
