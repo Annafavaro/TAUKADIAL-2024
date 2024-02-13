@@ -27,7 +27,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     )
     return transcript.text
 
-# change here the -1.wav depending on the task
+# change here the -2.wav depending on the task --> ladder
 all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.wav' in elem  and '-2.wav' in elem]
 print(len(all_files_audio))
 convert_to_ogg = []

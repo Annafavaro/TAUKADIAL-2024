@@ -27,7 +27,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     )
     return transcript.text
 
-# change here the -1.wav depending on the task
+# change here the -1.wav depending on the task --> driving car
 all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.wav' in elem  and '-1.wav' in elem]
 
 convert_to_ogg = []
@@ -40,10 +40,13 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="Well, um, I was just, you know, walking into the kitchen,"
-               "and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like,"
-               "there were crumbs all over the counter counter, so, ah, I think someone might might have,"
-               "you know, helped themselves to a few cookies when, uh, nobody was around.")
+        prompt="So, there's this group of people, right? And they're all, like, driving in a car. "
+               "It kinda looks like it's from, you know, a while back,"
+               "maybe even from, like, an early reader book or something."
+               "In the lower picture, everyone seems pretty chill, just, you know, looking out the window. "
+               "There's this boy and a girl looking out, and there's a dog, and a man driving, "
+               "and a woman who looks like she's asleep with a kid next to her in the car, between her and the driver. "
+               "And there are two people in the back seat, probably a grandma and a kid.")
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
@@ -54,21 +57,3 @@ for audio_file in all_files_audio:
 print(convert_to_ogg)
 
 
-
-
-
-
-  # # audio_file_complete = os.path.join(root2, audio +'.wav')
-  #  base_name = os.path.basename(audio).split(".ogg")[0]
-  #  OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-  #  transcript = transcribe(audio,
-  #  prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
-  #  with open(OUT_PATH_FILE, 'w') as output:
-  #      for line in transcript:
-  #          output.write(line)
-#f#or audio_file in all_files_audio[377:]:
-  #      #print(audio_file)
-  #     # file_size_bytes = os.path.getsize(audio_file)
-  #      #file_size_mb = file_size_bytes / (1024 * 1024)
-  #     # if file_size_mb <= limit_mb:
-#
