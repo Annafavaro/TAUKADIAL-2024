@@ -50,4 +50,5 @@ for audio in all_audios:
     base = os.path.basename(audio).split('.wav')[0]
     out_file = os.path.join(out, base+'.ogg')
     song = AudioSegment.from_wav(audio)
+    song = song.set_channels(1)
     song.export(out_file, format="ogg")
