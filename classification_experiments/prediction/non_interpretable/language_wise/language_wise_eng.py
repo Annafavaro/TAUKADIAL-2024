@@ -26,8 +26,6 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import RepeatedStratifiedKFold
 test_only = 0
 
-
-
 #def normalize(train_split, test_split):
 #    train_set = train_split
 #    test_set = test_split
@@ -159,8 +157,8 @@ for feat_name in feats_names:
         best_params = []
         for i in range(1, 11):
             print(i)
-            normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}_china"),
-                                                                               eval(f"data_test_{i}_china"))
+            normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
+                                                                               eval(f"data_test_{i}"))
             # %
             tuned_params = {"PCA_n": [10, 20, 30, 40, 50, 60, 70, 80, 90, 100]}  # per speaker
             model = PCA_PLDA_EER_Classifier(normalize=0)
@@ -186,8 +184,8 @@ for feat_name in feats_names:
     test_scores = []
     for i in range(1, 11):
         print(i)
-        normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}_china"),
-                                                                           eval(f"data_test_{i}_china"))
+        normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}"),
+                                                                           eval(f"data_test_{i}"))
         y_test = y_test.tolist()
         model = PCA_PLDA_EER_Classifier(PCA_n=best_param, normalize=0)
         model.fit(normalized_train_X, y_train)
