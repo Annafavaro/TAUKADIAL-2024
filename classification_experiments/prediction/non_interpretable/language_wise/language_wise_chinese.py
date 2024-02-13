@@ -231,10 +231,10 @@ for feat_name in feats_names:
                 + list(data_test_10_names)
     print(all_names)
 
-     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-     df2 = pd.DataFrame(dict)
-     file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-     df2.to_csv(file_out2)
+    dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
+    df2 = pd.DataFrame(dict)
+    file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+    df2.to_csv(file_out2)
 
 
 
