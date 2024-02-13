@@ -98,9 +98,9 @@ for feat_name in feats_names:
     print(f"The output directory exists--> {os.path.isdir(out_path)}")
    # test_only = 0
 
-    path_files = [os.path.join(feat_pth_pd, elem) for elem in sorted(os.listdir(feat_pth_pd))]
-    names = ['taukdial-' + os.path.basename(elem).rsplit('-', -1)[1] for elem in path_files]
-    ids = [os.path.basename(elem).rsplit('.npy')[0] + '.wav' for elem in path_files]
+    path_files = sorted([os.path.join(feat_pth_pd, elem) for elem in sorted(os.listdir(feat_pth_pd))])
+    names = sorted(['taukdial-' + os.path.basename(elem).rsplit('-', -1)[1] for elem in path_files])
+    ids = sorted([os.path.basename(elem).rsplit('.npy')[0] + '.wav' for elem in path_files])
     if labels_df['tkdname'].tolist() == ids:
         labels = labels_df['dx'].tolist()
         labels = [1 if elem =='NC' else 0 for elem in labels]

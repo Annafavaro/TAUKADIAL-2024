@@ -112,7 +112,7 @@ for feat_name in feats_names:
         print('DONE')
     else:
         print('error in the labels order')
-    #labels_pd = [0]*len(path_files_pd)
+
     df_pd = pd.DataFrame(list(zip(names, path_files, labels)), columns = ['names', 'path_feat', 'labels'])
 
     folds_china = []
@@ -215,6 +215,7 @@ for feat_name in feats_names:
     data_test_9_names_eng = np.concatenate(folds_names_eng[7:8])
     data_test_10_names_eng = np.concatenate(folds_names_eng[8:9])
 
+    print('#################### Test China ############################')
     ##   inner chinese
     if test_only == 0:
         best_params = []
@@ -223,7 +224,7 @@ for feat_name in feats_names:
             normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}_china"),
                                                                                eval(f"data_test_{i}_china"))
             # %
-            tuned_params = {"PCA_n": [30, 40, 50, 70, 100, 150, 160, 170, 200, 290]}  # per speaker
+            tuned_params = {"PCA_n": [30, 40, 50, 60, 70, 80, 100, 150]}  # per speaker
             model = PCA_PLDA_EER_Classifier(normalize=0)
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
             grid_search = GridSearchCV(estimator=model, param_grid=tuned_params, n_jobs=-1, cv=cv, scoring='accuracy',
@@ -299,7 +300,7 @@ for feat_name in feats_names:
    #file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
    #df2.to_csv(file_out2)
 
-    ##   ####################### ENGLISH #################################
+    print('#################### Test English ############################')
     if test_only == 0:
         best_params = []
         for i in range(1, 11):
@@ -307,7 +308,7 @@ for feat_name in feats_names:
             normalized_train_X, normalized_test_X, y_train, y_test = normalize(eval(f"data_train_{i}_eng"),
                                                                                eval(f"data_test_{i}_eng"))
             # %
-            tuned_params = {"PCA_n": [30, 40, 50, 70, 100, 150, 160, 170, 200, 290]}  # per speaker
+            tuned_params = {"PCA_n": [30, 40, 50, 60, 70, 80, 100, 150]}  # per speaker
             model = PCA_PLDA_EER_Classifier(normalize=0)
             cv = RepeatedStratifiedKFold(n_splits=10, n_repeats=5, random_state=1)
             grid_search = GridSearchCV(estimator=model, param_grid=tuned_params, n_jobs=-1, cv=cv, scoring='accuracy',
