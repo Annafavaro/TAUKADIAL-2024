@@ -106,6 +106,7 @@ for feat_name in feats_names:
                  (fold_info[sp])['mmse']])
         all_folds_info.append(fold_info_general)
 
+    print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
