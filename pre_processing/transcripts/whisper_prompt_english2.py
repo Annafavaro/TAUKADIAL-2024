@@ -1,6 +1,5 @@
-OUT_PATH = '/data/lmorove1/afavaro/data/IS_2024/transcripts_with_prompts/'
-#root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
-root2 = '/data/lmorove1/afavaro/data/IS_2024/audios_compressed/'
+OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/english/'
+root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/english/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -21,6 +20,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
         file=open(audio_filepath, "rb"),
         model="whisper-1",
         prompt=prompt,
+        language='en'
     )
     return transcript.text
 
