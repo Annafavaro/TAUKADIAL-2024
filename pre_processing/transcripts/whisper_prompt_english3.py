@@ -4,6 +4,7 @@ root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
 import os
+
 #token = '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'
 token = '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' #yuzhe paid
 #token = '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'
@@ -24,32 +25,29 @@ def transcribe(audio_filepath, prompt: str) -> str:
     )
     return transcript.text
 
-all_files_audio = []
-for path, subdirs, files in os.walk(root2):
-    #print(path)
-    for name in files:
-        if name.endswith(".ogg"):
-            all_files_audio.append(os.path.join(path, name))
+# change here the -1.wav depending on the task
+all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.wav' in elem  and '-3.wav' in elem]
+print(len(all_files_audio))
+convert_to_ogg = []
 
-names = []
-ids = []
+for audio_file in all_files_audio:
+    print(audio_file)
+    file_size_bytes = os.path.getsize(audio_file)
+    file_size_mb = file_size_bytes / (1024 * 1024)
+    if file_size_mb <= limit_mb:
+        base_name = os.path.basename(audio_file).split(".wav")[0]
+        OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
+        transcript = transcribe(audio_file,
+        prompt="Well, um, I was just, you know, walking into the kitchen,"
+               "and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like,"
+               "there were crumbs all over the counter counter, so, ah, I think someone might might have,"
+               "you know, helped themselves to a few cookies when, uh, nobody was around.")
+        with open(OUT_PATH_FILE, 'w') as output:
+            for line in transcript:
+                output.write(line)
+    if file_size_mb > limit_mb:
+        print(f"This file is too big: {audio_file}")
+        convert_to_ogg.append(audio_file)
 
-#base_audios = [os.path.basename(audio).split('.wav')[0] for audio in all_files_audio]
-#present_tr = [os.path.basename(tr).split('.txt')[0] for tr in os.listdir(OUT_PATH)]
-#
-#to_do_list = list(set(base_audios)^set(present_tr))
+print(convert_to_ogg)
 
-for audio in all_files_audio:
-   # audio_file_complete = os.path.join(root2, audio +'.wav')
-    base_name = os.path.basename(audio).split(".ogg")[0]
-    OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-    transcript = transcribe(audio,
-                            prompt="Well, um, I was just, you know, walking into the kitchen, and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like, there were crumbs all over the counter counter, so, ah, I think someone might might have, you know, helped themselves to a few cookies when, uh, nobody was around.")
-    with open(OUT_PATH_FILE, 'w') as output:
-        for line in transcript:
-            output.write(line)
-#for audio_file in all_files_audio[377:]:
-        #print(audio_file)
-       # file_size_bytes = os.path.getsize(audio_file)
-        #file_size_mb = file_size_bytes / (1024 * 1024)
-       # if file_size_mb <= limit_mb:
