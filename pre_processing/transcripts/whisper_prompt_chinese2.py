@@ -39,10 +39,9 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="Well, um, I was just, you know, walking into the kitchen,"
-               "and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like,"
-               "there were crumbs all over the counter counter, so, ah, I think someone might might have,"
-               "you know, helped themselves to a few cookies when, uh, nobody was around.")
+        prompt="这是在一个公园，两个女孩在打网球或者羽毛球，那，有一个人牵着一只狗，还有那个小狗，小狗就很调皮的抓着那个打那个羽毛球的小朋友，咬住其中一个女孩的衣服，\
+        那个女孩是一脸惊恐。另外，有两个老人家下，下棋，下象棋，然后就很开心。旁边还有泡的茶，茶还冒着烟。另外两个年纪更小的小朋友在稍远的院子里，\
+        在溜滑梯荡秋千，也很开心。")
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)

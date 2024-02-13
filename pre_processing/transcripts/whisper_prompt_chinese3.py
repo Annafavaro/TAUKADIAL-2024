@@ -40,10 +40,9 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="Well, um, I was just, you know, walking into the kitchen,"
-               "and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like,"
-               "there were crumbs all over the counter counter, so, ah, I think someone might might have,"
-               "you know, helped themselves to a few cookies when, uh, nobody was around.")
+        prompt="有一天，哦，那边挂了一个日历，应该是六月二十七号，有一个父亲，爸爸在烫衣服。孩子在地上爬，爬到那个插头上要去抓那个插头。爸爸听到狗汪汪叫，一看，\
+        原来那只狗很忠心，看到他的儿子要碗插头，恐怕他触电，狗就扑过去，要制止哪个孩子。家里的猫咪呢，却很调皮，把，把放在柜子上的花瓶打翻掉下来，结果里面的水呢都溅出来了，\
+        就把爸爸烫好的这些东西呢，全部都弄湿了。那个父亲就一脸惊恐，哇，愤怒生气这样，他也吓出一身冷汗。" )
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
