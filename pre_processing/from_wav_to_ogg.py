@@ -49,6 +49,10 @@ for audio in all_audios:
     print(audio)
     base = os.path.basename(audio).split('.wav')[0]
     out_file = os.path.join(out, base+'.ogg')
+    try:
+        audio = AudioSegment.from_file(audio, "wav")
+    except:
+        audio = AudioSegment.from_file(audio, format="mp4")
     song = AudioSegment.from_wav(audio)
     song = song.set_channels(1)
     song.export(out_file, format="ogg")
