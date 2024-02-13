@@ -39,11 +39,7 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="Um, so, it's like, the window's open, right? And, uh,"
-               "the curtains are pulled apart. I think the housewife, you know, is probably doing the dishes or something. "
-               "But, like, the sink is overflowing, and she doesn't even seem to notice. "
-               "Um, the kids, they're trying to reach the cookie jar. Oh, the boy, he's standing on this, "
-               "like, wobbly three-legged stool that's about to tip over."
+        prompt="So, um, it's kinda like, the window's open, you know? And, uh, the curtains are pulled apart. I think the housewife is, like, probably doing the dishes or something. But, um, the sink is overflowing, and she doesn't even seem to notice. Um, the kids, they're, like, trying to reach the cookie jar. Oh, and the boy, he's standing on this, like, wobbly three-legged stool that's, you know, about to tip over."
 )
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:

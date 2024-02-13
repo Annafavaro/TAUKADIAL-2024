@@ -40,10 +40,7 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="So, like, it seems that this little girl's cat, you know, climbed up the tree and got stuck there, right? "
-               "And then she told her dad about it, and he, um, went and grabbed a ladder, and he, like, climbed up the tree,"
-               "but then, uh, the ladder fell down, and now he's stuck up there with the cat."
-               "And, uh, the dog's down at the bottom, barking for him, I guess.")
+        prompt="So, it's kinda like, this little girl's cat, you know, climbed up the tree and got stuck there, right? And then she told her dad about it, and he, um, went and grabbed a ladder, and he, like, climbed up the tree, but then, uh, the ladder fell down, and now he's stuck up there with the cat. And, uh, the dog's down at the bottom, barking for him, I guess.")
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
