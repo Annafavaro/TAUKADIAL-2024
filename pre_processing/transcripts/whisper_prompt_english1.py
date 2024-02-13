@@ -46,7 +46,7 @@ for audio_file in all_files_audio:
             for line in transcript:
                 output.write(line)
     if file_size_mb > limit_mb:
-        print(f"This file is too big: {audio_file}')
+        print(f"This file is too big: {audio_file}")
         convert_to_ogg.append(audio_file)
 
 print(convert_to_ogg)
