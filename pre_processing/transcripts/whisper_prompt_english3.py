@@ -26,7 +26,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     )
     return transcript.text
 
-# change here the -1.wav depending on the task
+# change here the -1.wav depending on the task -----> COOKIE THIEF
 all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.wav' in elem  and '-3.wav' in elem]
 print(len(all_files_audio))
 convert_to_ogg = []
@@ -39,10 +39,12 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="Well, um, I was just, you know, walking into the kitchen,"
-               "and, uh, I noticed that the cookie jar was, um, mysteriously open, and, like,"
-               "there were crumbs all over the counter counter, so, ah, I think someone might might have,"
-               "you know, helped themselves to a few cookies when, uh, nobody was around.")
+        prompt="Um, so, it's like, the window's open, right? And, uh,"
+               "the curtains are pulled apart. I think the housewife, you know, is probably doing the dishes or something. "
+               "But, like, the sink is overflowing, and she doesn't even seem to notice. "
+               "Um, the kids, they're trying to reach the cookie jar. Oh, the boy, he's standing on this, "
+               "like, wobbly three-legged stool that's about to tip over."
+)
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
