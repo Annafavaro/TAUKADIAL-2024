@@ -1,14 +1,11 @@
-out_rf =  ''
-out_xg =  ''
-out_mlp = ''
-out_svm = ''
-out_bagg  = ''
-
 feats_names = ['trillsson', 'xvector', 'wav2vec', 'whisper']
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+
+out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/prediction/'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/prediction/non_interpretable/'
 
 import sys
 sys.path.append("/export/b16/afavaro/TAUKADIAL-2024/")
@@ -219,28 +216,23 @@ for feat_name in feats_names:
     print(roc_auc_score(truth, test_scores))
     print('*************')
     print('*************')
-    # report = classification_report(truth, predictions, output_dict=True)
-    # df = pd.DataFrame(report).transpose()
-    # df['best_PCA_param'] = best_param
-    # df['AUROC'] = roc_auc_score(truth, test_scores)
-    # df['sensitivity'] = sensitivity
-    # df['specificity'] = specificity
-##file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
-# df.to_csv(file_out)
-##
-# all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \
-#            + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
-#            + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \
-#            + list(data_test_10_names)
-# print(all_names)
+    report = classification_report(truth, predictions, output_dict=True)
 
-# dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-# df2 = pd.DataFrame(dict)
-# file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-# df2.to_csv(file_out2)
+    df = pd.DataFrame(report).transpose()
+    df['best_PCA_param'] = best_param
+    df['AUROC'] = roc_auc_score(truth, test_scores)
+    df['sensitivity'] = sensitivity
+    df['specificity'] = specificity
+    file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
+    df.to_csv(file_out)
+    #
+    all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \
+                + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
+                + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \
+                + list(data_test_10_names)
+    print(all_names)
 
-
-
-
-
-
+    dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
+    df2 = pd.DataFrame(dict)
+    file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+    df2.to_csv(file_out2)
