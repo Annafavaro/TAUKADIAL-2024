@@ -12,7 +12,6 @@ out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/sav
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/regression/non_interpretable/'
 
 
-import torch
 import json
 import torch.nn as nn
 import torch.nn.functional as F
@@ -48,24 +47,6 @@ def get_n_folds(arrayOfSpeaker):
     return n_folds
 
 
-def normalize(train_split, test_split):
-    feat_train = train_split[:, :-2]
-    lab_train_mmse = train_split[:, -2:-1].astype('int').ravel()
-
-    feat_test = test_split[:, :-2]
-    lab_test_mmse = test_split[:, -2:-1].astype('int').ravel()
-
-    # X = StandardScaler().fit_transform(matrix_feat)
-
-    X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train_mmse, lab_test_mmse
-
-    X_train = X_train.astype('float')
-    X_test = X_test.astype('float')
-    normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
-    normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
-
-    return normalized_train_X, normalized_test_X, y_train, y_test
-
 def normalize(train_split, test_split): ## when prediction
     train_set = train_split
     test_set = test_split
@@ -89,6 +70,7 @@ def normalize(train_split, test_split): ## when prediction
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
     return normalized_train_X, normalized_test_X, y_train, y_test
+
 
 
 def add_labels(df, path_labels):
