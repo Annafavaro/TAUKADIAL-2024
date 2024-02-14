@@ -1,11 +1,15 @@
-feats_names = ['trillsson', 'xvector', 'wav2vec', 'whisper']
-english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large', 'text2vec-base-multilingual',
+               'distiluse-base-multilingual-cased', 'distiluse-base-multilingual-cased-v1',
+               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128', 'wav2vec_53', 'whisper', 'trillsson', 'xvector']
+
+
+english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
 
-out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable/regression/'
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese/regression/non_interpretable/'
+out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/regression/'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/regression/non_interpretable/'
 
 
 import torch
@@ -116,20 +120,14 @@ class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 70)
-        self.fc3 = nn.Linear(70, 30)
-        self.fc4 = nn.Linear(30, 1)  # Output is a single value
+        self.fc2 = nn.Linear(hidden_size, 30)
+        self.fc3 = nn.Linear(30, 1)  # Output is a single value
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
-        x = torch.relu(self.fc3(x))
-        x = self.fc4(x)
+        x = self.fc3(x)
         return x
-
-
-seed = 19
-torch.manual_seed(seed)
 
 
 for feat_name in feats_names:
@@ -204,7 +202,6 @@ for feat_name in feats_names:
     batch_size = 32
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
-    num_bins = 10
     criterion = nn.MSELoss()
     # criterion = CustomLoss()
 
@@ -293,6 +290,7 @@ for feat_name in feats_names:
     df = pd.DataFrame(dict, index=[0])
     file_out = os.path.join(out_path, feat_name + "_" + ".csv")
     df.to_csv(file_out)
+
     #######################################################################################################
 
     all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \

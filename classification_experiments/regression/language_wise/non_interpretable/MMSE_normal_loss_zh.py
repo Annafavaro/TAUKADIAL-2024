@@ -1,11 +1,14 @@
-feats_names = ['trillsson', 'xvector', 'wav2vec', 'whisper']
-english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large', 'text2vec-base-multilingual',
+               'distiluse-base-multilingual-cased', 'distiluse-base-multilingual-cased-v1',
+               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128', 'wav2vec_53', 'whisper', 'trillsson', 'xvector']
+
+english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
 
-out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/regression/'
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/regression/non_interpretable/'
+out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable/regression/'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese/regression/non_interpretable/'
 
 
 import torch
@@ -62,29 +65,6 @@ def normalize(train_split, test_split):
 
     return normalized_train_X, normalized_test_X, y_train, y_test
 
-def normalize(train_split, test_split): ## when prediction
-    train_set = train_split
-    test_set = test_split
-
-    feat_train = train_set[:, :-2]
-    lab_train = train_set[:, -1:]
-    lab_train = lab_train.astype('int')
-
-    feat_test = test_set[:, :-2]
-    lab_test = test_set[:, -1:]
-    lab_test = lab_test.astype('int')
-
-    # X = StandardScaler().fit_transform(matrix_feat)
-
-    X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
-    y_test = y_test.ravel()
-    y_train = y_train.ravel()
-    X_train = X_train.astype('float')
-    X_test = X_test.astype('float')
-    normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
-    normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
-
-    return normalized_train_X, normalized_test_X, y_train, y_test
 
 
 def add_labels(df, path_labels):
@@ -116,20 +96,14 @@ class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 70)
-        self.fc3 = nn.Linear(70, 30)
-        self.fc4 = nn.Linear(30, 1)  # Output is a single value
+        self.fc2 = nn.Linear(hidden_size, 30)
+        self.fc3 = nn.Linear(30, 1)  # Output is a single value
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
         x = torch.relu(self.fc2(x))
-        x = torch.relu(self.fc3(x))
-        x = self.fc4(x)
+        x = self.fc3(x)
         return x
-
-
-seed = 19
-torch.manual_seed(seed)
 
 
 for feat_name in feats_names:
@@ -204,7 +178,6 @@ for feat_name in feats_names:
     batch_size = 32
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
-    num_bins = 10
     criterion = nn.MSELoss()
     # criterion = CustomLoss()
 
@@ -239,7 +212,6 @@ for feat_name in feats_names:
                 # take a batch
                 Xbatch = Xtrain[start:start + batch_size]
                 y_train_batch_mmse = mmse_labels_train[start:start + batch_size]
-                # y_train_batch_mmse_binned = bins_labels_train[start:start+batch_size]
                 Xbatch = torch.tensor(Xbatch, dtype=torch.float32)
                 y_train_batch_mmse = torch.tensor(y_train_batch_mmse, dtype=torch.float32)
                 outputs = model(Xbatch)
@@ -263,7 +235,6 @@ for feat_name in feats_names:
         with torch.no_grad():
             Xtest = torch.tensor(Xtest, dtype=torch.float32)
             y_test_mmse = torch.tensor(mmse_labels_test, dtype=torch.float32)
-            # y_test_batch_mmse_binned = torch.tensor(bins_labels_test, dtype=torch.float32)
             y_pred = model(Xtest)  # .detach().numpy()
         rmse_val = rmse_function(y_pred.squeeze(), y_test_mmse)
         r2_val = r2_score(y_test_mmse.numpy(), y_pred.squeeze().numpy())
