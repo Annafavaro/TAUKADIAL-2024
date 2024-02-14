@@ -22,9 +22,8 @@ if __name__ == "__main__":
         print(base_name)
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip()#.lower() --> this is the cased version
-            encoded_input = tokenizer(sentences, return_tensors='pt', truncation=True)
+            encoded_input = tokenizer(sentences, return_tensors='pt', truncation=True) # if sentence is too long
             output = model(**encoded_input)
             embeddings = output['pooler_output'].detach().numpy()
-            #embeddings = embeddings.numpy()
             print(type(embeddings))
             save(output_dir + base_name + '.npy', embeddings)
