@@ -30,11 +30,12 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip()#.lower()
+            # Tokenize sentences
             encoded_input = tokenizer(sentences, return_tensors='pt', padding=True, truncation=True)
-            # forward pass
+            # Compute token embeddings
             with torch.no_grad():
                 output = model(**encoded_input)
-
+            # Perform pooling. In this case, max pooling.
             embeddings = mean_pooling(output, encoded_input['attention_mask'])
             emebddings = embeddings.numpy()
             print(type(embeddings))
