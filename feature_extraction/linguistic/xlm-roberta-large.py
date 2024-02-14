@@ -5,8 +5,9 @@ import sys
 import os
 from transformers import AutoTokenizer, AutoModelForMaskedLM
 import torch.nn.functional as F
-import torch
-from numpy import save
+from torch import Tensor
+from transformers import AutoTokenizer, AutoModel
+
 
 def average_pool(last_hidden_states: Tensor,
                  attention_mask: Tensor) -> Tensor:
