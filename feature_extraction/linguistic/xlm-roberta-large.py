@@ -18,8 +18,8 @@ def average_pool(last_hidden_states: Tensor,
 # LANGUAGES: ENGLISH AND CHINESE, AMONG OTHERS
 #if __name__ == "__main__":
 
-    input_dir = sys.argv[1] # path to transcripts
-    output_dir = sys.argv[2]
+   # input_dir = sys.argv[1] # path to transcripts
+   # output_dir = sys.argv[2]
 model = SentenceTransformer('sentence-transformers/xlm-roberta-large')
 sentences = ["This is an example sentence"]
 embeddings = model.encode(sentences)
