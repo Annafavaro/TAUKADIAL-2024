@@ -25,7 +25,6 @@ if __name__ == "__main__":
             encoded_input = tokenizer(sentences, return_tensors='pt')
             output = model(**encoded_input)
             embeddings = output['pooler_output']
-            #print(type(embeddings))
-            #print(embeddings.shape)
             embeddings = embeddings.numpy()
+            print(type(embeddings))
             save(output_dir + base_name + '.npy', embeddings)
