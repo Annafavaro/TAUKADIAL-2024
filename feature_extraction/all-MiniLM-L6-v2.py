@@ -6,7 +6,7 @@ import os
 import re
 from numpy import save
 
-
+# no
 if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts

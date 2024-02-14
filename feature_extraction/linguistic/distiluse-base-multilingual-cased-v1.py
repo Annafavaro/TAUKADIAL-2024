@@ -5,8 +5,9 @@ import sys
 import os
 import re
 from numpy import save
-# no
 
+# YES:
+# LANGUAGES: ENGLISH AND CHINESE, AMONG OTHERS
 if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
@@ -19,7 +20,7 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            model = SentenceTransformer('sentence-transformers/all-distilroberta-v1')
+            model = SentenceTransformer('sentence-transformers/distiluse-base-multilingual-cased-v1')
             embeddings = model.encode(sentences)
             print(type(embeddings))
             #numpy_array = embeddings.numpy()
