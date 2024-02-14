@@ -26,4 +26,5 @@ if __name__ == "__main__":
             output = model(**encoded_input)
             embeddings = output['pooler_output'].detach().numpy()
             print(type(embeddings))
+            print(embeddings.shape)
             save(output_dir + base_name + '.npy', embeddings)
