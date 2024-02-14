@@ -27,12 +27,3 @@ if __name__ == "__main__":
             output = model(encoded_input)
             embeddings = output.numpy()
             save(output_dir + base_name + '.npy', embeddings)
-
-
-            #sentences = file.read().strip().lower()
-            #model = SentenceTransformer('google-bert/bert-base-multilingual-cased')
-           ## model = SentenceTransformer('sentence-transformers/all-MiniLM-L12-v2')
-            #embeddings = model.encode(sentences)
-            #print(type(embeddings))
-            ##numpy_array = embeddings.numpy()
-            #save(output_dir + base_name + '.npy', embeddings)
