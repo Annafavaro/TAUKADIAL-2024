@@ -3,7 +3,7 @@
 from sentence_transformers import SentenceTransformer
 import sys
 import os
-from transformers import BertTokenizer, TFBertModel
+from transformers import BertTokenizer, BertModel
 import re
 from numpy import save
 # yes
@@ -14,7 +14,7 @@ if __name__ == "__main__":
     output_dir = sys.argv[2]
 
     tokenizer = BertTokenizer.from_pretrained('bert-base-multilingual-cased')
-    model = TFBertModel.from_pretrained("bert-base-multilingual-cased")
+    model = BertModel.from_pretrained("bert-base-multilingual-cased")
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
     for sentences in all_sents:
@@ -23,8 +23,10 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            encoded_input = tokenizer(sentences, return_tensors='tf')
-            output = model(encoded_input)
+            print(sentences)
+            encoded_input = tokenizer(sentences, return_tensors='pt')
+            output = model(**encoded_input)
+            embeddings = output['last_hidden_state']
             print(type(output))
             print(output.shape)
            # embeddings = output.numpy()
