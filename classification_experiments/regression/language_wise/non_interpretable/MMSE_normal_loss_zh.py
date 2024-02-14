@@ -57,7 +57,7 @@ def normalize(train_split, test_split): ## when prediction
     lab_train = lab_train.astype('int')
 
     feat_test = test_set[:, :-2]
-    lab_test = test_set[:, -1:]
+    lab_test = test_set[:, -1:] #-1 is where MMSE are
     lab_test = lab_test.astype('int')
 
     # X = StandardScaler().fit_transform(matrix_feat)
@@ -161,7 +161,7 @@ for feat_name in feats_names:
     learning_rate = 0.01
     num_epochs = 35
     batch_size = 32
-    input_size = data_train_1.shape[1] - 2
+    input_size = data_train_1.shape[1] - 2 #one is label and the other is MMSE
     hidden_size = 40
     criterion = nn.MSELoss()
     # criterion = CustomLoss()

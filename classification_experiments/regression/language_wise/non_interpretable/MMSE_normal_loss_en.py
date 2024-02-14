@@ -189,7 +189,6 @@ for feat_name in feats_names:
     for n_fold in range(1, 11):
         print(n_fold)
         model = MMSE_ModelBasic(input_size, hidden_size)
-        # model = MMSEPredictionModel2(input_size, hidden_size, num_bins)
         model.apply(reset_weights)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
@@ -257,7 +256,6 @@ for feat_name in feats_names:
 
     sum = 0.0
     for key, value in results_2.items():
-        #   print(f'Fold {key}: {value} %')
         sum += value
     avg_R2 = sum / len(results_2.items())
     print(f'Average R2: {avg_R2}')
