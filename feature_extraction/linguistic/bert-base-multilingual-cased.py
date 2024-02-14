@@ -20,10 +20,8 @@ if __name__ == "__main__":
     for sentences in all_sents:
         base_name = os.path.basename(sentences).split(".txt")[0]
         print(base_name)
-        # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
-            sentences = file.read().strip().lower()
-           # print(sentences)
+            sentences = file.read().strip()#.lower() --> this is the cased version
             encoded_input = tokenizer(sentences, return_tensors='pt')
             output = model(**encoded_input)
             embeddings = output['pooler_output']
