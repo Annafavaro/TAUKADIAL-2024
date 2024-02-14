@@ -1,4 +1,4 @@
-feats_names = ['trillsson', 'xvector', 'wav2vec', 'whisper']
+feats_names = ['trillsson', 'xvector', 'wav2vec_53', 'whisper', 'wav2vec_128']
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
