@@ -39,7 +39,7 @@ for audio_file in all_files_audio:
     if file_size_mb <= limit_mb:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         if base_name in set_of_sps:
-            print(f'yes': {base_name})
+            print(f'yes---->' {base_name})
             OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
             transcript = transcribe(audio_file,
             prompt="在一个公共场所夜市,有一个摊位是掷骰子的，然后呢，有很多小朋友，嗯，有几个小朋友在掷骰子吧，很专注地在玩，啊，没想到旁边有一个小偷，趴手，\

@@ -41,7 +41,7 @@ for audio_file in all_files_audio:
     if file_size_mb <= limit_mb:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         if base_name in set_of_sps:
-            print(f'yes': {base_name})
+            print(f'yes---->' {base_name})
             OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
             transcript = transcribe(audio_file,
             prompt="有一天，哦，那边挂了一个日历，应该是六月二十七号，有一个父亲，爸爸在烫衣服。孩子在地上爬，爬到那个插头上要去抓那个插头。爸爸听到狗汪汪叫，一看，\
