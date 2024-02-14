@@ -4,10 +4,11 @@ from sentence_transformers import SentenceTransformer
 import sys
 import os
 from transformers import AutoTokenizer, AutoModelForMaskedLM
-import re
+import torch.nn.functional as F
 import torch
 from numpy import save
 
+#Mean Pooling - Take attention mask into account for correct averaging
 def mean_pooling(model_output, attention_mask):
     token_embeddings = model_output[0] #First element of model_output contains all token embeddings
     input_mask_expanded = attention_mask.unsqueeze(-1).expand(token_embeddings.size()).float()
@@ -34,13 +35,16 @@ if __name__ == "__main__":
             encoded_input = tokenizer(sentences, return_tensors='pt', padding=True, truncation=True)
             # Compute token embeddings
             with torch.no_grad():
-                output = model(**encoded_input)
+                model_output = model(**encoded_input)
             # Perform pooling. In this case, max pooling.
-            embeddings = mean_pooling(output, encoded_input['attention_mask'])
-            emebddings = embeddings.numpy()
-            print(type(embeddings))
-            print(embeddings)
-            print(embeddings.shape)
+            # Perform pooling
+            sentence_embeddings = mean_pooling(model_output, encoded_input['attention_mask'])
+            # Normalize embeddings
+            sentence_embeddings = F.normalize(sentence_embeddings, p=2, dim=1)
+
+            print(type(sentence_embeddings))
+            print(sentence_embeddings.shape)
+            #print(embeddings.shape)
             #print(output.keys())
             #embeddings = model.encode(sentences)
            # embeddings = embeddings.reshape(1, -1)
