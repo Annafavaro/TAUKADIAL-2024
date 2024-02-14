@@ -24,7 +24,7 @@ if __name__ == "__main__":
             sentences = file.read().strip()#.lower() --> this is the cased version
             encoded_input = tokenizer(sentences, return_tensors='pt')
             output = model(**encoded_input)
-            embeddings = output['pooler_output']
-            embeddings = embeddings.numpy()
+            embeddings = output['pooler_output'].detach().numpy()
+            #embeddings = embeddings.numpy()
             print(type(embeddings))
             save(output_dir + base_name + '.npy', embeddings)
