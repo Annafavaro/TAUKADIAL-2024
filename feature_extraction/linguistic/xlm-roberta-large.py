@@ -37,7 +37,8 @@ if __name__ == "__main__":
 
             embeddings = mean_pooling(output, encoded_input['attention_mask'])
             print(type(embeddings))
-            print(output.shape)
+            print(embeddings)
+            #print(output.shape)
             #print(output.keys())
             #embeddings = model.encode(sentences)
            # embeddings = embeddings.reshape(1, -1)
