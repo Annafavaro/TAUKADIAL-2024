@@ -44,7 +44,7 @@ def get_stats_data(transcripts_path, output_dir):
         print(base_name)
         #sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
-            sentences = file.read().strip().lower()
+            sentences = file.read().strip()#.lower()
             encoded_text = tokenizer.batch_encode_plus([str(sentences)], return_tensors="pt", truncation=True, max_length=512)
             text_embeddings = model_text(encoded_text)
             numpy_array = text_embeddings.numpy()
