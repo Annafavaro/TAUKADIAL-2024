@@ -15,7 +15,7 @@ if __name__ == "__main__":
     model = SentenceTransformer('FacebookAI/xlm-roberta-large')
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
-    for sentences in all_sents:
+    for sentences in all_sents[14:]:
         base_name = os.path.basename(sentences).split(".txt")[0]
         print(base_name)
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
