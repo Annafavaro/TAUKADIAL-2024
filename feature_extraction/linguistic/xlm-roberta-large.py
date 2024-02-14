@@ -35,10 +35,10 @@ if __name__ == "__main__":
             with torch.no_grad():
                 output = model(**encoded_input)
 
-            embeddings = mean_pooling(output, encoded_input['attention_mask'])
+            embeddings = mean_pooling(output, encoded_input['attention_mask']).detach.numpy()
             print(type(embeddings))
             print(embeddings)
-            #print(output.shape)
+            print(embeddings.shape)
             #print(output.keys())
             #embeddings = model.encode(sentences)
            # embeddings = embeddings.reshape(1, -1)
