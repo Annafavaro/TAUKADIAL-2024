@@ -34,7 +34,7 @@ if __name__ == "__main__":
             batch_dict = tokenizer(sentences, max_length=512, padding=True, truncation=True, return_tensors='pt')
             outputs = model(**batch_dict)
             print(outputs.keys())
-            #embeddings = average_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
+            embeddings = average_pool(outputs.logits, batch_dict['attention_mask'])
             ## normalize embeddings
             #embeddings = F.normalize(embeddings, p=2, dim=1)
             #embeddings = embeddings.detach().numpy()
