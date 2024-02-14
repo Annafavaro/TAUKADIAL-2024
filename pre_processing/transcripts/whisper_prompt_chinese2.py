@@ -26,7 +26,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     )
     return transcript.text
 
-set_of_sps = ['taukdial-003-2', 'taukdial-004-2', 'Taukdial-110-2' ]
+set_of_sps = ['taukdial-003-2', 'taukdial-004-2', 'taukdial-110-2' ]
 # change here the -1.wav depending on the task
 all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.wav' in elem  and '-2.wav' in elem]
 
