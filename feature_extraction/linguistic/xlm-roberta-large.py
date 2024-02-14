@@ -35,7 +35,8 @@ if __name__ == "__main__":
             with torch.no_grad():
                 output = model(**encoded_input)
 
-            embeddings = mean_pooling(output, encoded_input['attention_mask']).detach.numpy()
+            embeddings = mean_pooling(output, encoded_input['attention_mask'])
+            emebddings = embeddings.numpy()
             print(type(embeddings))
             print(embeddings)
             print(embeddings.shape)
