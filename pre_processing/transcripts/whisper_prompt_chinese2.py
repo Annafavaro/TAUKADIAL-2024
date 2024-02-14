@@ -40,7 +40,7 @@ for audio_file in all_files_audio:
     if file_size_mb <= limit_mb:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         if base_name in set_of_sps:
-            print(f'yes---->' {base_name})
+            print(f'yes----> {base_name}')
             OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
             transcript = transcribe(audio_file,
             prompt="这是在一个公园，两个女孩在打网球或者羽毛球，那，有一个人牵着一只狗，还有那个小狗，小狗就很调皮的抓着那个打那个羽毛球的小朋友，咬住其中一个女孩的衣服，\
