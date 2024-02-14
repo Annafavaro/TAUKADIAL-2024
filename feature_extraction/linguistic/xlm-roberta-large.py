@@ -22,7 +22,7 @@ if __name__ == "__main__":
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
             embeddings = model.encode(sentences)
-            embeddings = embeddings.reshape(1, -1)
+           # embeddings = embeddings.reshape(1, -1)
             print(type(embeddings))
             print(embeddings.shape)
             save(output_dir + base_name + '.npy', embeddings)
