@@ -23,11 +23,11 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            print(sentences)
+           # print(sentences)
             encoded_input = tokenizer(sentences, return_tensors='pt')
             output = model(**encoded_input)
             embeddings = output['pooler_output']
             print(type(embeddings))
             print(embeddings.shape)
-           # embeddings = embeddings.numpy()
-           # save(output_dir + base_name + '.npy', embeddings)
+            embeddings = embeddings.numpy()
+            save(output_dir + base_name + '.npy', embeddings)
