@@ -5,7 +5,7 @@ import sys
 import os
 import re
 from numpy import save
-
+# yes chinese and english
 #no--> cannot be used
 if __name__ == "__main__":
 
@@ -19,7 +19,7 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            model = SentenceTransformer('sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2')
+            model = SentenceTransformer('FacebookAI/xlm-roberta-large')
            # model = SentenceTransformer('sentence-transformers/all-MiniLM-L12-v2')
             embeddings = model.encode(sentences)
             print(type(embeddings))

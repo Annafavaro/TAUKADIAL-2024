@@ -1,5 +1,6 @@
 # conda activate mulitlingual_clip
 
+# no
 from sentence_transformers import SentenceTransformer
 import sys
 import os
