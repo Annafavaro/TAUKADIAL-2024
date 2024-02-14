@@ -27,7 +27,7 @@ if __name__ == "__main__":
             encoded_input = tokenizer(sentences, return_tensors='pt')
             output = model(**encoded_input)
             embeddings = output['last_hidden_state']
-            print(type(output))
-            print(output.shape)
-           # embeddings = output.numpy()
+            print(type(embeddings))
+            print(embeddings.shape)
+           # embeddings = embeddings.numpy()
            # save(output_dir + base_name + '.npy', embeddings)
