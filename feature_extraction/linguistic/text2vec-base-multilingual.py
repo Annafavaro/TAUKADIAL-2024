@@ -21,6 +21,7 @@ if __name__ == "__main__":
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
             embeddings = model.encode(sentences)
-            #print(type(embeddings))
+            print(type(embeddings))
+            print(embeddings.shape)
             numpy_array = embeddings.numpy()
             save(output_dir + base_name + '.npy', embeddings)
