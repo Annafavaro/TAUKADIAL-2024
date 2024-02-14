@@ -11,11 +11,8 @@ feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/em
 out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/regression/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/regression/non_interpretable/'
 
-
 import json
 import torch.nn as nn
-import torch.nn.functional as F
-from torch.utils.data import DataLoader, TensorDataset
 import os
 import pandas as pd
 import numpy as np
@@ -32,7 +29,6 @@ def reset_weights(m):
             #  print(f'Reset trainable parameters of layer = {layer}')
             layer.reset_parameters()
 
-
 def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
@@ -45,7 +41,6 @@ def get_n_folds(arrayOfSpeaker):
     for i in range(num_of_folds):
         n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
     return n_folds
-
 
 def normalize(train_split, test_split): ## when prediction
     train_set = train_split
@@ -70,7 +65,6 @@ def normalize(train_split, test_split): ## when prediction
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
     return normalized_train_X, normalized_test_X, y_train, y_test
-
 
 
 def add_labels(df, path_labels):
