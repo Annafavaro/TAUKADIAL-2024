@@ -33,11 +33,12 @@ if __name__ == "__main__":
             # Tokenize sentences
             batch_dict = tokenizer(sentences, max_length=512, padding=True, truncation=True, return_tensors='pt')
             outputs = model(**batch_dict)
-            embeddings = average_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
-            # normalize embeddings
-            embeddings = F.normalize(embeddings, p=2, dim=1)
-            embeddings = embeddings.detach().numpy()
-            print(type(embeddings))
-            print(embeddings.shape)
+            print(outputs.keys())
+            #embeddings = average_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
+            ## normalize embeddings
+            #embeddings = F.normalize(embeddings, p=2, dim=1)
+            #embeddings = embeddings.detach().numpy()
+            #print(type(embeddings))
+            #print(embeddings.shape)
 
             #save(output_dir + base_name + '.npy', embeddings)
