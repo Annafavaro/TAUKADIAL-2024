@@ -1,4 +1,5 @@
 feats_names = ['trillsson', 'xvector', 'wav2vec_53', 'whisper', 'wav2vec_128']
+# chinese speaker
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
@@ -72,15 +73,6 @@ def normalize(train_split, test_split): ## when prediction
 #    normalized_test_X = (X_test - median) / (std + 0.01)
 #
 #    return normalized_train_X, normalized_test_X, y_train, y_test
-
-def create_fold_lang(path_dict):
-    n_folds = []
-    read_dict = json.load(open(path_dict))
-    for key, values in read_dict.items():
-        fold = list((read_dict[key]).keys())
-        n_folds.append(list(set(['taukdial-' + sp.split('-')[1] for sp in fold])))
-
-    return n_folds
 
 
 for feat_name in feats_names:
@@ -224,7 +216,9 @@ for feat_name in feats_names:
     df['specificity'] = specificity
     file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
     df.to_csv(file_out)
-#
+
+########################################################################################################################
+
     all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \
                     + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
                 + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \

@@ -1,4 +1,5 @@
 feats_names = ['trillsson', 'xvector', 'wav2vec_53', 'whisper', 'wav2vec_128']
+# english speaker
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
@@ -46,42 +47,6 @@ def normalize(train_split, test_split): ## when prediction
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
     return normalized_train_X, normalized_test_X, y_train, y_test
-
-
-#def normalize(train_set, test_set):
-#
-#    feat_train = train_set[:, :-2]
-#    lab_train = train_set[:, -2:-1]
-#    lab_train = lab_train.astype('int')
-#
-#    feat_test = test_set[:, :-2]
-#    lab_test = test_set[:, -2:-1]
-#    lab_test = lab_test.astype('int')
-#
-#    control_group = train_set[train_set[:, -2] == 1]  # controls
-#    control_group = control_group[:, :-2]  # remove labels from features CNs
-#
-#    median = np.median(control_group, axis=0)
-#    std = np.std(control_group, axis=0)
-#
-#    X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
-#    y_test = y_test.ravel()
-#    y_train = y_train.ravel()
-#    X_train = X_train.astype('float')
-#    X_test = X_test.astype('float')
-#    normalized_train_X = (X_train - median) / (std + 0.01)
-#    normalized_test_X = (X_test - median) / (std + 0.01)
-#
-#    return normalized_train_X, normalized_test_X, y_train, y_test
-
-def create_fold_lang(path_dict):
-    n_folds = []
-    read_dict = json.load(open(path_dict))
-    for key, values in read_dict.items():
-        fold = list((read_dict[key]).keys())
-        n_folds.append(list(set(['taukdial-' + sp.split('-')[1] for sp in fold])))
-
-    return n_folds
 
 
 for feat_name in feats_names:
