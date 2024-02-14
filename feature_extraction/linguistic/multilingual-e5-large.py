@@ -37,7 +37,7 @@ if __name__ == "__main__":
             embeddings = average_pool(outputs.last_hidden_state, batch_dict['attention_mask'])
 
             # normalize embeddings
-            embeddings = F.normalize(embeddings, p=2, dim=1)
+            embeddings = F.normalize(embeddings, p=2, dim=1).detach.numpy()
 
             print(type(embeddings))
             print(embeddings.shape)
