@@ -19,10 +19,8 @@ if __name__ == "__main__":
         print(base_name)
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
-            sentences = file.read().strip().lower()
-            print(sentences)
-           # model = SentenceTransformer('sentence-transformers/all-MiniLM-L12-v2')
+            sentences = file.read().strip()#.lower()
             embeddings = model.encode(sentences)
             print(type(embeddings))
-            #numpy_array = embeddings.numpy()
+            numpy_array = embeddings.numpy()
             save(output_dir + base_name + '.npy', embeddings)
