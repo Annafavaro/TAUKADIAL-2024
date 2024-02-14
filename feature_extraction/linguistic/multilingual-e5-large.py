@@ -6,8 +6,6 @@ import os
 import torch.nn.functional as F
 from torch import Tensor
 from transformers import AutoTokenizer, AutoModel
-
-
 from numpy import save
 
 def average_pool(last_hidden_states: Tensor,
