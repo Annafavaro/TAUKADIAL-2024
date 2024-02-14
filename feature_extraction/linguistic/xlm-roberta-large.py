@@ -33,7 +33,7 @@ if __name__ == "__main__":
             encoded_input = tokenizer(sentences, return_tensors='pt', padding=True, truncation=True)
             # forward pass
             with torch.no_grad():
-                output = model(**encoded_input)#['logits']
+                output = model(**encoded_input)
 
             embeddings = mean_pooling(output, encoded_input['attention_mask'])
             print(type(embeddings))
