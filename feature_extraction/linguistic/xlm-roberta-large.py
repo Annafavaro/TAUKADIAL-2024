@@ -18,7 +18,7 @@ if __name__ == "__main__":
     model = AutoModelForMaskedLM.from_pretrained("xlm-roberta-large")
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
-    for sentences in all_sents[140:]:
+    for sentences in all_sents:
         base_name = os.path.basename(sentences).split(".txt")[0]
         print(base_name)
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
