@@ -30,6 +30,7 @@ def get_stats_data(transcripts_path, output_dir):
             encoded_text = tokenizer.batch_encode_plus([str(sentences)], return_tensors="pt", truncation=True, max_length=512)
             text_embeddings = model_text(encoded_text)
             numpy_array = text_embeddings.numpy()
+            print(numpy_array.shape)
             save(output_dir + base_name + '.npy', numpy_array)
 
 
