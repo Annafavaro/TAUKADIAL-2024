@@ -38,7 +38,7 @@ if __name__ == "__main__":
 
             # normalize embeddings
             embeddings = F.normalize(embeddings, p=2, dim=1)
-            embeddings = embeddings.numpy()
+            embeddings = embeddings..detach().numpy()
             print(type(embeddings))
             print(embeddings.shape)
             #print(embeddings.shape)
