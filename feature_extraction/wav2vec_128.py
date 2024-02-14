@@ -50,7 +50,7 @@ model_name = "facebook/wav2vec2-xls-r-300m"
 feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
 model = Wav2Vec2Model.from_pretrained(model_name)
 
-for audio in all_audios[70:]:
+for audio in all_audios[:72]:
     print(audio)
     base = os.path.basename(audio).split('.wav')[0]
     x, fs = librosa.load(audio, sr=16000)
