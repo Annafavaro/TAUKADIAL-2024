@@ -11,6 +11,7 @@ if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
+    model = SentenceTransformer('sentence-transformers/LaBSE')
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
     for sentences in all_sents:
@@ -19,7 +20,6 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            model = SentenceTransformer('sentence-transformers/LaBSE')
            # model = SentenceTransformer('sentence-transformers/all-MiniLM-L12-v2')
             embeddings = model.encode(sentences)
             print(type(embeddings))
