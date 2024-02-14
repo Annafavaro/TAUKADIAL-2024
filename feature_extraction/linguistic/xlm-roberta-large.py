@@ -26,9 +26,10 @@ if __name__ == "__main__":
             sentences = file.read().strip()#.lower()
             encoded_input = tokenizer(sentences, return_tensors='pt')
             # forward pass
-            output = model(**encoded_input)
+            output = model(**encoded_input)['logits']
             print(type(output))
-            print(output.keys())
+            print(output.shape)
+           # print(output.keys())
             #embeddings = model.encode(sentences)
            # embeddings = embeddings.reshape(1, -1)
             #print(type(embeddings))
