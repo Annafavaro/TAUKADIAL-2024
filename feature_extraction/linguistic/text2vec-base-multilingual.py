@@ -23,6 +23,6 @@ if __name__ == "__main__":
             embeddings = model.encode(sentences)
             embeddings = embeddings.reshape(1, -1)
             print(type(embeddings))
-            print(embeddings.shape)
+            print(embeddings.keys())
            # numpy_array = embeddings.numpy()
             save(output_dir + base_name + '.npy', embeddings)
