@@ -16,24 +16,6 @@ from multilingual_clip import tf_multilingual_clip
 import sys
 
 
-def preprocess_text(input_text, lang='en'):
-    # Load the appropriate spaCy model based on language
-    if lang == 'en':
-        nlp = spacy.load('en_core_web_sm')
-    elif lang == 'zh':
-        nlp = spacy.load('zh_core_web_sm')
-    elif lang == 'es':
-        nlp = spacy.load("es_core_news_sm")
-    else:
-        raise ValueError(f"Unsupported language: {lang}")
-    # Tokenize and perform part-of-speech tagging
-    doc = nlp(input_text)
-    filtered_words = [token.text.lower() for token in doc if token.pos_.startswith('NOUN') and not token.is_stop]
-    # Join the filtered words back into a string
-    processed_text = ' '.join(filtered_words)
-    return processed_text
-
-
 def get_stats_data(transcripts_path, output_dir):
 
     all_sents = sorted([os.path.join(transcripts_path, elem) for elem in os.listdir(transcripts_path)])

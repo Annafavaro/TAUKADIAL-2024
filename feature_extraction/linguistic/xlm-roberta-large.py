@@ -20,6 +20,21 @@ if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
+    model = SentenceTransformer('FacebookAI/xlm-roberta-large')
+    embeddings = model.encode(sentences)
+    print(embeddings)
+
+
+
+
+
+
+
+
+
+
+
+
     tokenizer = AutoTokenizer.from_pretrained('xlm-roberta-large')
     model = AutoModelForMaskedLM.from_pretrained("xlm-roberta-large")
 
