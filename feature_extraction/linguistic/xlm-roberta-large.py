@@ -23,12 +23,12 @@ if __name__ == "__main__":
         print(base_name)
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
-            sentences = file.read().strip().lower()
+            sentences = file.read().strip()#.lower()
             encoded_input = tokenizer(sentences, return_tensors='pt')
             # forward pass
             output = model(**encoded_input)
             print(type(output))
-            print(output.shape)
+            print(output.keys())
             #embeddings = model.encode(sentences)
            # embeddings = embeddings.reshape(1, -1)
             #print(type(embeddings))
