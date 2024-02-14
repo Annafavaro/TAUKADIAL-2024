@@ -26,7 +26,7 @@ if __name__ == "__main__":
             print(sentences)
             encoded_input = tokenizer(sentences, return_tensors='pt')
             output = model(**encoded_input)
-            embeddings = output['last_hidden_state']
+            embeddings = output['pooler_output']
             print(type(embeddings))
             print(embeddings.shape)
            # embeddings = embeddings.numpy()
