@@ -29,7 +29,7 @@ all_mmse_int = mmse_eng_int_all + mmse_chin_int_all
 
 mmse_eng_nonint =  '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/regression/'
 mmse_eng_nonint_all = [os.path.join(mmse_eng_nonint, elem) for elem in os.listdir(mmse_eng_nonint)]
-mmse_chin_nonint =  '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable/regression/'
+mmse_chin_nonint = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable/regression/'
 mmse_chin_nonint_all = [os.path.join(mmse_chin_nonint, elem) for elem in os.listdir(mmse_chin_nonint)]
 all_mmse_nonint = mmse_eng_nonint_all + mmse_chin_nonint_all
 
