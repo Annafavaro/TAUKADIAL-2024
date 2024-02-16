@@ -144,9 +144,6 @@ def path_to_csv_dev(data_dir):
 
         return f'/export/b14/afavaro/csv_addresso_2021/dev/dev_{cv_folder}.csv', df
 
-
-# %%
-
 dev_csv = path_to_csv_dev(data_dir_)
 
 
