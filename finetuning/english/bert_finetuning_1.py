@@ -60,7 +60,7 @@ metrics_list = list_metrics()
 metric = load_metric("accuracy")
 
 task = "taukadial_cv1"
-task_to_keys = { "addresso": ("sentences", None)}
+task_to_keys = { "taukadial_cv1": ("sentences", None)}
 
 sentence1_key, sentence2_key = task_to_keys[task]
 if sentence2_key is None:
