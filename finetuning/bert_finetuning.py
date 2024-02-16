@@ -43,7 +43,8 @@ dataset['test'] = test_ds
 
 #dataset = load_dataset('csv', data_files={"train": path_train, 'dev': path_dev, "test": path_test})
 tokernizer = AutoTokenizer.from_pretrained(checkpoint)
-#print('done')
+def tokenize_fn(batch):
+  return tokernizer(batch['sentence'], truncation = True)
 
 metrics_list = list_metrics()
 #metric
@@ -91,7 +92,7 @@ else:
 def preprocess_function(examples):
     if sentence2_key is None:
         return tokenizer(examples[sentence1_key], truncation=True, padding=True)
-    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
+    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True,
     return_tensors="pt")
 
 encoded_dataset = dataset.map(preprocess_function, batched=True,load_from_cache_file=False)
