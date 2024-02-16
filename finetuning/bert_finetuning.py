@@ -4,6 +4,7 @@ from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
+from datasets import ClassLabel
 from datasets import list_metrics
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
@@ -17,30 +18,189 @@ from datasets import load_metric
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 
 checkpoint = 'bert-base-cased'
-finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/'
-path_train = os.path.join(finetuning_data, 'train_set.csv')
-path_dev = os.path.join(finetuning_data, 'dev_set.csv')
-path_test = os.path.join(finetuning_data, 'test_set.csv')
+#finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/'
+#path_train = os.path.join(finetuning_data, 'train_set.csv')
+#path_dev = os.path.join(finetuning_data, 'dev_set.csv')
+#path_test = os.path.join(finetuning_data, 'test_set.csv')
+#
+#print(path_train)
+#
+#df_train = pd.read_csv(path_train).drop(columns=['Unnamed: 0'])
+#df_train = pd.DataFrame(df_train)
+#df_dev = pd.read_csv(path_dev).drop(columns=['Unnamed: 0'])
+#df_dev = pd.DataFrame(df_dev)
+#df_test = pd.read_csv(path_test).drop(columns=['Unnamed: 0'])
+#df_test = pd.DataFrame(df_test)
+#
+#train_ds = Dataset.from_pandas(df_train, split="train")
+#dev_ds = Dataset.from_pandas(df_dev, split="train")
+#test_ds = Dataset.from_pandas(df_test, split="test")
+#
+#dataset = DatasetDict()
+#
+#dataset['train'] = train_ds
+#dataset['dev'] = dev_ds
+#dataset['test'] = test_ds
+#
 
-print(path_train)
+data_dir_ = '/export/b15/rpapagari/Tianzi_work/ADReSSo_NoVAD_IS2021_dataset/data_ADReSSo_diagnosis_cv10_text_v5_Longformer_TrainDevTest/cv_1/test.tsv'
+# data_dir_2 = '/export/b15/rpapagari/Tianzi_work/ADReSSo_NoVAD_IS2021_dataset/data_ADReSSo_diagnosis_cv10_text_v5_Longformer_TrainDevTest/cv_2/test.tsv'
 
-df_train = pd.read_csv(path_train).drop(columns=['Unnamed: 0'])
-df_train = pd.DataFrame(df_train)
-df_dev = pd.read_csv(path_dev).drop(columns=['Unnamed: 0'])
-df_dev = pd.DataFrame(df_dev)
-df_test = pd.read_csv(path_test).drop(columns=['Unnamed: 0'])
-df_test = pd.DataFrame(df_test)
+# %%
 
-train_ds = Dataset.from_pandas(df_train, split="train")
-dev_ds = Dataset.from_pandas(df_dev, split="train")
-test_ds = Dataset.from_pandas(df_test, split="test")
+def path_to_csv_train(data_dir):
+    cv_folder = os.path.basename(os.path.normpath(data_dir_))
+    if os.path.exists(data_dir + '/train.tsv'):
+        train_path = data_dir + '/train.tsv'
+        train_csv = pd.read_csv(train_path, sep=',', header=None)
+        speakers = train_csv[0].tolist()
+        c2l = ClassLabel(num_classes=2, names=['cn', 'ad'])
+        labels = train_csv[1].tolist()  # BERT only accepts the list of numerical values (float/int) as label.
+        # numerical_labels = [c2l.str2int(label) for label in labels ]
+        # ad == 1, cn ==0
+        spk2lab = {sp: c2l.str2int(lab) for sp, lab in zip(speakers, labels)}
+        # print(spk2lab)
 
-dataset = DatasetDict()
+    if os.path.exists(data_dir + '/utt2csvpath'):
+        path_sentence_ = data_dir + '/utt2csvpath'
+        paths_to_transcript = pd.read_csv(path_sentence_, sep=',', header=None)
+        transcripts = paths_to_transcript[1].tolist()
+        list_speaker = paths_to_transcript[0].tolist()
 
-dataset['train'] = train_ds
-dataset['dev'] = dev_ds
-dataset['test'] = test_ds
+        sentences = []
+        # for speaker in speakers:
+        for spk, transcript in zip(list_speaker, transcripts):
+            # if speaker in transcript:
+            with open(transcript, 'r') as f:
+                transcript_ = f.readlines()
+                # print(transcript_)
+                transcript_ = transcript_[0]
+                sentences.append(transcript_)
 
+        spk2sen = {sp: lab for sp, lab in zip(list_speaker, sentences)}
+
+        data = np.array([[sp, spk2lab[sp], spk2sen[sp]] for sp in spk2lab]).T
+        # print(data)
+        # improved_list = [num for elem in sentences for num in elem]
+
+        # dict = {'idx': speakers, 'label': numerical_labels, 'sentence': improved_list}
+        dict = {'idx': data[0], 'label': data[1], 'sentence': data[2]}
+        df = pd.DataFrame(dict)
+
+        df.to_csv(f'/export/b14/afavaro/csv_addresso_2021/train/train_{cv_folder}.csv', index=False)  # Header?
+
+        return f'/export/b14/afavaro/csv_addresso_2021/train/train_{cv_folder}.csv', df
+
+
+# %%
+
+# train_csv = path_to_csv_train(data_dir_)
+# train_csv
+# train_csv
+
+# %%
+
+def path_to_csv_dev(data_dir):
+    cv_folder = os.path.basename(os.path.normpath(data_dir))
+    if os.path.exists(data_dir + '/dev.tsv'):
+        dev_path = data_dir + '/dev.tsv'
+        dev_csv = pd.read_csv(dev_path, sep=',', header=None)
+        speakers = dev_csv[0].tolist()
+        c2l = ClassLabel(num_classes=2, names=['cn', 'ad'])
+        labels = dev_csv[
+            1].tolist()  # BERT only accepts the list of numerical values for labels (integer, float etc.) .
+        # numerical_labels = [c2l.str2int(label) for label in labels ]
+        # ad == 1, cn ==0
+        spk2lab = {sp: c2l.str2int(lab) for sp, lab in zip(speakers, labels)}
+        # print(spk2lab)
+
+    if os.path.exists(data_dir + '/utt2csvpath'):
+        path_sentence_ = data_dir + '/utt2csvpath'
+        paths_to_transcript = pd.read_csv(path_sentence_, sep=',', header=None)
+        transcripts = paths_to_transcript[1].tolist()
+        list_speaker = paths_to_transcript[0].tolist()
+
+        sentences = []
+        # for speaker in speakers:
+        for spk, transcript in zip(list_speaker, transcripts):
+            # if speaker in transcript:
+            with open(transcript, 'r') as f:
+                transcript_ = f.readlines()
+                # print(transcript_)
+                transcript_ = transcript_[0]
+                sentences.append(transcript_)
+
+        spk2sen = {sp: lab for sp, lab in zip(list_speaker, sentences)}
+
+        data = np.array([[sp, spk2lab[sp], spk2sen[sp]] for sp in spk2lab]).T
+        # print(data)
+        # improved_list = [num for elem in sentences for num in elem]
+
+        # dict = {'idx': speakers, 'label': numerical_labels, 'sentence': improved_list}
+        dict = {'idx': data[0], 'label': data[1], 'sentence': data[2]}
+        df = pd.DataFrame(dict)
+
+        df.to_csv(f'/export/b14/afavaro/csv_addresso_2021/dev/dev_{cv_folder}.csv', index=False)  # Header?
+
+        return f'/export/b14/afavaro/csv_addresso_2021/dev/dev_{cv_folder}.csv', df
+
+
+# %%
+
+dev_csv = path_to_csv_dev(data_dir_)
+
+
+def path_to_csv_test(data_dir):
+    cv_folder = os.path.basename(os.path.normpath(data_dir))
+    if os.path.exists(data_dir + '/test.tsv'):
+        test_path = data_dir + '/test.tsv'
+        test_csv = pd.read_csv(test_path, sep=',', header=None)
+        speakers = test_csv[0].tolist()
+        c2l = ClassLabel(num_classes=2, names=['cn', 'ad'])
+        labels = test_csv[
+            1].tolist()  # BERT only accepts the list of numerical values for labels (integer, float etc.) .
+        # numerical_labels = [c2l.str2int(label) for label in labels ]
+        # ad == 1, cn ==0
+        spk2lab = {sp: c2l.str2int(lab) for sp, lab in zip(speakers, labels)}
+        # print(spk2lab)
+
+    if os.path.exists(data_dir + '/utt2csvpath'):
+        path_sentence_ = data_dir + '/utt2csvpath'
+        paths_to_transcript = pd.read_csv(path_sentence_, sep=',', header=None)
+        transcripts = paths_to_transcript[1].tolist()
+        list_speaker = paths_to_transcript[0].tolist()
+
+        sentences = []
+        # for speaker in speakers:
+        for spk, transcript in zip(list_speaker, transcripts):
+            # if speaker in transcript:
+            with open(transcript, 'r') as f:
+                transcript_ = f.readlines()
+                # print(transcript_)
+                transcript_ = transcript_[0]
+                sentences.append(transcript_)
+
+        spk2sen = {sp: lab for sp, lab in zip(list_speaker, sentences)}
+
+        data = np.array([[sp, spk2lab[sp], spk2sen[sp]] for sp in spk2lab]).T
+        # print(data)
+        # improved_list = [num for elem in sentences for num in elem]
+
+        # dict = {'idx': speakers, 'label': numerical_labels, 'sentence': improved_list}
+        dict = {'idx': data[0], 'label': data[1], 'sentence': data[2]}
+        df = pd.DataFrame(dict)
+
+        df.to_csv(f'/export/b14/afavaro/csv_addresso_2021/test/test_{cv_folder}.csv', index=False)
+
+        return f'/export/b14/afavaro/csv_addresso_2021/test/test_{cv_folder}.csv', df
+
+
+# %%
+train_csv = path_to_csv_train(data_dir_)
+test_csv = path_to_csv_test(data_dir_)
+
+
+dataset = load_dataset('csv', data_files={'train': train_csv, 'dev': dev_csv, 'test': test_csv})
 
 #dataset = load_dataset('csv', data_files={"train": path_train, 'dev': path_dev, "test": path_test})
 tokernizer = AutoTokenizer.from_pretrained(checkpoint)
