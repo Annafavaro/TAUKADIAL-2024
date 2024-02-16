@@ -1,5 +1,5 @@
 
-OUT_PATH = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/transcripts_with_prompt/'
+OUT_PATH = '/export/c12/afavaro/New_NLS/Late_multimodal/ctp/all_audio_not_refined/'
 root2 = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/train_wav'
 
 from openai import OpenAI  # for making OpenAI API calls
@@ -28,7 +28,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     return transcript.text
 
 # change here the -1.wav depending on the task -----> COOKIE THIEF mostly
-all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)]
+all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)][118:]
 print(len(all_files_audio))
 convert_to_ogg = []
 
