@@ -17,7 +17,8 @@ import torch
 from datasets import load_metric
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 
-device = 'cpu' #torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+#device = 'cpu' #torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 checkpoint = 'bert-base-cased'
 finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/'
@@ -57,10 +58,10 @@ def preprocess_function(examples):
     return_tensors="pt")
 
 
-def compute_metrics(eval_pred):
-    logits, labels = eval_pred
-    predictions = np.argmax(logits, axis=-1)
-    return metric.compute(predictions=predictions, references=labels)
+#def compute_metrics(eval_pred):
+#    logits, labels = eval_pred
+#    predictions = np.argmax(logits, axis=-1)
+#    return metric.compute(predictions=predictions, references=labels)
 
 
 def compute_metrics(pred):
@@ -141,3 +142,7 @@ trainer = Trainer(
 )
 
 trainer.train()
+
+from tqdm.auto import tqdm
+evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
+print(evaluation_results)
