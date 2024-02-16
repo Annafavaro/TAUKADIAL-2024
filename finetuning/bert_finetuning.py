@@ -20,9 +20,22 @@ path_train = os.path.join(finetuning_data, 'train_set.csv')
 path_dev = os.path.join(finetuning_data, 'dev_set.csv')
 path_test = os.path.join(finetuning_data, 'test_set.csv')
 
-dataset = load_dataset('csv', data_files={"train": path_train, 'dev': path_dev, "test": path_test})
+print(path_train)
+df_train = pd.read_csv(path_train).drop(columns=['Unnamed: 0'])
+df_train = pd.DataFrame(df_train)
+df_dev = pd.read_csv(path_dev).drop(columns=['Unnamed: 0'])
+df_dev = pd.DataFrame(df_dev)
+df_test = pd.read_csv(path_test).drop(columns=['Unnamed: 0'])
+df_test = pd.DataFrame(df_test)
+
+train_ds = Dataset.from_pandas(df_train, split="train")
+dev_ds = Dataset.from_pandas(df_dev, split="train")
+test_ds = Dataset.from_pandas(df_test, split="test")
+
+
+#dataset = load_dataset('csv', data_files={"train": path_train, 'dev': path_dev, "test": path_test})
 tokernizer = AutoTokenizer.from_pretrained(checkpoint)
-print('done')
+#print('done')
 
 metrics_list = list_metrics()
 #metric
