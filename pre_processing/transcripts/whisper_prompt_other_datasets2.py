@@ -1,6 +1,6 @@
 
 OUT_PATH = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/transcripts_with_prompt/'
-root2 = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/train_wav'
+root2 = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/train_wav/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
