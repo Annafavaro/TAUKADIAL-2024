@@ -146,9 +146,6 @@ evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print('results on the test set')
 print(evaluation_results)
 
-prediction_results = trainer.predict(eval_dataset=encoded_dataset["test"])
-print(prediction_results)
-
 # ----- 3. Predict -----#
 # Load test data
 #test_data = pd.read_csv("test.csv")
