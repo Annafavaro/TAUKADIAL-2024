@@ -99,8 +99,6 @@ def tokenize_fn(batch):
   return tokernizer(batch['sentences'], truncation = True)
 
 encoded_dataset = dataset.map(tokenize_fn, batched=True, load_from_cache_file=False)
-encoded_dataset = encoded_dataset.remove_columns_(encoded_dataset["train"].column_names)
-
 
 num_labels = 2 # (cn or ad)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
