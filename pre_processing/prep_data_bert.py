@@ -1,7 +1,7 @@
 
-sp_subset = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
+sp_subset = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/all.json'
 tr_path_all = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/all/'
-output = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/chinese/'
+output = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/all/'
 
 import json
 import numpy as np
