@@ -14,6 +14,7 @@ from transformers import AutoTokenizer
 from datasets import list_metrics
 import numpy as np
 from datasets import load_metric
+os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 
 checkpoint = 'bert-base-cased'
 finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/'
