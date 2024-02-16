@@ -1,7 +1,7 @@
 import os
 from datasets import load_dataset
 from datasets import load_dataset
-from transformers import AutoTokenizer
+from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
 from datasets import list_metrics
@@ -21,6 +21,7 @@ path_dev = os.path.join(finetuning_data, 'dev_set.csv')
 path_test = os.path.join(finetuning_data, 'test_set.csv')
 
 print(path_train)
+
 df_train = pd.read_csv(path_train).drop(columns=['Unnamed: 0'])
 df_train = pd.DataFrame(df_train)
 df_dev = pd.read_csv(path_dev).drop(columns=['Unnamed: 0'])
@@ -31,6 +32,12 @@ df_test = pd.DataFrame(df_test)
 train_ds = Dataset.from_pandas(df_train, split="train")
 dev_ds = Dataset.from_pandas(df_dev, split="train")
 test_ds = Dataset.from_pandas(df_test, split="test")
+
+dataset = DatasetDict()
+
+dataset['train'] = train_ds
+dataset['dev'] = dev_ds
+dataset['test'] = test_ds
 
 
 #dataset = load_dataset('csv', data_files={"train": path_train, 'dev': path_dev, "test": path_test})
@@ -86,7 +93,7 @@ def preprocess_function(examples):
     return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
     return_tensors="pt")
 
-encoded_dataset = train_ds.map(preprocess_function, batched=True,load_from_cache_file=False)
+encoded_dataset = dataset.map(preprocess_function, batched=True,load_from_cache_file=False)
 
 num_labels = 2 # (cn or ad)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
@@ -113,3 +120,31 @@ args = TrainingArguments(
    # output_dir='./test_dir'
 )
 
+
+def compute_metrics(eval_pred):
+    predictions, labels = eval_pred
+    if task != "stsb":
+        predictions = np.argmax(predictions, axis=1)
+    else:
+        predictions = predictions[:, 0]
+    return metric.compute(predictions=predictions, references=labels)
+
+#%%
+
+#%%
+
+def compute_metrics(eval_pred):
+    logits, labels = eval_pred
+    predictions = np.argmax(logits, axis=-1)
+    return metric.compute(predictions=predictions, references=labels)
+
+
+trainer = Trainer(
+    model,
+    args,
+    train_dataset=encoded_dataset["train"],
+    eval_dataset=encoded_dataset["dev"],
+    tokenizer=tokenizer,
+    compute_metrics=compute_metrics
+
+)
