@@ -53,10 +53,6 @@ def preprocess_function(examples):
     return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
     return_tensors="pt")
 
-metrics_list = list_metrics()
-#metric
-print(metrics_list)
-metric = load_metric("accuracy")
 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
@@ -78,7 +74,12 @@ def compute_metrics(pred):
 
 
 
-model_checkpoint = "bert-base-uncased"
+metrics_list = list_metrics()
+#metric
+print(metrics_list)
+metric = load_metric("accuracy")
+
+model_checkpoint = "bert-base-cased"
 batch_size = 8
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
 
@@ -92,18 +93,6 @@ else:
     print(f"Sentence 1: {dataset['train'][0][sentence1_key]}")
     print(f"Sentence 2: {dataset['train'][0][sentence2_key]}")
 
-#%%
-
-#%%
-
-#def preprocess_function(examples):
-#    if sentence2_key is None:
-#        return tokenizer(examples[sentence1_key], truncation=True, padding=True)
-#    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True,
-#    return_tensors="pt")
-
-#def tokenize_fn(batch):
- # return tokernizer(batch['sentences'], truncation = True)
 
 encoded_dataset = dataset.map(preprocess_function, batched=True, load_from_cache_file=False)
 
@@ -122,8 +111,8 @@ args = TrainingArguments(
     fp16=True,
     logging_steps=1,
     per_device_train_batch_size=1,
-    per_device_eval_batch_size=64,
-    num_train_epochs=9,
+    per_device_eval_batch_size=1,
+    num_train_epochs=1,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
@@ -131,7 +120,6 @@ args = TrainingArguments(
     logging_dir='./logs'#exp-dir
    # output_dir='./test_dir'
 )
-
 
 
 def compute_metrics(eval_pred):
