@@ -1,31 +1,43 @@
 import os
-from datasets import load_dataset
-from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
-from tqdm.auto import tqdm
-from transformers import BertTokenizer, BertForSequenceClassification
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
-import numpy as np
-from datasets import load_metric
-from transformers import pipeline
 from transformers import AutoTokenizer
 from datasets import list_metrics
 import numpy as np
 import torch
 from datasets import load_metric
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
-
-#device = 'cpu' #torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 checkpoint = 'bert-base-cased'
-finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/'
-path_train = os.path.join(finetuning_data, 'train_set.csv')
-path_dev = os.path.join(finetuning_data, 'dev_set.csv')
-path_test = os.path.join(finetuning_data, 'test_set.csv')
+model_checkpoint = "bert-base-cased"
+
+def preprocess_function(examples):
+    if sentence2_key is None:
+        return tokenizer(examples[sentence1_key], truncation=True, padding=True)
+    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
+    return_tensors="pt")
+
+
+def compute_metrics(pred):
+    labels = pred.label_ids
+    preds = pred.predictions.argmax(-1)
+    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary')
+    acc = accuracy_score(labels, preds)
+    return {
+        'accuracy': acc,
+        'f1': f1,
+        'precision': precision,
+        'recall': recall
+    }
+
+finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/english/cv_1/'
+path_train = os.path.join(finetuning_data, 'train.csv')
+path_dev = os.path.join(finetuning_data, 'dev.csv')
+path_test = os.path.join(finetuning_data, 'test.csv')
 
 print(path_train)
 
@@ -45,47 +57,9 @@ dataset = DatasetDict()
 dataset['train'] = train_ds
 dataset['dev'] = dev_ds
 dataset['test'] = test_ds
-
-
-#dataset = load_dataset('csv', data_files={"train": path_train, 'dev': path_dev, "test": path_test})
-tokernizer = AutoTokenizer.from_pretrained(checkpoint)
-#def tokenize_fn(batch):
-  #return tokernizer(batch['sentence'], truncation = True)
-
-def preprocess_function(examples):
-    if sentence2_key is None:
-        return tokenizer(examples[sentence1_key], truncation=True, padding=True)
-    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
-    return_tensors="pt")
-
-
-#def compute_metrics(eval_pred):
-#    logits, labels = eval_pred
-#    predictions = np.argmax(logits, axis=-1)
-#    return metric.compute(predictions=predictions, references=labels)
-
-
-def compute_metrics(pred):
-    labels = pred.label_ids
-    preds = pred.predictions.argmax(-1)
-    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary')
-    acc = accuracy_score(labels, preds)
-    return {
-        'accuracy': acc,
-        'f1': f1,
-        'precision': precision,
-        'recall': recall
-    }
-
-
+tokernizer = AutoTokenizer.from_pretrained(checkpoint, use_fast=True)
 metrics_list = list_metrics()
-#metric
-print(metrics_list)
 metric = load_metric("accuracy")
-
-model_checkpoint = "bert-base-cased"
-batch_size = 8
-tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
 
 task = "taukadial_cv1"
 task_to_keys = { "addresso": ("sentences", None)}
@@ -99,11 +73,9 @@ else:
 
 
 encoded_dataset = dataset.map(preprocess_function, batched=True, load_from_cache_file=False)
-
 num_labels = 2 # (cn or ad)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
 model = model.to(device)
-
 metric_name = "accuracy"
 model_name = model_checkpoint.split("/")[-1]
 
@@ -125,10 +97,10 @@ args = TrainingArguments(
    # output_dir='./test_dir'
 )
 
-def compute_metrics(eval_pred):
-    logits, labels = eval_pred
-    predictions = np.argmax(logits, axis=-1)
-    return metric.compute(predictions=predictions, references=labels)
+#def compute_metrics(eval_pred):
+#    logits, labels = eval_pred
+#    predictions = np.argmax(logits, axis=-1)
+#    return metric.compute(predictions=predictions, references=labels)
 
 trainer = Trainer(
     model,
