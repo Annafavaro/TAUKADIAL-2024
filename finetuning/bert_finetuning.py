@@ -73,10 +73,10 @@ task_to_keys = { "addresso": ("sentences", None)}
 
 sentence1_key, sentence2_key = task_to_keys[task]
 if sentence2_key is None:
-    print(f"Sentence: {dataset['train'][0][sentence1_key]}")
+    print(f"Sentence: {train_ds[0][sentence1_key]}")
 else:
-    print(f"Sentence 1: {dataset['train'][0][sentence1_key]}")
-    print(f"Sentence 2: {dataset['train'][0][sentence2_key]}")
+    print(f"Sentence 1: {train_ds[0][sentence1_key]}")
+    print(f"Sentence 2: {train_ds[sentence2_key]}")
 
 #%%
 
@@ -86,7 +86,7 @@ def preprocess_function(examples):
     return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
     return_tensors="pt")
 
-encoded_dataset = dataset.map(preprocess_function, batched=True,load_from_cache_file=False)
+encoded_dataset = train_ds.map(preprocess_function, batched=True,load_from_cache_file=False)
 
 num_labels = 2 # (cn or ad)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
