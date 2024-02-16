@@ -96,7 +96,7 @@ else:
 #    return_tensors="pt")
 
 def tokenize_fn(batch):
-  return tokernizer(batch['sentence'], truncation = True)
+  return tokernizer(batch['sentences'], truncation = True)
 
 encoded_dataset = dataset.map(tokenize_fn, batched=True, load_from_cache_file=False)
 
