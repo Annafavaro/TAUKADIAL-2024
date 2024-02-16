@@ -59,11 +59,6 @@ def preprocess_function(examples):
     return_tensors="pt")
 
 
-#def compute_metrics(eval_pred):
-#    logits, labels = eval_pred
-#    predictions = np.argmax(logits, axis=-1)
-#    return metric.compute(predictions=predictions, references=labels)
-
 
 def compute_metrics(pred):
     labels = pred.label_ids
@@ -107,46 +102,7 @@ model = model.to(device)
 metric_name = "accuracy"
 model_name = model_checkpoint.split("/")[-1]
 
-args = TrainingArguments(
-    f"{model_name}-finetuned-{task}",
-    evaluation_strategy = "epoch",
-    save_strategy = "epoch",
-    learning_rate=2e-5,
-    fp16=True,
-    logging_steps=1,
-    per_device_train_batch_size=16,
-    per_device_eval_batch_size=64,
-    num_train_epochs=1,
-    weight_decay=0.01,
-    load_best_model_at_end=True,
-    metric_for_best_model=metric_name,
-   # push_to_hub=True,
-    logging_dir='./logs'#exp-dir
-   # output_dir='./test_dir'
-)
-
-def compute_metrics(eval_pred):
-    logits, labels = eval_pred
-    predictions = np.argmax(logits, axis=-1)
-    return metric.compute(predictions=predictions, references=labels)
-
-trainer = Trainer(
-    model,
-    args,
-    train_dataset=encoded_dataset["train"],
-    eval_dataset=encoded_dataset["dev"],
-    tokenizer=tokenizer,
-    compute_metrics=compute_metrics
-
-)
-
-trainer.train()
-
-evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
-print('results on the test set')
-print(evaluation_results)
-
-model_path = "output/checkpoint-50000"
+model_path = "/export/b16/afavaro/TAUKADIAL-2024/finetuning/bert-base-cased-finetuned-addresso/checkpoint-100/"
 model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
 
 # Define test trainer
@@ -163,7 +119,7 @@ X_test_tokenized = tokenizer(X_test, padding=True, truncation=True, max_length=5
 test_dataset = Dataset(X_test_tokenized)
 
 # Make prediction
-raw_pred, _, _ = trainer.predict(test_dataset)
+raw_pred, _, _ = test_trainer.predict(test_dataset)
 # Preprocess raw predictions
 y_pred = np.argmax(raw_pred, axis=1)
 print(y_pred)
