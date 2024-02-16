@@ -150,20 +150,27 @@ model_path = "output/checkpoint-50000"
 model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
 
 # Define test trainer
-test_trainer = Trainer(model)
+
 # ----- 3. Predict -----#
 # Load test data
-#test_data = pd.read_csv("test.csv")
-X_test = list(df_test['sentences'])
-y_test_true =  list(df_test['label'])
-#X_test = list(test_data["review"])
+X_test = list(df_test["sentences"])
+y_test =  list(df_test["label"])
 X_test_tokenized = tokenizer(X_test, padding=True, truncation=True, max_length=512)
 
 # Create torch dataset
 test_dataset = Dataset(X_test_tokenized)
 
+# Load trained model
+model_path = "/export/b16/afavaro/TAUKADIAL-2024/finetuning/bert-base-cased-finetuned-addresso/"
+model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
+
+# Define test trainer
+test_trainer = Trainer(model)
+
 # Make prediction
-raw_pred, _, _ = trainer.predict(test_dataset)
+raw_pred, _, _ = test_trainer.predict(test_dataset)
+
 # Preprocess raw predictions
 y_pred = np.argmax(raw_pred, axis=1)
+
 print(y_pred)
