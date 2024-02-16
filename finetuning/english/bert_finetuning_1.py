@@ -83,13 +83,13 @@ args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
     evaluation_strategy = "epoch",
     save_strategy = "epoch",
-    learning_rate = 2e-5,
+    learning_rate=2e-6,
     #learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=10,
+    num_train_epochs=9,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
@@ -118,7 +118,7 @@ trainer.train()
 evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print('RESULTS on the test set')
 print(evaluation_results)
-acc = evaluation_results['eval_accuracy']
+acc = [evaluation_results['eval_accuracy']]
 print('ACCURACYYYYYYY')
 print(acc)
 predictions = trainer.predict(encoded_dataset["test"])
@@ -126,7 +126,8 @@ print(predictions.predictions.shape, predictions.label_ids.shape)
 preds = np.argmax(predictions.predictions, axis=-1)
 print(f'predictions are {preds}')
 sp_test = df_test['idx'].tolist()
-dict = {'idx': sp_test, 'preds':preds}
+y_test = df_test['label'].tolist()
+dict = {'idx': sp_test, 'preds':preds, 'label': y_test, 'accuracy': acc*len(sp_test)}
 df = pd.DataFrame(dict)
 out_scores = os.path.join(out_scores, 'cv1.csv')
 df.to_csv(out_scores)
