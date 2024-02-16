@@ -10,9 +10,10 @@ from datasets import list_metrics
 import numpy as np
 import torch
 from datasets import load_metric
+
+cv_num = 1
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-
 checkpoint = 'bert-base-cased'
 model_checkpoint = "bert-base-cased"
 
@@ -35,13 +36,12 @@ def compute_metrics(pred):
         'recall': recall
     }
 
-finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/english/cv_1/'
+finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/english/cv_{cv_num}/'
 path_train = os.path.join(finetuning_data, 'train.csv')
 path_dev = os.path.join(finetuning_data, 'dev.csv')
 path_test = os.path.join(finetuning_data, 'test.csv')
 
 print(path_train)
-
 df_train = pd.read_csv(path_train).drop(columns=['Unnamed: 0'])
 df_train = pd.DataFrame(df_train)
 df_dev = pd.read_csv(path_dev).drop(columns=['Unnamed: 0'])
@@ -61,8 +61,8 @@ tokenizer = AutoTokenizer.from_pretrained(checkpoint, use_fast=True)
 metrics_list = list_metrics()
 metric = load_metric("accuracy")
 
-task = "taukadial_cv1"
-task_to_keys = { "taukadial_cv1": ("sentences", None)}
+task = f"taukadial_cv_{cv_num}"
+task_to_keys = {task: ("sentences", None)}
 
 sentence1_key, sentence2_key = task_to_keys[task]
 if sentence2_key is None:
@@ -98,11 +98,6 @@ args = TrainingArguments(
    # output_dir='./test_dir'
 )
 
-#def compute_metrics(eval_pred):
-#    logits, labels = eval_pred
-#    predictions = np.argmax(logits, axis=-1)
-#    return metric.compute(predictions=predictions, references=labels)
-
 trainer = Trainer(
     model,
     args,
@@ -119,7 +114,7 @@ evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print('RESULTS on the test set')
 print(evaluation_results)
 acc = [evaluation_results['eval_accuracy']]
-print('ACCURACYYYYYYY')
+print('Accuracy-->')
 print(acc)
 predictions = trainer.predict(encoded_dataset["test"])
 print(predictions.predictions.shape, predictions.label_ids.shape)
@@ -129,5 +124,5 @@ sp_test = df_test['idx'].tolist()
 y_test = df_test['label'].tolist()
 dict = {'idx': sp_test, 'preds':preds, 'label': y_test, 'accuracy': acc*len(sp_test)}
 df = pd.DataFrame(dict)
-out_scores = os.path.join(out_scores, 'cv1.csv')
+out_scores = os.path.join(out_scores, f'{cv_num}.csv')
 df.to_csv(out_scores)
