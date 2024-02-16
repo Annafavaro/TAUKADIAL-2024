@@ -1,6 +1,6 @@
 
-OUT_PATH = '/export/c12/afavaro/New_NLS/Late_multimodal/ctp/all_transcripts_prompt_taukadial/'
-root2 = '/export/c12/afavaro/New_NLS/Late_multimodal/ctp/all_audio_not_refined/'
+OUT_PATH = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/transcripts_with_prompt/'
+root2 = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/train_wav'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -12,6 +12,8 @@ token = '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'
 #token = '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'
 #token = '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'
 #token= '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'
+#token = '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'
+
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 limit_mb=25
 
