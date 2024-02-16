@@ -1,3 +1,4 @@
+out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/english/'
 import os
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
@@ -115,9 +116,11 @@ trainer = Trainer(
 trainer.train()
 
 evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
-print('results on the test set')
+print('RESULTS on the test set')
 print(evaluation_results)
-
+acc = evaluation_results['eval_accuracy']
+print('ACCURACYYYYYYY')
+print(acc)
 predictions = trainer.predict(encoded_dataset["test"])
 print(predictions.predictions.shape, predictions.label_ids.shape)
 preds = np.argmax(predictions.predictions, axis=-1)
@@ -125,37 +128,5 @@ print(f'predictions are {preds}')
 sp_test = df_test['idx'].tolist()
 dict = {'idx': sp_test, 'preds':preds}
 df = pd.DataFrame(dict)
-out_scores = os.path.join()
-df.to_csv()
-#model_path = "output/checkpoint-50000"
-#model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
-
-
-
-
-
-# Define test trainer
-
-# ----- 3. Predict -----#
-# Load test data
-#X_test = list(df_test["sentences"])
-#y_test =  list(df_test["label"])
-#X_test_tokenized = tokenizer(X_test, padding=True, truncation=True, max_length=512)
-#
-## Create torch dataset
-#test_dataset = Dataset(X_test_tokenized)
-#
-## Load trained model
-#model_path = "/export/b16/afavaro/TAUKADIAL-2024/finetuning/bert-base-cased-finetuned-addresso/"
-#model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
-#
-## Define test trainer
-#test_trainer = Trainer(model)
-#
-## Make prediction
-#raw_pred, _, _ = test_trainer.predict(test_dataset)
-#
-## Preprocess raw predictions
-#y_pred = np.argmax(raw_pred, axis=1)
-#
-#print(y_pred)
+out_scores = os.path.join(out_scores, 'cv1.csv')
+df.to_csv(out_scores)
