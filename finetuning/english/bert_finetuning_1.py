@@ -47,17 +47,15 @@ df_dev = pd.read_csv(path_dev).drop(columns=['Unnamed: 0'])
 df_dev = pd.DataFrame(df_dev)
 df_test = pd.read_csv(path_test).drop(columns=['Unnamed: 0'])
 df_test = pd.DataFrame(df_test)
-
 train_ds = Dataset.from_pandas(df_train, split="train")
 dev_ds = Dataset.from_pandas(df_dev, split="train")
 test_ds = Dataset.from_pandas(df_test, split="test")
-
 dataset = DatasetDict()
 
 dataset['train'] = train_ds
 dataset['dev'] = dev_ds
 dataset['test'] = test_ds
-tokernizer = AutoTokenizer.from_pretrained(checkpoint, use_fast=True)
+tokenizer = AutoTokenizer.from_pretrained(checkpoint, use_fast=True)
 metrics_list = list_metrics()
 metric = load_metric("accuracy")
 
