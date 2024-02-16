@@ -4,6 +4,7 @@ from datasets import load_dataset
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
+from tqdm.auto import tqdm
 from datasets import list_metrics
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
@@ -113,9 +114,9 @@ args = TrainingArguments(
     learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
-    per_device_train_batch_size=1,
-    per_device_eval_batch_size=1,
-    num_train_epochs=1,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=64,
+    num_train_epochs=30,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
@@ -123,7 +124,6 @@ args = TrainingArguments(
     logging_dir='./logs'#exp-dir
    # output_dir='./test_dir'
 )
-
 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
@@ -143,6 +143,5 @@ trainer = Trainer(
 
 trainer.train()
 
-from tqdm.auto import tqdm
 evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print(evaluation_results)
