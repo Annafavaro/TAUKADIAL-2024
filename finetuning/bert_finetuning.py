@@ -145,3 +145,5 @@ trainer.train()
 evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print('results on the test set')
 print(evaluation_results)
+
+evaluation_results = trainer.predict(eval_dataset=encoded_dataset["test"])
