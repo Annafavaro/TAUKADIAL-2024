@@ -84,6 +84,14 @@ tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
 task = "addresso"
 task_to_keys = { "addresso": ("sentences", None)}
 
+sentence1_key, sentence2_key = task_to_keys[task]
+if sentence2_key is None:
+    print(f"Sentence: {dataset['train'][0][sentence1_key]}")
+else:
+    print(f"Sentence 1: {dataset['train'][0][sentence1_key]}")
+    print(f"Sentence 2: {dataset['train'][0][sentence2_key]}")
+
+#%%
 
 #%%
 
