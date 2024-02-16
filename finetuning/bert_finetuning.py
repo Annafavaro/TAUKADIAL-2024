@@ -9,6 +9,7 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 import numpy as np
 from datasets import load_metric
+from transformers import pipeline
 from transformers import AutoTokenizer
 from datasets import list_metrics
 import numpy as np
@@ -109,8 +110,8 @@ args = TrainingArguments(
     learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
-    per_device_train_batch_size=batch_size,
-    per_device_eval_batch_size=batch_size,
+    per_device_train_batch_size=16,
+    per_device_eval_batch_size=64,
     num_train_epochs=9,
     weight_decay=0.01,
     load_best_model_at_end=True,
@@ -121,17 +122,6 @@ args = TrainingArguments(
 )
 
 
-def compute_metrics(eval_pred):
-    predictions, labels = eval_pred
-    if task != "stsb":
-        predictions = np.argmax(predictions, axis=1)
-    else:
-        predictions = predictions[:, 0]
-    return metric.compute(predictions=predictions, references=labels)
-
-#%%
-
-#%%
 
 def compute_metrics(eval_pred):
     logits, labels = eval_pred
@@ -148,3 +138,5 @@ trainer = Trainer(
     compute_metrics=compute_metrics
 
 )
+
+trainer.train()
