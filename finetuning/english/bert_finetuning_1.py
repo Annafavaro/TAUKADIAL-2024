@@ -55,6 +55,7 @@ dataset = DatasetDict()
 dataset['train'] = train_ds
 dataset['dev'] = dev_ds
 dataset['test'] = test_ds
+
 tokenizer = AutoTokenizer.from_pretrained(checkpoint, use_fast=True)
 metrics_list = list_metrics()
 metric = load_metric("accuracy")
@@ -81,12 +82,13 @@ args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
     evaluation_strategy = "epoch",
     save_strategy = "epoch",
-    learning_rate=2e-5,
+    learning_rate = 0.0001,
+    #learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
-    per_device_train_batch_size=16,
+    per_device_train_batch_size=32,
     per_device_eval_batch_size=64,
-    num_train_epochs=1,
+    num_train_epochs=10,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
@@ -120,6 +122,11 @@ predictions = trainer.predict(encoded_dataset["test"])
 print(predictions.predictions.shape, predictions.label_ids.shape)
 preds = np.argmax(predictions.predictions, axis=-1)
 print(f'predictions are {preds}')
+sp_test = df_test['idx'].tolist()
+dict = {'idx': sp_test, 'preds':preds}
+df = pd.DataFrame(dict)
+out_scores = os.path.join()
+df.to_csv()
 #model_path = "output/checkpoint-50000"
 #model = BertForSequenceClassification.from_pretrained(model_path, num_labels=2)
 
