@@ -87,7 +87,7 @@ model_checkpoint = "bert-base-cased"
 batch_size = 8
 tokenizer = AutoTokenizer.from_pretrained(model_checkpoint, use_fast=True)
 
-task = "addresso"
+task = "taukadial_cv1"
 task_to_keys = { "addresso": ("sentences", None)}
 
 sentence1_key, sentence2_key = task_to_keys[task]
