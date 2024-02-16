@@ -89,13 +89,16 @@ else:
 
 #%%
 
-def preprocess_function(examples):
-    if sentence2_key is None:
-        return tokenizer(examples[sentence1_key], truncation=True, padding=True)
-    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True,
-    return_tensors="pt")
+#def preprocess_function(examples):
+#    if sentence2_key is None:
+#        return tokenizer(examples[sentence1_key], truncation=True, padding=True)
+#    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True,
+#    return_tensors="pt")
 
-encoded_dataset = dataset.map(preprocess_function, batched=True,load_from_cache_file=False)
+def tokenize_fn(batch):
+  return tokernizer(batch['sentence'], truncation = True)
+
+encoded_dataset = dataset.map(tokenize_fn, batched=True, load_from_cache_file=False)
 
 num_labels = 2 # (cn or ad)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
