@@ -13,8 +13,11 @@ from transformers import pipeline
 from transformers import AutoTokenizer
 from datasets import list_metrics
 import numpy as np
+import torch
 from datasets import load_metric
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
+
+device = 'cpu' #torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 
 checkpoint = 'bert-base-cased'
 finetuning_data = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/'
@@ -98,7 +101,7 @@ encoded_dataset = dataset.map(preprocess_function, batched=True, load_from_cache
 
 num_labels = 2 # (cn or ad)
 model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
-
+model = model.to(device)
 
 metric_name = "accuracy"
 model_name = model_checkpoint.split("/")[-1]
