@@ -10,8 +10,8 @@ import os
 #token = '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'
 #token = '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'
 #token = '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'
-token= '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'
-#token = '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'
+#token= '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'
+token = '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'
 #token='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
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
@@ -29,7 +29,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     return transcript.text
 
 # change here the -1.wav depending on the task -----> COOKIE THIEF mostly
-all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)][105:]
+all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)][228:]
 print(len(all_files_audio))
 convert_to_ogg = []
 
