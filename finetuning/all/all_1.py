@@ -20,8 +20,8 @@ if __name__ == "__main__":
     def preprocess_function(examples):
         if sentence2_key is None:
             return tokenizer(examples[sentence1_key], truncation=True, padding=True)
-        return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=256,
-        return_tensors="pt")
+        return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=50,
+         add_special_tokens = True, return_tensors="pt")
 
     def compute_metrics(pred):
         labels = pred.label_ids
