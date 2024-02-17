@@ -1,6 +1,6 @@
 
-OUT_PATH = '/export/c12/afavaro/New_NLS/Late_multimodal/ctp/all_transcripts_prompt_taukadial/'
-root2 = '/export/c12/afavaro/New_NLS/Late_multimodal/ctp/all_audio_not_refined/'
+OUT_PATH = '/export/c06/afavaro/DementiaBank/Delaware/Transcripts_all_with_prompt/'
+root2 = '/export/c06/afavaro/DementiaBank/Delaware/Audio_diarized_ctp/All/'
 
 
 from openai import OpenAI  # for making OpenAI API calls
