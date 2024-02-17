@@ -14,8 +14,7 @@ from datasets import load_metric
 cv_num = 8
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-checkpoint = 'bert-base-cased'
-model_checkpoint = "bert-base-cased"
+checkpoint = 'distilbert-base-cased'
 
 def preprocess_function(examples):
     if sentence2_key is None:
