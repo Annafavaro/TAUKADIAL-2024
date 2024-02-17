@@ -8,13 +8,13 @@ import urllib  # for downloading example audio files
 import os
 
 #token = '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'
-token = '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' #yuzhe paid
+#token = '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' #yuzhe paid
 #token = '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'
 #token = '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'
 #token = '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'
 #token= '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'
 #token = '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'
-#token='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'
+token='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'
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 limit_mb=25
