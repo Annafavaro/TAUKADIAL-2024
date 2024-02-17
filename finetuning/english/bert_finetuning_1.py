@@ -74,10 +74,10 @@ else:
 
 encoded_dataset = dataset.map(preprocess_function, batched=True, load_from_cache_file=False)
 num_labels = 2 # (cn or ad)
-model = AutoModelForSequenceClassification.from_pretrained(model_checkpoint, num_labels=num_labels)
+model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=num_labels)
 model = model.to(device)
 metric_name = "accuracy"
-model_name = model_checkpoint.split("/")[-1]
+model_name = checkpoint.split("/")[-1]
 
 args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
