@@ -27,5 +27,5 @@ if __name__ == "__main__":
             outputs = model(**inputs)
             last_hidden_states = outputs.last_hidden_state #take last hidden state
             sentence_embedding = torch.mean(last_hidden_states, dim=1) # mean pooling
-            sentence_embedding = sentence_embedding.detach.numpy()  # dim: (1, 768)
+            sentence_embedding = sentence_embedding.detach().numpy()  # dim: (1, 768)
             save(output_dir + base_name + '.npy', sentence_embedding)
