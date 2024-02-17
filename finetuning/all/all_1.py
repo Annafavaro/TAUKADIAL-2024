@@ -37,7 +37,8 @@ if __name__ == "__main__":
 
     os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
     device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-    checkpoint = 'google-bert/bert-base-multilingual-cased'
+
+    checkpoint = 'sentence-transformers/distiluse-base-multilingual-cased-v1'
     finetuning_data = os.path.join(finetuning_data, f"cv_{cv_num}")
 
     print(checkpoint)
