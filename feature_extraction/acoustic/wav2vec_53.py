@@ -44,8 +44,6 @@ def get_sub_segment(x, fs=16e3, dur=10, index=0):
     return seg
 
 
-
-
 if __name__ == "__main__":
 
     path_audios = sys.argv[1]
