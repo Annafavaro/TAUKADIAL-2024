@@ -37,7 +37,7 @@ def compute_metrics(pred):
         'recall': recall
     }
 
-finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/english/cv_{cv_num}/'
+finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/chinese/cv_{cv_num}/'
 path_train = os.path.join(finetuning_data, 'train.csv')
 path_dev = os.path.join(finetuning_data, 'dev.csv')
 path_test = os.path.join(finetuning_data, 'test.csv')
