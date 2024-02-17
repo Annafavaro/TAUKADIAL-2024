@@ -1,6 +1,6 @@
 
-OUT_PATH = '/export/c06/afavaro/DementiaBank/Delaware/Transcripts_all_with_prompt/'
-root2 = '/export/c06/afavaro/DementiaBank/Delaware/Audio_diarized_ctp/All/'
+OUT_PATH = '/export/c06/afavaro/DementiaBank/Lu2/transcripts_ctp_all_with_prompts/'
+root2 = '/export/c06/afavaro/DementiaBank/Lu2/diarized_audios_all/'
 
 
 from openai import OpenAI  # for making OpenAI API calls
