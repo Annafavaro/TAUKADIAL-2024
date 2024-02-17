@@ -85,13 +85,13 @@ args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
     evaluation_strategy = "epoch",
     save_strategy = "epoch",
-    learning_rate=2e-5,
+    learning_rate=2e-6,
     #learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=4,
+    num_train_epochs=10,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
@@ -99,6 +99,7 @@ args = TrainingArguments(
     logging_dir='./logs'#exp-dir
    # output_dir='./test_dir'
 )
+
 
 trainer = Trainer(
     model,
