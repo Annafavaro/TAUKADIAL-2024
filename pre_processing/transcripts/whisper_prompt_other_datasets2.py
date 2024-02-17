@@ -1,6 +1,6 @@
 
-OUT_PATH = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/transcripts_with_prompt/'
-root2 = '/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/train_wav/'
+OUT_PATH = '/export/c06/afavaro/NCMMSC2021AD/NCMMSC2021_AD_Interspeech_2024/Transcripts_with_prompts/'
+root2 = '/export/c06/afavaro/NCMMSC2021AD/NCMMSC2021_AD_Interspeech_2024/Audios/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -24,7 +24,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
         file=open(audio_filepath, "rb"),
         model="whisper-1",
         prompt=prompt,
-        language='en'
+        language='zh'
     )
     return transcript.text
 
@@ -41,10 +41,9 @@ for audio_file in all_files_audio:
         base_name = os.path.basename(audio_file).split(".wav")[0]
         OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
         transcript = transcribe(audio_file,
-        prompt="So, um, it is kinda like, the window is open, you know? \
-        And, uh, the curtains, the curtains are pulled apart. I think the housewife is, like, probably doing the dishes or something. \
-        But, um, the sink is overflowing, and she does not even seem to notice. \
-        Um, the kids, they are, like, trying to reach the cookie, the cookie jar. Oh, and the boy, he is standing on this, like, wobbly three-legged stool that is about to tip over.")
+        prompt="这是在一个公园，两个女孩在打网球或者羽毛球，那，有一个人牵着一只狗，还有那个小狗，小狗就很调皮的抓着那个打那个羽毛球的小朋友，咬住其中一个女孩的衣服，\
+        那个女孩是一脸惊恐。另外，有两个老人家下，下棋，下象棋，然后就很开心。旁边还有泡的茶，茶还冒着烟。另外两个年纪更小的小朋友在稍远的院子里，\
+        在溜滑梯荡秋千，也很开心。")
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
