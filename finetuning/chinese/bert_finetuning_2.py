@@ -1,5 +1,4 @@
 out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/chinese/'
-finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/chinese/cv_{cv_num}/'
 
 import os
 from datasets import Dataset, DatasetDict
@@ -17,6 +16,8 @@ cv_num = 2
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 checkpoint = 'bert-base-chinese'
+finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/chinese/cv_{cv_num}/'
+
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
@@ -99,7 +100,6 @@ args = TrainingArguments(
     logging_dir='./logs'#exp-dir
    # output_dir='./test_dir'
 )
-
 
 trainer = Trainer(
     model,
