@@ -6,7 +6,7 @@ import os
 import parselmouth
 from feature_extraction_utils import *
 
-output_dir = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_feats/'
+output_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/interpretable/no_diarization/'
 sound_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios_16k_no_diarization/'
 sound_dir_files = [os.path.join(sound_dir, elem) for elem in sorted(os.listdir(sound_dir)) if ".wav" in elem]
 text_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/all/'
