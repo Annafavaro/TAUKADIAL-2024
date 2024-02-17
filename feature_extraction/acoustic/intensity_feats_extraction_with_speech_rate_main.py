@@ -11,7 +11,7 @@ if __name__ == "__main__":
 
     sound_dir = sys.argv[1]
     text_dir = sys.argv[2]
-    output_dir = int(sys.argv[3])
+    output_dir = sys.argv[3]
 
     #output_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/interpretable/no_diarization/'
     print(os.path.isdir(output_dir))
