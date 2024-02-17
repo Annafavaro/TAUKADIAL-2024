@@ -34,7 +34,7 @@ all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)]
 print(len(all_files_audio))
 convert_to_ogg = []
 
-for audio_file in all_files_audio:
+for audio_file in all_files_audio[35:]:
     print(audio_file)
     file_size_bytes = os.path.getsize(audio_file)
     file_size_mb = file_size_bytes / (1024 * 1024)
