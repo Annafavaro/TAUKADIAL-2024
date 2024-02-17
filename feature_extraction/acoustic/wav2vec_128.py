@@ -46,8 +46,7 @@ def get_sub_segment(x, fs=16e3, dur=10, index=0):
 if __name__ == "__main__":
 
     path_audios = sys.argv[1]
-    text_dir = sys.argv[2]
-    output_path = sys.argv[3]
+    output_path = sys.argv[2]
     model_name = "facebook/wav2vec2-xls-r-300m"
 
     all_audios = [os.path.join(path_audios, elem) for elem in os.listdir(path_audios)]
