@@ -14,7 +14,7 @@ from datasets import load_metric
 cv_num = 1
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-checkpoint = 'bert_embeddings_chinese_roberta_wwm_ext_large'
+checkpoint = 'hfl/chinese-roberta-wwm-ext-large'
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
