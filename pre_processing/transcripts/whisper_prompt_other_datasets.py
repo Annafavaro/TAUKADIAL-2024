@@ -19,6 +19,7 @@ token = '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'
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 limit_mb=25
 
+
 # define a wrapper function for seeing how prompts affect transcriptions
 def transcribe(audio_filepath, prompt: str) -> str:
     """Given a prompt, transcribe the audio file."""
