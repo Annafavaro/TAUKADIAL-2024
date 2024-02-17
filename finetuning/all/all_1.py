@@ -1,5 +1,3 @@
-out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/all/'
-
 import os
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
