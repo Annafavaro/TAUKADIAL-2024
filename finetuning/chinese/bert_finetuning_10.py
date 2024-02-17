@@ -14,7 +14,7 @@ from datasets import load_metric
 cv_num = 10
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-checkpoint = 'bert-base-chinese'
+checkpoint = 'hfl/chinese-roberta-wwm-ext-large'
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
@@ -37,7 +37,7 @@ def compute_metrics(pred):
         'recall': recall
     }
 
-finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/english/cv_{cv_num}/'
+finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/chinese/cv_{cv_num}/'
 path_train = os.path.join(finetuning_data, 'train.csv')
 path_dev = os.path.join(finetuning_data, 'dev.csv')
 path_test = os.path.join(finetuning_data, 'test.csv')
