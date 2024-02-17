@@ -14,7 +14,7 @@ import os
 #token = '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'
 token= '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'
 token = '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'
-#token='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'
+token='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'
 
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 limit_mb=25
