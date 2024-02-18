@@ -260,15 +260,16 @@ for feat_name in feats_names:
                 outputs = model(Xbatch)
                 # Compute loss
                 loss = criterion(outputs.squeeze(), y_train_batch_mmse)
+                print(loss)
                 # Backward pass
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
                 total_mmse_rmse += rmse_function(outputs, y_train_batch_mmse).item()
 
-        avg_train_loss = total_loss / len(Xtrain)
-        print(f'training loss:{avg_train_loss}')
-        avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
+        #avg_train_loss = total_loss / len(Xtrain)
+        #print(f'training loss:{avg_train_loss}')
+        #avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
 
         correct, total = 0, 0
         model.eval()
