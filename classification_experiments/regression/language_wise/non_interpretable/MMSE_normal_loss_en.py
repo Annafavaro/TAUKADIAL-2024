@@ -19,6 +19,8 @@ import numpy as np
 import torch
 import sklearn
 from sklearn.metrics import r2_score
+seed = 19
+torch.manual_seed(seed)
 
 
 def reset_weights(m):
@@ -90,30 +92,26 @@ def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
 
 
+class MMSE_ModelBasic(nn.Module):
+    def __init__(self, input_size):
+        super(MMSE_ModelBasic, self).__init__()
+        self.fc = nn.Linear(input_size, 1)
+
+    def forward(self, x):
+        x = self.fc(x)
+        return x.squeeze(1)
+
 #class MMSE_ModelBasic(nn.Module):
 #    def __init__(self, input_size, hidden_size):
 #        super(MMSE_ModelBasic, self).__init__()
 #        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.fc2 = nn.Linear(hidden_size, 30)
-#        self.fc3 = nn.Linear(30, 1)  # Output is a single value
+#        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
 #
 #    def forward(self, x):
 #        x = torch.relu(self.fc1(x))
-#        x = torch.relu(self.fc2(x))
-#        x = self.fc3(x)
+#        x = self.fc2(x)
 #        return x
-
-class MMSE_ModelBasic(nn.Module):
-    def __init__(self, input_size, hidden_size):
-        super(MMSE_ModelBasic, self).__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
-
-    def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
-
+#
 
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
@@ -121,8 +119,6 @@ for feat_name in feats_names:
     n_folds_names = []
     n_folds_data = []
     all_folds_info = []
-    seed = 19
-    torch.manual_seed(seed)
 
     read_dict = json.load(open(english_sps))
     for key, values in read_dict.items():
@@ -260,7 +256,8 @@ for feat_name in feats_names:
 
     for n_fold in range(1, 11):
         print(n_fold)
-        model = MMSE_ModelBasic(input_size, hidden_size)
+        model = MMSE_ModelBasic(input_size)
+        #model = MMSE_ModelBasic(input_size, hidden_size)
         model.apply(reset_weights)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
