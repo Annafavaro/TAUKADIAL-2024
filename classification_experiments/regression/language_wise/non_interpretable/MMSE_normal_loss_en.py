@@ -92,26 +92,26 @@ def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
 
 
-class MMSE_ModelBasic(nn.Module):
-    def __init__(self, input_size):
-        super(MMSE_ModelBasic, self).__init__()
-        self.fc = nn.Linear(input_size, 1)
-
-    def forward(self, x):
-        x = self.fc(x)
-        return x.squeeze(1)
-
 #class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size, hidden_size):
+#    def __init__(self, input_size):
 #        super(MMSE_ModelBasic, self).__init__()
-#        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
+#        self.fc = nn.Linear(input_size, 1)
 #
 #    def forward(self, x):
-#        x = torch.relu(self.fc1(x))
-#        x = self.fc2(x)
-#        return x
-#
+#        x = self.fc(x)
+#        return x.squeeze(1)
+
+class MMSE_ModelBasic(nn.Module):
+    def __init__(self, input_size, hidden_size):
+        super(MMSE_ModelBasic, self).__init__()
+        self.fc1 = nn.Linear(input_size, hidden_size)
+        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
+
+    def forward(self, x):
+        x = torch.relu(self.fc1(x))
+        x = self.fc2(x)
+        return x
+
 
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
@@ -245,7 +245,7 @@ for feat_name in feats_names:
     num_epochs = 30
     batch_size = 32
     input_size = data_train_1.shape[1] - 2
-    hidden_size = 20
+    hidden_size = 30
     criterion = nn.MSELoss()
     # criterion = CustomLoss()
 
@@ -256,15 +256,15 @@ for feat_name in feats_names:
 
     for n_fold in range(1, 11):
         print(n_fold)
-        model = MMSE_ModelBasic(input_size)
-        #model = MMSE_ModelBasic(input_size, hidden_size)
+        #model = MMSE_ModelBasic(input_size)
+        model = MMSE_ModelBasic(input_size, hidden_size)
         model.apply(reset_weights)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
         Xtrain, Xtest, mmse_labels_train, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
 
-        print(len(Xtrain), len(Xtest))
+        #print(len(Xtrain), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
 
         for epoch in range(num_epochs):
