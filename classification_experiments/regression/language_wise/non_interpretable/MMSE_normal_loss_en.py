@@ -243,9 +243,9 @@ for feat_name in feats_names:
 
     learning_rate = 0.01
     num_epochs = 8
-    batch_size = 32
+    batch_size = 48
     input_size = data_train_1.shape[1] - 2
-    hidden_size = 30
+    hidden_size = 40
     criterion = nn.MSELoss()
     # criterion = CustomLoss()
 
