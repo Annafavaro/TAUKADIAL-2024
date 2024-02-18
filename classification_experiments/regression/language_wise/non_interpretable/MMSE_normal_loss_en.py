@@ -264,8 +264,7 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
-        Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val,  mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"),
-                                                                                                eval(f"data_test_{n_fold}"))
+        Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val,  mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
         print(len(Xtrain), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
