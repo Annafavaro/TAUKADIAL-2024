@@ -18,7 +18,7 @@ import sys
 
 def get_stats_data(transcripts_path, output_dir):
 
-    all_sents = sorted([os.path.join(transcripts_path, elem) for elem in os.listdir(transcripts_path)])
+    all_sents = sorted([os.path.join(transcripts_path, elem) for elem in os.listdir(transcripts_path)])[107:]
 
     for sentences in all_sents:
 
