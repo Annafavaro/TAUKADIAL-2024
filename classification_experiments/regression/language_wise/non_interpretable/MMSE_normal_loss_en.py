@@ -22,14 +22,6 @@ from sklearn.metrics import r2_score
 seed = 19
 torch.manual_seed(seed)
 
-# Function for early stopping
-def early_stopping(val_loss, patience):
-    if len(val_loss) > patience:
-        best_val_loss = np.min(val_loss[-patience:])
-        if val_loss[-1] > best_val_loss:
-            return True
-    return False
-
 
 def reset_weights(m):
     for layer in m.children():
@@ -70,23 +62,36 @@ def normalize(train_split, val_split, test_split): ## when prediction
 
     # X = StandardScaler().fit_transform(matrix_feat)
 
-    X_train, X_val, X_test, y_train, y_val, y_test = feat_train, feat_val, feat_test, lab_train, lab_val, lab_test
-
-    y_train = y_train.ravel()
-    y_val = y_val.ravel()
+    X_train,  X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
     y_test = y_test.ravel()
-
+    y_train = y_train.ravel()
     X_train = X_train.astype('float')
-    X_val = X_val.astype('float')
     X_test = X_test.astype('float')
-
-
-    normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
-    normalized_val_X = (X_val - X_train.mean(0)) / (X_train.std(0) + 0.01)
     normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
+    normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
-    return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
+    return normalized_train_X, normalized_test_X, y_train, y_test
 
+
+def add_labels(df, path_labels):
+    path_labels_df = pd.read_csv(path_labels)
+    label = path_labels_df['dx'].tolist()
+    speak = path_labels_df['tkdname'].tolist()  # id
+    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
+    speak2__ = df['ID'].tolist()
+    etichettex = []
+    for nome in speak2__:
+        if nome in spk2lab_.keys():
+            lav = spk2lab_[nome]
+            etichettex.append(([nome, lav]))
+        else:
+            etichettex.append(([nome, 'Unknown']))
+    label_new_ = []
+    for e in etichettex:
+        label_new_.append(e[1])
+    df['labels'] = label_new_
+
+    return df
 
 
 def rmse_function(predictions, targets):
@@ -137,7 +142,7 @@ for feat_name in feats_names:
                  (fold_info[sp])['mmse']])
         all_folds_info.append(fold_info_general)
 
-   # print(n_folds_names[0])
+    print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
@@ -151,7 +156,7 @@ for feat_name in feats_names:
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
-   # print(folds[0])
+    print(folds[0])
 
     # For fold 1
     data_train_1 = np.concatenate(folds[:8])
@@ -246,8 +251,8 @@ for feat_name in feats_names:
     #data_test_9_names = np.concatenate(n_folds_names[7:8])
     #data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    learning_rate = 0.001
-    num_epochs = 12
+    learning_rate = 0.01
+    num_epochs = 35
     batch_size = 32
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
@@ -266,12 +271,10 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
-        Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
+        Xtrain, Xtest, mmse_labels_train, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
 
-       # print(len(Xtrain), len(X_val), len(Xtest))
+        print(len(Xtrain), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
-        patience = 5
-        val_loss_history = []
 
         for epoch in range(num_epochs):
 
@@ -298,25 +301,9 @@ for feat_name in feats_names:
                 total_loss += loss.item()
                 total_mmse_rmse += rmse_function(outputs, y_train_batch_mmse).item()
 
-            avg_train_loss = total_loss / len(Xtrain)
-            print(f'training loss:{avg_train_loss}')
-            avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
-
-        # Validation
-            model.eval()
-            with torch.no_grad():
-                X_val = torch.tensor(X_val, dtype=torch.float32)
-                y_val_mmse = torch.tensor(mmse_labels_val, dtype=torch.float32)
-                y_pred_val = model(X_val)
-                #print("Shape of y_pred_val:", y_pred_val.shape)
-                #print("Shape of y_val_mmse:", y_val_mmse.shape)
-                val_loss = criterion(y_pred_val.squeeze(), y_val_mmse).item()
-                val_loss_history.append(val_loss)
-
-            # Check for early stopping
-            if early_stopping(val_loss_history, patience):
-                print(f'Early stopping at epoch {epoch}')
-                break
+        avg_train_loss = total_loss / len(Xtrain)
+        print(f'training loss:{avg_train_loss}')
+        avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
 
         correct, total = 0, 0
         model.eval()
