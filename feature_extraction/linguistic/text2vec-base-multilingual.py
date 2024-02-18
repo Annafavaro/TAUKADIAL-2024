@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
-    model = SentenceTransformer('shibing624/text2vec-base-multilingual').to(device)
+    model = SentenceTransformer('shibing624/text2vec-base-multilingual').to('cpu')
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
     for sentences in all_sents:
