@@ -59,8 +59,10 @@ def normalize(train_split, test_split): ## when prediction
     X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
     y_test = y_test.ravel()
     y_train = y_train.ravel()
+
     X_train = X_train.astype('float')
     X_test = X_test.astype('float')
+
     normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
@@ -102,6 +104,7 @@ def rmse_function(predictions, targets):
 #        return x.squeeze(1)
 
 class MMSE_ModelBasic(nn.Module):
+
     def __init__(self, input_size, hidden_size):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
@@ -148,54 +151,25 @@ for feat_name in feats_names:
 
     print(folds[0])
 
-    # For fold 1
-    data_train_1 = np.concatenate(folds[:8])
-    data_val_1 = np.concatenate(folds[8:9])
-    data_test_1 = np.concatenate(folds[9:])
-
-    # For fold 2
-    data_train_2 = np.concatenate((folds[1:-1]))
-    data_val_2 = np.concatenate(folds[-1:])
+    data_train_1 = np.concatenate(folds[:9])
+    data_test_1 = np.concatenate(folds[-1:])
+    data_train_2 = np.concatenate(folds[1:])
     data_test_2 = np.concatenate(folds[:1])
-
-    # For fold 3
-    data_train_3 = np.concatenate(folds[2:])
-    data_val_3 = np.concatenate(folds[:1])
+    data_train_3 = np.concatenate(folds[2:] + folds[:1])
     data_test_3 = np.concatenate(folds[1:2])
-
-    # For fold 4
-    data_train_4 = np.concatenate((folds[3:] + folds[:1]))
-    data_val_4 = np.concatenate(folds[1:2])
+    data_train_4 = np.concatenate(folds[3:] + folds[:2])
     data_test_4 = np.concatenate(folds[2:3])
-
-    # For fold 5
-    data_train_5 = np.concatenate((folds[4:] + folds[:2]))
-    data_val_5 = np.concatenate(folds[2:3])
+    data_train_5 = np.concatenate(folds[4:] + folds[:3])
     data_test_5 = np.concatenate(folds[3:4])
-
-    # For fold 6
-    data_train_6 = np.concatenate((folds[5:] + folds[:3]))
-    data_val_6 = np.concatenate(folds[3:4])
+    data_train_6 = np.concatenate(folds[5:] + folds[:4])
     data_test_6 = np.concatenate(folds[4:5])
-
-    # For fold 7
-    data_train_7 = np.concatenate((folds[6:] + folds[:4]))
-    data_val_7 = np.concatenate(folds[4:5])
+    data_train_7 = np.concatenate(folds[6:] + folds[:5])
     data_test_7 = np.concatenate(folds[5:6])
-
-    # For fold 8
-    data_train_8 = np.concatenate((folds[7:] + folds[:5]))
-    data_val_8 = np.concatenate(folds[5:6])
+    data_train_8 = np.concatenate(folds[7:] + folds[:6])
     data_test_8 = np.concatenate(folds[6:7])
-
-    # For fold 9
-    data_train_9 = np.concatenate((folds[8:] + folds[:6]))
-    data_val_9 = np.concatenate(folds[6:7])
+    data_train_9 = np.concatenate(folds[8:] + folds[:7])
     data_test_9 = np.concatenate(folds[7:8])
-
-    # For fold 10
-    data_train_10 = np.concatenate((folds[9:] + folds[:7]))
-    data_val_10 = np.concatenate(folds[7:8])
+    data_train_10 = np.concatenate(folds[9:] + folds[:8])
     data_test_10 = np.concatenate(folds[8:9])
 
     data_test_1_names = np.concatenate(n_folds_names[-1:])
