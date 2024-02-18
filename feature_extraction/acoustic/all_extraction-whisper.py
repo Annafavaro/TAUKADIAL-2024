@@ -96,7 +96,7 @@ def whisper_extraction(x,m): #x signal, m = model.
         #print(seg.shape)
         seg = seg.unsqueeze(0)  # seg.shape [1, 160000]
         hidden_states = m(seg)
-        #print(hidden_states.shape)  # [1, frame#, 384]
+        print(hidden_states.shape)  # [1, frame#, 384]
         embeddings[spec_ind, :] = hidden_states.squeeze().mean(dim=0).detach().numpy()  # [384,]
 
     # average across embeddings of all sub-specs
