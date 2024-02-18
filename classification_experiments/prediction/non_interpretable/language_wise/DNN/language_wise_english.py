@@ -15,6 +15,7 @@ english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/traini
 import os
 import numpy as np
 import torch
+import pandas as pd
 import torch.nn as nn
 import json
 from sklearn.metrics import classification_report, confusion_matrix
