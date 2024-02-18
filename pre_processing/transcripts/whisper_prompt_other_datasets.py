@@ -32,8 +32,16 @@ def transcribe(audio_filepath, prompt: str) -> str:
     return transcript.text
 
 # change here the -1.wav depending on the task -----> COOKIE THIEF mostly
-all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)][523:]
+#all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2)][523:]
+#print(len(all_files_audio))
+
+all_files_audio_base = [elem.split('.wav')[0] for elem in os.listdir(root2)]
+all_files_tr_base = [elem.split('.txt')[0]  for elem in os.listdir(OUT_PATH)]
+to_do = list(set(all_files_audio_base)^set(all_files_tr_base))
+all_files_audio = [os.path.join(root2, elem+ '.wav') for elem in to_do]
 print(len(all_files_audio))
+
+
 convert_to_ogg = []
 
 for audio_file in all_files_audio:
