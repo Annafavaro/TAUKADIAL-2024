@@ -71,16 +71,18 @@ def normalize(train_split, val_split, test_split): ## when prediction
     # X = StandardScaler().fit_transform(matrix_feat)
 
     X_train, X_val, X_test, y_train, y_val, y_test = feat_train, feat_val, feat_test, lab_train, lab_val, lab_test
-    y_test = y_test.ravel()
+
     y_train = y_train.ravel()
     y_val = y_val.ravel()
+    y_test = y_test.ravel()
+
     X_train = X_train.astype('float')
-    X_val = X_train.astype('float')
+    X_val = X_val.astype('float')
     X_test = X_test.astype('float')
 
 
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
-    normalized_val_X = (X_val - X_train.mean(0)) / (X_val.std(0) + 0.01)
+    normalized_val_X = (X_val - X_train.mean(0)) / (X_train.std(0) + 0.01)
     normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
@@ -264,7 +266,7 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
-        Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val,  mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
+        Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
         print(len(Xtrain), len(X_val), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
