@@ -92,17 +92,28 @@ def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
 
 
+#class MMSE_ModelBasic(nn.Module):
+#    def __init__(self, input_size, hidden_size):
+#        super(MMSE_ModelBasic, self).__init__()
+#        self.fc1 = nn.Linear(input_size, hidden_size)
+#        self.fc2 = nn.Linear(hidden_size, 30)
+#        self.fc3 = nn.Linear(30, 1)  # Output is a single value
+#
+#    def forward(self, x):
+#        x = torch.relu(self.fc1(x))
+#        x = torch.relu(self.fc2(x))
+#        x = self.fc3(x)
+#        return x
+
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 30)
-        self.fc3 = nn.Linear(30, 1)  # Output is a single value
+        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
 
     def forward(self, x):
         x = torch.relu(self.fc1(x))
-        x = torch.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = self.fc2(x)
         return x
 
 
