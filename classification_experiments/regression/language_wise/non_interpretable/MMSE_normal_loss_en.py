@@ -266,7 +266,7 @@ for feat_name in feats_names:
         # DATA
         Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val,  mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
-        print(len(Xtrain), len(Xtest))
+        print(len(Xtrain), len(X_val), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
         patience = 5
         val_loss_history = []
@@ -306,6 +306,8 @@ for feat_name in feats_names:
             X_val = torch.tensor(X_val, dtype=torch.float32)
             y_val_mmse = torch.tensor(mmse_labels_val, dtype=torch.float32)
             y_pred_val = model(X_val)
+            print("Shape of y_pred_val:", y_pred_val.shape)
+            print("Shape of y_val_mmse:", y_val_mmse.shape)
             val_loss = criterion(y_pred_val.squeeze(), y_val_mmse).item()
             val_loss_history.append(val_loss)
 
