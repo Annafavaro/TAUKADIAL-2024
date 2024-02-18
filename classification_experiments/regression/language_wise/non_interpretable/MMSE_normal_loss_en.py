@@ -10,19 +10,6 @@ feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/em
 
 out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/regression/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/regression/non_interpretable/'
-feats_names = [
-    'DINO']  # 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large', 'text2vec-base-multilingual',
-# 'distiluse-base-multilingual-cased', 'distiluse-base-multilingual-cased-v1',
-# 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128', 'wav2vec_53', 'whisper', 'trillsson', 'xvector']
-
-
-english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
-lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
-path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
-feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-
-out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/regression/'
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/regression/non_interpretable/'
 
 import json
 import torch.nn as nn
@@ -296,7 +283,7 @@ for feat_name in feats_names:
 
     learning_rate = 0.01
     num_epochs = 300
-    batch_size = 48
+    batch_size = 32
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
     criterion = nn.MSELoss()
