@@ -108,8 +108,6 @@ def reset_weights(m):
             layer.reset_parameters()
 
 
-
-
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
 
