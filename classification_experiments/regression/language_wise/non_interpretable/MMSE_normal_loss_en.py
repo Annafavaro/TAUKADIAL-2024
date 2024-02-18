@@ -42,27 +42,21 @@ def get_n_folds(arrayOfSpeaker):
         n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
     return n_folds
 
-def normalize(train_split, val_split, test_split): ## when prediction
-
+def normalize(train_split, test_split): ## when prediction
     train_set = train_split
-    val_set = val_split
     test_set = test_split
 
     feat_train = train_set[:, :-2]
     lab_train = train_set[:, -1:]
     lab_train = lab_train.astype('int')
 
-    feat_val = val_set[:, :-2]
-    lab_val = val_set[:, -1:]
-    lab_val = lab_val.astype('int')
-
     feat_test = test_set[:, :-2]
-    lab_test = test_set[:, -1:]
+    lab_test = test_set[:, -1:] #-1 is where MMSE are
     lab_test = lab_test.astype('int')
 
     # X = StandardScaler().fit_transform(matrix_feat)
 
-    X_train,  X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
+    X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
     y_test = y_test.ravel()
     y_train = y_train.ravel()
     X_train = X_train.astype('float')
