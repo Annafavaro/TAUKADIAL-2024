@@ -137,7 +137,7 @@ for feat_name in feats_names:
                  (fold_info[sp])['mmse']])
         all_folds_info.append(fold_info_general)
 
-    print(n_folds_names[0])
+   # print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
@@ -151,7 +151,7 @@ for feat_name in feats_names:
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
-    print(folds[0])
+   # print(folds[0])
 
     # For fold 1
     data_train_1 = np.concatenate(folds[:8])
@@ -247,7 +247,7 @@ for feat_name in feats_names:
     #data_test_10_names = np.concatenate(n_folds_names[8:9])
 
     learning_rate = 0.001
-    num_epochs = 35
+    num_epochs = 12
     batch_size = 32
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
@@ -268,7 +268,7 @@ for feat_name in feats_names:
         # DATA
         Xtrain, X_val, Xtest, mmse_labels_train, mmse_labels_val, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
-        print(len(Xtrain), len(X_val), len(Xtest))
+       # print(len(Xtrain), len(X_val), len(Xtest))
         batches_per_epoch = len(Xtrain) // batch_size
         patience = 5
         val_loss_history = []
@@ -308,8 +308,8 @@ for feat_name in feats_names:
             X_val = torch.tensor(X_val, dtype=torch.float32)
             y_val_mmse = torch.tensor(mmse_labels_val, dtype=torch.float32)
             y_pred_val = model(X_val)
-            print("Shape of y_pred_val:", y_pred_val.shape)
-            print("Shape of y_val_mmse:", y_val_mmse.shape)
+            #print("Shape of y_pred_val:", y_pred_val.shape)
+            #print("Shape of y_val_mmse:", y_val_mmse.shape)
             val_loss = criterion(y_pred_val.squeeze(), y_val_mmse).item()
             val_loss_history.append(val_loss)
 
