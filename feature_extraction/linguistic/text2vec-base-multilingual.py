@@ -1,4 +1,5 @@
 # conda activate mulitlingual_clip
+export CUDA_VISIBLE_DEVICES=""
 
 from sentence_transformers import SentenceTransformer
 import sys
