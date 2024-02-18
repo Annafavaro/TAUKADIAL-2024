@@ -298,25 +298,25 @@ for feat_name in feats_names:
                 total_loss += loss.item()
                 total_mmse_rmse += rmse_function(outputs, y_train_batch_mmse).item()
 
-        avg_train_loss = total_loss / len(Xtrain)
-        print(f'training loss:{avg_train_loss}')
-        avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
+            avg_train_loss = total_loss / len(Xtrain)
+            print(f'training loss:{avg_train_loss}')
+            avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
 
         # Validation
-        model.eval()
-        with torch.no_grad():
-            X_val = torch.tensor(X_val, dtype=torch.float32)
-            y_val_mmse = torch.tensor(mmse_labels_val, dtype=torch.float32)
-            y_pred_val = model(X_val)
-            #print("Shape of y_pred_val:", y_pred_val.shape)
-            #print("Shape of y_val_mmse:", y_val_mmse.shape)
-            val_loss = criterion(y_pred_val.squeeze(), y_val_mmse).item()
-            val_loss_history.append(val_loss)
+            model.eval()
+            with torch.no_grad():
+                X_val = torch.tensor(X_val, dtype=torch.float32)
+                y_val_mmse = torch.tensor(mmse_labels_val, dtype=torch.float32)
+                y_pred_val = model(X_val)
+                #print("Shape of y_pred_val:", y_pred_val.shape)
+                #print("Shape of y_val_mmse:", y_val_mmse.shape)
+                val_loss = criterion(y_pred_val.squeeze(), y_val_mmse).item()
+                val_loss_history.append(val_loss)
 
-        # Check for early stopping
-        if early_stopping(val_loss_history, patience):
-            print(f'Early stopping at epoch {epoch}')
-            break
+            # Check for early stopping
+            if early_stopping(val_loss_history, patience):
+                print(f'Early stopping at epoch {epoch}')
+                break
 
         correct, total = 0, 0
         model.eval()
