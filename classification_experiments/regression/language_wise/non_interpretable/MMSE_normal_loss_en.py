@@ -19,8 +19,6 @@ import numpy as np
 import torch
 import sklearn
 from sklearn.metrics import r2_score
-seed = 19
-torch.manual_seed(seed)
 
 
 def reset_weights(m):
@@ -123,6 +121,8 @@ for feat_name in feats_names:
     n_folds_names = []
     n_folds_data = []
     all_folds_info = []
+    seed = 19
+    torch.manual_seed(seed)
 
     read_dict = json.load(open(english_sps))
     for key, values in read_dict.items():
@@ -245,8 +245,8 @@ for feat_name in feats_names:
     #data_test_9_names = np.concatenate(n_folds_names[7:8])
     #data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    learning_rate = 0.01
-    num_epochs = 35
+    learning_rate = 0.001
+    num_epochs = 12
     batch_size = 32
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
