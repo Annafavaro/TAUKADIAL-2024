@@ -197,7 +197,7 @@ def feature_extraction_db_extra(sdir, task_inds, id_inds, out_dir, db_name, tril
         #feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained("superb/hubert-base-superb-sid")
 
     elif trill == 4: # whisper
-        m = HuggingFaceWhisper('openai/whisper-large-v2', save_path='/export/b16/afavaro/speechbrain/pretrained_models/openai/whisper-small/')
+        m = HuggingFaceWhisper('openai/whisper-large-v2', save_path='/export/b16/afavaro/speechbrain/pretrained_models/openai/whisper-base/')
         m.encoder_only = True
 
     print('Extracting features from all target train/test data...')
