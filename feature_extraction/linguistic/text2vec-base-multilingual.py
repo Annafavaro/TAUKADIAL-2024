@@ -6,12 +6,15 @@ import os
 import re
 from numpy import save
 # yes
+
+device = 'cpu'
+
 #no--> cannot be used
 if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
-    model = SentenceTransformer('shibing624/text2vec-base-multilingual')
+    model = SentenceTransformer('shibing624/text2vec-base-multilingual').to(device)
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
     for sentences in all_sents:
