@@ -202,7 +202,7 @@ for feat_name in feats_names:
     data_test_9_names = np.concatenate(n_folds_names[7:8])
     data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    n_epochs = 12
+    n_epochs = 15
     batch_size = 32
     input_dim = data_train_1.shape[1] - 2  # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
@@ -276,14 +276,6 @@ for feat_name in feats_names:
         truth.append(y_test_tensor.detach().numpy())
         results[n_fold] = accuracy
 
-    # Print k-fold cross-validation results
-    print(f'K-FOLD CROSS VALIDATION RESULTS FOR 10 FOLDS')
-    print('--------------------------------')
-    sum = 0.0
-    for key, value in results.items():
-        print(f'Fold {key}: {value} %')
-        sum += value
-    print(f'Average: {sum / len(results.items())} %')
 
     test_scores = np.concatenate(test_scores)
     truth = np.concatenate(truth)

@@ -407,16 +407,6 @@ for feat_name in feats_names:
         test_scores.append(y_pred.detach().numpy())
         predictions.append(y_pred.round().detach().numpy())
         truth.append(y_test_tensor.detach().numpy())
-        results[n_fold] = accuracy
-
-    # Print k-fold cross-validation results
-    print(f'K-FOLD CROSS VALIDATION RESULTS FOR 10 FOLDS')
-    print('--------------------------------')
-    sum = 0.0
-    for key, value in results.items():
-        print(f'Fold {key}: {value} %')
-        sum += value
-    print(f'Average: {sum / len(results.items())} %')
 
     test_scores = np.concatenate(test_scores)
     truth = np.concatenate(truth)
