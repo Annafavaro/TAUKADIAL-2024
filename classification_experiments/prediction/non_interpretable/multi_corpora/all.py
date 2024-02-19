@@ -6,7 +6,7 @@ import pandas as pd
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 40
+seed = 19
 torch.manual_seed(seed)
 
 
@@ -126,29 +126,29 @@ class SingleLayerClassifier(nn.Module):
         return x.squeeze(1)
 
 
-# class SingleLayerClassifier(nn.Module):
-#    def __init__(self, input_size, output_size):
-#        super(SingleLayerClassifier, self).__init__()
-#        self.fc1 = nn.Linear(input_size, 128)
-#        self.fc2 = nn.Linear(128, 256)
-#        self.fc3 = nn.Linear(256, 128)
-#        self.fc4 = nn.Linear(128, 64)
-#        self.fc5 = nn.Linear(64, output_size)
-#        self.relu = nn.ReLU()
-#        self.sigmoid = nn.Sigmoid()
-#
-#    def forward(self, x):
-#        x = self.fc1(x)
-#        x = self.relu(x)
-#        x = self.fc2(x)
-#        x = self.relu(x)
-#        x = self.fc3(x)
-#        x = self.relu(x)
-#        x = self.fc4(x)
-#        x = self.relu(x)
-#        x = self.fc5(x)
-#        x = self.sigmoid(x)
-#        return x.squeeze(1)
+ class SingleLayerClassifier(nn.Module):
+    def __init__(self, input_size, output_size):
+        super(SingleLayerClassifier, self).__init__()
+        self.fc1 = nn.Linear(input_size, 128)
+        self.fc2 = nn.Linear(128, 256)
+        self.fc3 = nn.Linear(256, 128)
+        self.fc4 = nn.Linear(128, 64)
+        self.fc5 = nn.Linear(64, output_size)
+        self.relu = nn.ReLU()
+        self.sigmoid = nn.Sigmoid()
+
+    def forward(self, x):
+        x = self.fc1(x)
+        x = self.relu(x)
+        x = self.fc2(x)
+        x = self.relu(x)
+        x = self.fc3(x)
+        x = self.relu(x)
+        x = self.fc4(x)
+        x = self.relu(x)
+        x = self.fc5(x)
+        x = self.sigmoid(x)
+        return x.squeeze(1)
 
 
 def reset_weights(m):
@@ -509,11 +509,11 @@ for feat_name in feats_names:
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
-        Xtrain = np.concatenate([normalized_train_en, normalized_train_zh,normalized_train_pitt,
+        Xtrain = np.concatenate([normalized_train_en, normalized_train_zh,
                                  normalized_train_lu, normalized_train_del, normalized_train_adr,
                                  ], axis=0)
 
-        y_train = np.concatenate([y_train_en, y_train_zh, y_train_pitt, y_train_lu, y_train_del, y_train_adr], axis=0)
+        y_train = np.concatenate([y_train_en, y_train_zh, y_train_lu, y_train_del, y_train_adr], axis=0)
 
         Xval = np.concatenate([normalized_val_en, normalized_val_zh
                                ], axis=0)
