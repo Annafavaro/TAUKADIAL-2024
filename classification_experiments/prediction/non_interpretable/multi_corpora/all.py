@@ -95,35 +95,34 @@ def add_labels(df, path_labels):
     return df
 
 
-# class SingleLayerClassifier(nn.Module):
+class SingleLayerClassifier(nn.Module):
+   def __init__(self, input_size, output_size):
+       super(SingleLayerClassifier, self).__init__()
+       self.fc = nn.Linear(input_size, output_size)
+       self.sigmoid = nn.Sigmoid()
+   def forward(self, x):
+       x = self.fc(x)
+       x = self.sigmoid(x)
+       return x.squeeze(1)
+
+#class SingleLayerClassifier(nn.Module):
+#
 #    def __init__(self, input_size, output_size):
 #        super(SingleLayerClassifier, self).__init__()
-#        self.fc = nn.Linear(input_size, output_size)
+#        self.fc1 = nn.Linear(input_size, 50)
+#        self.fc2 = nn.Linear(50, 20)
+#        self.fc3 = nn.Linear(20, output_size)
+#        self.relu = nn.ReLU()
 #        self.sigmoid = nn.Sigmoid()
 #
 #    def forward(self, x):
-#        x = self.fc(x)
+#        x = self.fc1(x)
+#        x = self.relu(x)
+#        x = self.fc2(x)
+#        x = self.relu(x)
+#        x = self.fc3(x)
 #        x = self.sigmoid(x)
 #        return x.squeeze(1)
-
-class SingleLayerClassifier(nn.Module):
-
-    def __init__(self, input_size, output_size):
-        super(SingleLayerClassifier, self).__init__()
-        self.fc1 = nn.Linear(input_size, 50)
-        self.fc2 = nn.Linear(50, 20)
-        self.fc3 = nn.Linear(20, output_size)
-        self.relu = nn.ReLU()
-        self.sigmoid = nn.Sigmoid()
-
-    def forward(self, x):
-        x = self.fc1(x)
-        x = self.relu(x)
-        x = self.fc2(x)
-        x = self.relu(x)
-        x = self.fc3(x)
-        x = self.sigmoid(x)
-        return x.squeeze(1)
 
 
 #class SingleLayerClassifier(nn.Module):
