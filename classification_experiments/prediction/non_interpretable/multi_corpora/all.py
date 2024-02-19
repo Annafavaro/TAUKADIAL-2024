@@ -110,9 +110,9 @@ class SingleLayerClassifier(nn.Module):
 
     def __init__(self, input_size, output_size):
         super(SingleLayerClassifier, self).__init__()
-        self.fc1 = nn.Linear(input_size, 60)
-        self.fc2 = nn.Linear(60, 30)
-        self.fc3 = nn.Linear(30, output_size)
+        self.fc1 = nn.Linear(input_size, 50)
+        self.fc2 = nn.Linear(50, 20)
+        self.fc3 = nn.Linear(20, output_size)
         self.relu = nn.ReLU()
         self.sigmoid = nn.Sigmoid()
 
@@ -126,29 +126,29 @@ class SingleLayerClassifier(nn.Module):
         return x.squeeze(1)
 
 
-class SingleLayerClassifier(nn.Module):
-   def __init__(self, input_size, output_size):
-       super(SingleLayerClassifier, self).__init__()
-       self.fc1 = nn.Linear(input_size, 128)
-       self.fc2 = nn.Linear(128, 256)
-       self.fc3 = nn.Linear(256, 128)
-       self.fc4 = nn.Linear(128, 64)
-       self.fc5 = nn.Linear(64, output_size)
-       self.relu = nn.ReLU()
-       self.sigmoid = nn.Sigmoid()
-
-   def forward(self, x):
-       x = self.fc1(x)
-       x = self.relu(x)
-       x = self.fc2(x)
-       x = self.relu(x)
-       x = self.fc3(x)
-       x = self.relu(x)
-       x = self.fc4(x)
-       x = self.relu(x)
-       x = self.fc5(x)
-       x = self.sigmoid(x)
-       return x.squeeze(1)
+#class SingleLayerClassifier(nn.Module):
+#   def __init__(self, input_size, output_size):
+#       super(SingleLayerClassifier, self).__init__()
+#       self.fc1 = nn.Linear(input_size, 128)
+#       self.fc2 = nn.Linear(128, 256)
+#       self.fc3 = nn.Linear(256, 128)
+#       self.fc4 = nn.Linear(128, 64)
+#       self.fc5 = nn.Linear(64, output_size)
+#       self.relu = nn.ReLU()
+#       self.sigmoid = nn.Sigmoid()
+#
+#   def forward(self, x):
+#       x = self.fc1(x)
+#       x = self.relu(x)
+#       x = self.fc2(x)
+#       x = self.relu(x)
+#       x = self.fc3(x)
+#       x = self.relu(x)
+#       x = self.fc4(x)
+#       x = self.relu(x)
+#       x = self.fc5(x)
+#       x = self.sigmoid(x)
+#       return x.squeeze(1)
 
 
 def reset_weights(m):
