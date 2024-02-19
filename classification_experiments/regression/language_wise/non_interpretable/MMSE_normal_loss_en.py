@@ -36,23 +36,40 @@ torch.manual_seed(seed)
 #        return x
 #
 
+#class MMSE_ModelBasic(nn.Module):
+#    def __init__(self, input_size, hidden_size, dropout_rate=0.5):
+#        super(MMSE_ModelBasic, self).__init__()
+#        self.fc1 = nn.Linear(input_size, hidden_size)
+#        self.bn1 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the first fully connected layer
+#        self.dropout1 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
+#        self.fc2 = nn.Linear(hidden_size, hidden_size)
+#        self.bn2 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the second fully connected layer
+#        self.dropout2 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
+#        self.fc3 = nn.Linear(hidden_size, 1)
+#
+#    def forward(self, x):
+#        x = torch.relu(self.bn1(self.fc1(x)))  # Apply batch normalization after the first fully connected layer
+#        x = self.dropout1(x)  # Apply dropout
+#        x = torch.relu(self.bn2(self.fc2(x)))  # Apply batch normalization after the second fully connected layer
+#        x = self.dropout2(x)  # Apply dropout
+#        x = self.fc3(x)
+#        return x
+#
+
+
+
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size, dropout_rate=0.5):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.bn1 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the first fully connected layer
-        self.dropout1 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
-        self.fc2 = nn.Linear(hidden_size, hidden_size)
-        self.bn2 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the second fully connected layer
-        self.dropout2 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
-        self.fc3 = nn.Linear(hidden_size, 1)
+        self.bn1 = nn.BatchNorm1d(hidden_size)
+        self.dropout = nn.Dropout(p=dropout_rate)
+        self.fc2 = nn.Linear(hidden_size, 1)
 
     def forward(self, x):
-        x = torch.relu(self.bn1(self.fc1(x)))  # Apply batch normalization after the first fully connected layer
-        x = self.dropout1(x)  # Apply dropout
-        x = torch.relu(self.bn2(self.fc2(x)))  # Apply batch normalization after the second fully connected layer
-        x = self.dropout2(x)  # Apply dropout
-        x = self.fc3(x)
+        x = torch.relu(self.bn1(self.fc1(x)))
+        x = self.dropout(x)
+        x = self.fc2(x)
         return x
 
 # Function to reset neural network weights
@@ -66,33 +83,6 @@ def reset_weights(m):
 # Function to compute RMSE
 def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
-
-
-# def normalize(train_split, test_split): ## when prediction
-#    train_set = train_split
-#    test_set = test_split
-#
-#    feat_train = train_set[:, :-2]
-#    lab_train = train_set[:, -1:]
-#    lab_train = lab_train.astype('int')
-#
-#    feat_test = test_set[:, :-2]
-#    lab_test = test_set[:, -1:] #-1 is where MMSE are
-#    lab_test = lab_test.astype('int')
-#
-#    # X = StandardScaler().fit_transform(matrix_feat)
-#
-#    X_train, X_test, y_train, y_test = feat_train, feat_test, lab_train, lab_test
-#    y_test = y_test.ravel()
-#    y_train = y_train.ravel()
-#
-#    X_train = X_train.astype('float')
-#    X_test = X_test.astype('float')
-#
-#    normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
-#    normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
-#
-#    return normalized_train_X, normalized_test_X, y_train, y_test
 
 def normalize(train_split, val_split, test_split):  ## when prediction
     train_set = train_split
@@ -131,29 +121,6 @@ def normalize(train_split, val_split, test_split):  ## when prediction
     normalized_test_X = (X_test - mean_train) / std_train
 
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
-
-
-#
-
-def add_labels(df, path_labels):
-    path_labels_df = pd.read_csv(path_labels)
-    label = path_labels_df['dx'].tolist()
-    speak = path_labels_df['tkdname'].tolist()  # id
-    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
-    speak2__ = df['ID'].tolist()
-    etichettex = []
-    for nome in speak2__:
-        if nome in spk2lab_.keys():
-            lav = spk2lab_[nome]
-            etichettex.append(([nome, lav]))
-        else:
-            etichettex.append(([nome, 'Unknown']))
-    label_new_ = []
-    for e in etichettex:
-        label_new_.append(e[1])
-    df['labels'] = label_new_
-
-    return df
 
 
 def rmse_function(predictions, targets):

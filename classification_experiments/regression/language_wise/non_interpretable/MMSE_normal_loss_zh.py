@@ -25,17 +25,36 @@ torch.manual_seed(seed)
 
 
 # Define a custom neural network model
+#class MMSE_ModelBasic(nn.Module):
+#    def __init__(self, input_size, hidden_size):
+#        super(MMSE_ModelBasic, self).__init__()
+#        self.fc1 = nn.Linear(input_size, hidden_size)
+#        self.fc2 = nn.Linear(hidden_size, 1)
+#
+#    def forward(self, x):
+#        x = torch.relu(self.fc1(x))
+#        x = self.fc2(x)
+#        return x
+#
+
 class MMSE_ModelBasic(nn.Module):
-    def __init__(self, input_size, hidden_size):
+    def __init__(self, input_size, hidden_size, dropout_rate=0.5):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 1)
+        self.bn1 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the first fully connected layer
+        self.dropout1 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
+        self.fc2 = nn.Linear(hidden_size, hidden_size)
+        self.bn2 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the second fully connected layer
+        self.dropout2 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
+        self.fc3 = nn.Linear(hidden_size, 1)
 
     def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
+        x = torch.relu(self.bn1(self.fc1(x)))  # Apply batch normalization after the first fully connected layer
+        x = self.dropout1(x)  # Apply dropout
+        x = torch.relu(self.bn2(self.fc2(x)))  # Apply batch normalization after the second fully connected layer
+        x = self.dropout2(x)  # Apply dropout
+        x = self.fc3(x)
         return x
-
 
 # Function to reset neural network weights
 def reset_weights(m):
@@ -89,28 +108,6 @@ def normalize(train_split, val_split, test_split):  ## when prediction
 
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
-
-#
-
-def add_labels(df, path_labels):
-    path_labels_df = pd.read_csv(path_labels)
-    label = path_labels_df['dx'].tolist()
-    speak = path_labels_df['tkdname'].tolist()  # id
-    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
-    speak2__ = df['ID'].tolist()
-    etichettex = []
-    for nome in speak2__:
-        if nome in spk2lab_.keys():
-            lav = spk2lab_[nome]
-            etichettex.append(([nome, lav]))
-        else:
-            etichettex.append(([nome, 'Unknown']))
-    label_new_ = []
-    for e in etichettex:
-        label_new_.append(e[1])
-    df['labels'] = label_new_
-
-    return df
 
 
 def rmse_function(predictions, targets):
