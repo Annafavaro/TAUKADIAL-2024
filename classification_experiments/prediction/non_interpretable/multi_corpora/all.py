@@ -128,12 +128,11 @@ class SingleLayerClassifier(nn.Module):
     def __init__(self, input_size, output_size):
         super(SingleLayerClassifier, self).__init__()
         self.fc1 = nn.Linear(input_size, 50)
-        self.bn1 = nn.BatchNorm1d(50)  # Batch normalization after first linear layer
-        self.dropout1 = nn.Dropout(0.5)  # Dropout with probability 0.5
         self.fc2 = nn.Linear(50, 20)
-        self.bn2 = nn.BatchNorm1d(20)  # Batch normalization after second linear layer
-        self.dropout2 = nn.Dropout(0.5)  # Dropout with probability 0.5
         self.fc3 = nn.Linear(20, output_size)
+        self.bn1 = nn.BatchNorm1d(50)  # Batch normalization after first linear layer
+        self.bn2 = nn.BatchNorm1d(20)  # Batch normalization after second linear layer
+        self.dropout = nn.Dropout(0.5)  # Dropout with probability 0.5
         self.relu = nn.ReLU()
         self.sigmoid = nn.Sigmoid()
 
@@ -141,14 +140,15 @@ class SingleLayerClassifier(nn.Module):
         x = self.fc1(x)
         x = self.bn1(x)
         x = self.relu(x)
-        x = self.dropout1(x)
+        x = self.dropout(x)
         x = self.fc2(x)
         x = self.bn2(x)
         x = self.relu(x)
-        x = self.dropout2(x)
+        x = self.dropout(x)
         x = self.fc3(x)
         x = self.sigmoid(x)
         return x.squeeze(1)
+
 
 
 #class SingleLayerClassifier(nn.Module):
