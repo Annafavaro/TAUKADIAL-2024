@@ -126,17 +126,6 @@ def normalize(train_split, val_split, test_split):  ## when prediction
 def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
 
-
-# class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc = nn.Linear(input_size, 1)
-#
-#    def forward(self, x):
-#        x = self.fc(x)
-#        return x.squeeze(1)
-
-
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
 
@@ -171,27 +160,6 @@ for feat_name in feats_names:
         folds.append(data_fold)
 
     print(folds[0])
-
-    # data_train_1 = np.concatenate(folds[:9])
-    # data_test_1 = np.concatenate(folds[-1:])
-    # data_train_2 = np.concatenate(folds[1:])
-    # data_test_2 = np.concatenate(folds[:1])
-    # data_train_3 = np.concatenate(folds[2:] + folds[:1])
-    # data_test_3 = np.concatenate(folds[1:2])
-    # data_train_4 = np.concatenate(folds[3:] + folds[:2])
-    # data_test_4 = np.concatenate(folds[2:3])
-    # data_train_5 = np.concatenate(folds[4:] + folds[:3])
-    # data_test_5 = np.concatenate(folds[3:4])
-    # data_train_6 = np.concatenate(folds[5:] + folds[:4])
-    # data_test_6 = np.concatenate(folds[4:5])
-    # data_train_7 = np.concatenate(folds[6:] + folds[:5])
-    # data_test_7 = np.concatenate(folds[5:6])
-    # data_train_8 = np.concatenate(folds[7:] + folds[:6])
-    # data_test_8 = np.concatenate(folds[6:7])
-    # data_train_9 = np.concatenate(folds[8:] + folds[:7])
-    # data_test_9 = np.concatenate(folds[7:8])
-    # data_train_10 = np.concatenate(folds[9:] + folds[:8])
-    # data_test_10 = np.concatenate(folds[8:9])
 
     # For fold 1
     data_train_1 = np.concatenate(folds[:8])
@@ -270,7 +238,7 @@ for feat_name in feats_names:
 
     for n_fold in range(1, 11):
         print(n_fold)
-        # model = MMSE_ModelBasic(input_size)
+
         model = MMSE_ModelBasic(input_size, hidden_size)
         model.apply(reset_weights)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)

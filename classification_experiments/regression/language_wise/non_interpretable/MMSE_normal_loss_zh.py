@@ -23,37 +23,18 @@ from sklearn.metrics import r2_score
 seed = 40
 torch.manual_seed(seed)
 
-
-# Define a custom neural network model
-#class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size, hidden_size):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.fc2 = nn.Linear(hidden_size, 1)
-#
-#    def forward(self, x):
-#        x = torch.relu(self.fc1(x))
-#        x = self.fc2(x)
-#        return x
-#
-
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size, dropout_rate=0.5):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
-        self.bn1 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the first fully connected layer
-        self.dropout1 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
-        self.fc2 = nn.Linear(hidden_size, hidden_size)
-        self.bn2 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the second fully connected layer
-        self.dropout2 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
-        self.fc3 = nn.Linear(hidden_size, 1)
+        self.bn1 = nn.BatchNorm1d(hidden_size)
+        self.dropout = nn.Dropout(p=dropout_rate)
+        self.fc2 = nn.Linear(hidden_size, 1)
 
     def forward(self, x):
-        x = torch.relu(self.bn1(self.fc1(x)))  # Apply batch normalization after the first fully connected layer
-        x = self.dropout1(x)  # Apply dropout
-        x = torch.relu(self.bn2(self.fc2(x)))  # Apply batch normalization after the second fully connected layer
-        x = self.dropout2(x)  # Apply dropout
-        x = self.fc3(x)
+        x = torch.relu(self.bn1(self.fc1(x)))
+        x = self.dropout(x)
+        x = self.fc2(x)
         return x
 
 # Function to reset neural network weights
@@ -67,7 +48,6 @@ def reset_weights(m):
 # Function to compute RMSE
 def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
-
 
 
 def normalize(train_split, val_split, test_split):  ## when prediction
@@ -109,31 +89,8 @@ def normalize(train_split, val_split, test_split):  ## when prediction
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
 
-
 def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
-
-
-# class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc = nn.Linear(input_size, 1)
-#
-#    def forward(self, x):
-#        x = self.fc(x)
-#        return x.squeeze(1)
-
-class MMSE_ModelBasic(nn.Module):
-
-    def __init__(self, input_size, hidden_size):
-        super(MMSE_ModelBasic, self).__init__()
-        self.fc1 = nn.Linear(input_size, hidden_size)
-        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
-
-    def forward(self, x):
-        x = torch.relu(self.fc1(x))
-        x = self.fc2(x)
-        return x
 
 
 for feat_name in feats_names:
@@ -255,7 +212,7 @@ for feat_name in feats_names:
 
     learning_rate = 0.01
     num_epochs = 300
-    batch_size = 32
+    batch_size = 48
     input_size = data_train_1.shape[1] - 2
     hidden_size = 40
     criterion = nn.MSELoss()
