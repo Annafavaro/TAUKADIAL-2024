@@ -509,19 +509,16 @@ for feat_name in feats_names:
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
-        Xtrain = np.concatenate([normalized_train_en, normalized_train_zh,
+        Xtrain = np.concatenate([normalized_train_en,
                                  normalized_train_lu, normalized_train_del, normalized_train_adr,
                                  ], axis=0)
 
-        y_train = np.concatenate([y_train_en, y_train_zh, y_train_lu, y_train_del, y_train_adr], axis=0)
+        y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
 
-        Xval = np.concatenate([normalized_val_en
-                               ], axis=0)
-        y_val = np.concatenate([y_val_en, y_val_zh], axis=0)
-        Xtest = np.concatenate([normalized_test_en
-                                ], axis=0)
-        y_test = np.concatenate([y_test_en
-                                 ], axis=0)
+        Xval = np.concatenate([normalized_val_en ], axis=0)
+        y_val = np.concatenate([y_val_en], axis=0)
+        Xtest = np.concatenate([normalized_test_en  ], axis=0)
+        y_test = np.concatenate([y_test_en ], axis=0)
 
         batches_per_epoch = len(Xtrain) // batch_size
 
