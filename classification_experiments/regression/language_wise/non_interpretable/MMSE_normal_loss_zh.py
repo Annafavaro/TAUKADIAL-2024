@@ -19,7 +19,7 @@ import torch
 import sklearn
 from sklearn.metrics import r2_score
 
-seed = 19
+seed = 40
 torch.manual_seed(seed)
 
 

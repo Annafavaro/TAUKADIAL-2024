@@ -42,7 +42,6 @@ torch.manual_seed(seed)
 #        return x
 #
 
-
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size):
         super(MMSE_ModelBasic, self).__init__()
