@@ -1,6 +1,6 @@
 
 
-#out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable_sigmoid/prediction/'
+out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
 import os
 import numpy as np
@@ -13,7 +13,6 @@ from sklearn.metrics import roc_auc_score
 seed = 19
 torch.manual_seed(seed)
 
-
 def normalize_train_set(train_split):
 
     train_set = train_split
@@ -25,8 +24,6 @@ def normalize_train_set(train_split):
     control_group = control_group[:, :-1]  # remove labels from features CNs
     median = np.median(control_group, axis=0)
     std = np.std(control_group, axis=0)
-    #
-    # X = StandardScaler().fit_transform(matrix_feat)
 
     X_train, y_train = feat_train, lab_train
     y_train = y_train.ravel()
@@ -75,28 +72,6 @@ def normalize_and_split(train_split, val_split, test_split):
     normalized_test_X = (X_test - median) / (std + 0.01)
 
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
-
-
-def add_labels(df, path_labels):
-
-    path_labels_df = pd.read_csv(path_labels)
-    label = path_labels_df['dx'].tolist()
-    speak = path_labels_df['tkdname'].tolist()  # id
-    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
-    speak2__ = df['ID'].tolist()
-    etichettex = []
-    for nome in speak2__:
-        if nome in spk2lab_.keys():
-            lav = spk2lab_[nome]
-            etichettex.append(([nome, lav]))
-        else:
-            etichettex.append(([nome, 'Unknown']))
-    label_new_ = []
-    for e in etichettex:
-        label_new_.append(e[1])
-    df['labels'] = label_new_
-
-    return df
 
 
 #class SingleLayerClassifier(nn.Module):
@@ -228,7 +203,6 @@ train_labels_adr = train_labels.sort_values(by=['adressfname'])['dx'].tolist()
 train_labels_adr = [1 if ids == 'Control' else 0 for ids in train_labels_adr]
 
 for feat_name in feats_names:
-
     print(f"Experiments with {feat_name}")
 
     ############# China ###############
@@ -484,7 +458,7 @@ for feat_name in feats_names:
 
     n_epochs = 30
     batch_size = 36
-    input_dim = data_val_8_zh.shape[1] - 1  # Subtract 1 for the label column and 1 for mmse
+      # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
     learning_rate = 0.001
@@ -497,15 +471,13 @@ for feat_name in feats_names:
 
     for n_fold in range(1, 11):
         # print(n_fold)
-        model = SingleLayerClassifier(input_dim, output_dim)
-        model.apply(reset_weights)
-        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
         normalized_train_en, normalized_val_en, normalized_test_en, y_train_en, y_val_en, y_test_en = normalize_and_split(
             eval(f"data_train_{n_fold}_en"), eval(f"data_val_{n_fold}_en"), eval(f"data_test_{n_fold}_en"))
         normalized_train_zh, normalized_val_zh, normalized_test_zh, y_train_zh, y_val_zh, y_test_zh = normalize_and_split(
             eval(f"data_train_{n_fold}_zh"), eval(f"data_val_{n_fold}_zh"), eval(f"data_test_{n_fold}_zh"))
+
 
         normalized_train_del, y_train_del = normalize_train_set(data_fold_del)
         normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
@@ -515,15 +487,18 @@ for feat_name in feats_names:
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
        # Xtrain = np.concatenate([normalized_train_zh], axis=0)
-        Xtrain = np.concatenate([normalized_train_en,
-                               normalized_train_lu, normalized_train_del, normalized_train_adr,
-                                ], axis=0)
+        Xtrain = np.concatenate([normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
 
         y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
         Xval = np.concatenate([normalized_val_en], axis=0)
         y_val = np.concatenate([y_val_en], axis=0)
         Xtest = np.concatenate([normalized_test_en], axis=0)
-        y_test = np.concatenate([y_test_en ], axis=0)
+        y_test = np.concatenate([y_test_en], axis=0)
+
+        input_dim = Xtrain.shape[1]
+        model = SingleLayerClassifier(input_dim, output_dim)
+        model.apply(reset_weights)
+        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         batches_per_epoch = len(Xtrain) // batch_size
 
@@ -576,7 +551,6 @@ for feat_name in feats_names:
         results[n_fold] = accuracy
 
     # Print k-fold cross-validation results
-
     test_scores = np.concatenate(test_scores)
     truth = np.concatenate(truth)
     predictions = np.concatenate(predictions)
@@ -610,18 +584,22 @@ for feat_name in feats_names:
     print('saved')
 
     ########################################################################################################################
-    #all_names = (list(data_test_1_names_en) +
-    #          list(data_test_2_names_en) +
-    #          list(data_test_3_names_en) +
-    #          list(data_test_4_names_en) +
-    #          list(data_test_5_names_en) +
-    #          list(data_test_6_names_en) +
-    #          list(data_test_7_names_en) +
-    #          list(data_test_8_names_en) +
-    #          list(data_test_9_names_en) +
-    #          list(data_test_10_names_en))
+    all_names = (list(data_test_1_names_en) +
+              list(data_test_2_names_en) +
+              list(data_test_3_names_en) +
+              list(data_test_4_names_en) +
+              list(data_test_5_names_en) +
+              list(data_test_6_names_en) +
+              list(data_test_7_names_en) +
+              list(data_test_8_names_en) +
+              list(data_test_9_names_en) +
+              list(data_test_10_names_en))
 #
-
+    print(all_names)
+    dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
+    df2 = pd.DataFrame(dict)
+    file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+    df2.to_csv(file_out2)
 
 # all_names = (list(data_test_1_names_en) + list(data_test_1_names_zh) +
 #          list(data_test_2_names_en) + list(data_test_2_names_zh) +
