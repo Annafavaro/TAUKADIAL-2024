@@ -1,7 +1,7 @@
 
 
 #out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable_sigmoid/prediction/'
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
 import os
 import numpy as np
 import torch
@@ -607,6 +607,7 @@ for feat_name in feats_names:
     df['specificity'] = specificity
     file_out = os.path.join(out_path, feat_name + "_" + ".csv")
     df.to_csv(file_out)
+    print('saved')
 
     ########################################################################################################################
     #all_names = (list(data_test_1_names_en) +
