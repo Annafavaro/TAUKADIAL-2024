@@ -407,7 +407,7 @@ for feat_name in feats_names:
     batch_size = 48
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
-    learning_rate = 0.001
+    learning_rate = 0.0001
     criterion = nn.BCELoss()  # Binary Cross Entropy Loss
 
     results = {}
