@@ -72,16 +72,6 @@ def normalize_and_split(train_split, val_split, test_split):
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
 
-#class SingleLayerClassifier(nn.Module):
-#   def __init__(self, input_size, output_size):
-#       super(SingleLayerClassifier, self).__init__()
-#       self.fc = nn.Linear(input_size, output_size)
-#       self.sigmoid = nn.Sigmoid()
-#   def forward(self, x):
-#       x = self.fc(x)
-#       x = self.sigmoid(x)
-#       return x.squeeze(1)
-
 class SingleLayerClassifier(nn.Module):
 
     def __init__(self, input_size, output_size):
@@ -315,96 +305,8 @@ for feat_name in feats_names:
     data_test_9_names_en = np.concatenate(n_folds_names[7:8])
     data_test_10_names_en = np.concatenate(n_folds_names[8:9])
 
-    ##########################################################################
-
-    n_folds_names_zh = []
-    all_folds_info_zh = []
-
-    read_dict = json.load(open(chinese_sps))
-    for key, values in read_dict.items():
-        fold_info_general_zh = []
-        fold = list((read_dict[key]).keys())
-        n_folds_names_zh.append(list([os.path.basename(sp) for sp in fold]))
-        fold_info = read_dict[key]  # get data for
-        for sp in fold_info:
-            fold_info_general_zh.append(
-                [os.path.join(feat_pths, feat_name, sp.split('.wav')[0] + '.npy'), (fold_info[sp])['label']])
-        all_folds_info_zh.append(fold_info_general_zh)
-
-    folds_zh = []
-    for fold in all_folds_info_zh:
-        data_fold_zh = np.array(())  # %
-        for speaker in fold:
-            label_row = speaker[-1]
-            feat = np.load(speaker[0])
-            # print(label_row, row['path_feat'])
-            feat = np.append(feat, label_row)
-            data_fold_zh = np.vstack((data_fold_zh, feat)) if data_fold_zh.size else feat
-        folds_zh.append(data_fold_zh)
-
-    # For fold 1
-    data_train_1_zh = np.concatenate(folds_zh[:8])
-    data_val_1_zh = np.concatenate(folds_zh[8:9])
-    data_test_1_zh = np.concatenate(folds_zh[9:])
-
-    # For fold 2
-    data_train_2_zh = np.concatenate((folds_zh[1:-1]))
-    data_val_2_zh = np.concatenate(folds_zh[-1:])
-    data_test_2_zh = np.concatenate(folds_zh[:1])
-
-    # For fold 3
-    data_train_3_zh = np.concatenate(folds_zh[2:])
-    data_val_3_zh = np.concatenate(folds_zh[:1])
-    data_test_3_zh = np.concatenate(folds_zh[1:2])
-
-    # For fold 4
-    data_train_4_zh = np.concatenate((folds_zh[3:] + folds_zh[:1]))
-    data_val_4_zh = np.concatenate(folds_zh[1:2])
-    data_test_4_zh = np.concatenate(folds_zh[2:3])
-    # For fold 5
-    data_train_5_zh = np.concatenate((folds_zh[4:] + folds_zh[:2]))
-    data_val_5_zh = np.concatenate(folds_zh[2:3])
-    data_test_5_zh = np.concatenate(folds_zh[3:4])
-
-    # For fold 6
-    data_train_6_zh = np.concatenate((folds_zh[5:] + folds_zh[:3]))
-    data_val_6_zh = np.concatenate(folds_zh[3:4])
-    data_test_6_zh = np.concatenate(folds_zh[4:5])
-    # For fold 7
-    data_train_7_zh = np.concatenate((folds_zh[6:] + folds_zh[:4]))
-    data_val_7_zh = np.concatenate(folds_zh[4:5])
-    data_test_7_zh = np.concatenate(folds_zh[5:6])
-
-    # For fold 8
-    data_train_8_zh = np.concatenate((folds_zh[7:] + folds_zh[:5]))
-    data_val_8_zh = np.concatenate(folds_zh[5:6])
-    data_test_8_zh = np.concatenate(folds_zh[6:7])
-
-    # For fold 9
-    data_train_9_zh = np.concatenate((folds_zh[8:] + folds_zh[:6]))
-    data_val_9_zh = np.concatenate(folds_zh[6:7])
-    data_test_9_zh = np.concatenate(folds_zh[7:8])
-
-    # For fold 10
-    data_train_10_zh = np.concatenate((folds_zh[9:] + folds_zh[:7]))
-    data_val_10_zh = np.concatenate(folds_zh[7:8])
-    data_test_10_zh = np.concatenate(folds_zh[8:9])
-
-    data_test_1_names_zh = np.concatenate(n_folds_names_zh[-1:])
-    data_test_2_names_zh = np.concatenate(n_folds_names_zh[:1])
-    data_test_3_names_zh = np.concatenate(n_folds_names_zh[1:2])
-    data_test_4_names_zh = np.concatenate(n_folds_names_zh[2:3])
-    data_test_5_names_zh = np.concatenate(n_folds_names_zh[3:4])
-    data_test_6_names_zh = np.concatenate(n_folds_names_zh[4:5])
-    data_test_7_names_zh = np.concatenate(n_folds_names_zh[5:6])
-    data_test_8_names_zh = np.concatenate(n_folds_names_zh[6:7])
-    data_test_9_names_zh = np.concatenate(n_folds_names_zh[7:8])
-    data_test_10_names_zh = np.concatenate(n_folds_names_zh[8:9])
-
-    ####################################################################
-
     n_epochs = 30
-    batch_size = 36
+    batch_size = 48
       # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
@@ -433,7 +335,6 @@ for feat_name in feats_names:
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
-       # Xtrain = np.concatenate([normalized_train_zh], axis=0)
         Xtrain = np.concatenate([normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
 
         y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
@@ -547,21 +448,3 @@ for feat_name in feats_names:
     df2 = pd.DataFrame(dict)
     file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
     df2.to_csv(file_out2)
-
-# all_names = (list(data_test_1_names_en) + list(data_test_1_names_zh) +
-#          list(data_test_2_names_en) + list(data_test_2_names_zh) +
-#          list(data_test_3_names_en) + list(data_test_3_names_zh) +
-#          list(data_test_4_names_en) + list(data_test_4_names_zh) +
-#          list(data_test_5_names_en) + list(data_test_5_names_zh) +
-#          list(data_test_6_names_en) + list(data_test_6_names_zh) +
-#          list(data_test_7_names_en) + list(data_test_7_names_zh) +
-#          list(data_test_8_names_en) + list(data_test_8_names_zh) +
-#          list(data_test_9_names_en) + list(data_test_9_names_zh) +
-#          list(data_test_10_names_en) + list(data_test_10_names_zh))
-#
-# print(all_names)
-  #  dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-  #  df2 = pd.DataFrame(dict)
-  #  file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-  #  #df2.to_csv(file_out2)
-##
