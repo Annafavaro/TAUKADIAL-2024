@@ -511,9 +511,9 @@ for feat_name in feats_names:
 
         Xtrain = np.concatenate([normalized_train_en, normalized_train_zh,
                                  normalized_train_lu, normalized_train_del, normalized_train_adr,
-                                 normalized_train_nls], axis=0)
+                                 ], axis=0)
 
-        y_train = np.concatenate([y_train_en, y_train_zh, y_train_lu, y_train_del, y_train_adr, y_train_nls], axis=0)
+        y_train = np.concatenate([y_train_en, y_train_zh, y_train_lu, y_train_del, y_train_adr], axis=0)
 
         Xval = np.concatenate([normalized_val_en, normalized_val_zh
                                ], axis=0)
