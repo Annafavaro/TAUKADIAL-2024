@@ -1,5 +1,3 @@
-
-
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
 import os
@@ -102,57 +100,6 @@ class SingleLayerClassifier(nn.Module):
         x = self.fc3(x)
         x = self.sigmoid(x)
         return x.squeeze(1)
-#
-#class SingleLayerClassifier(nn.Module):
-#    def __init__(self, input_size, output_size):
-#        super(SingleLayerClassifier, self).__init__()
-#        self.fc1 = nn.Linear(input_size, 50)
-#        self.fc2 = nn.Linear(50, 20)
-#        self.fc3 = nn.Linear(20, output_size)
-#        self.bn1 = nn.BatchNorm1d(50)  # Batch normalization after first linear layer
-#        self.bn2 = nn.BatchNorm1d(20)  # Batch normalization after second linear layer
-#        self.dropout = nn.Dropout(0.5)  # Dropout with probability 0.5
-#        self.relu = nn.ReLU()
-#        self.sigmoid = nn.Sigmoid()
-#
-#    def forward(self, x):
-#        x = self.fc1(x)
-#        x = self.bn1(x)
-#        x = self.relu(x)
-#        x = self.dropout(x)
-#        x = self.fc2(x)
-#        x = self.bn2(x)
-#        x = self.relu(x)
-#        x = self.dropout(x)
-#        x = self.fc3(x)
-#        x = self.sigmoid(x)
-#        return x.squeeze(1)
-#
-
-
-#class SingleLayerClassifier(nn.Module):
-#   def __init__(self, input_size, output_size):
-#       super(SingleLayerClassifier, self).__init__()
-#       self.fc1 = nn.Linear(input_size, 128)
-#       self.fc2 = nn.Linear(128, 256)
-#       self.fc3 = nn.Linear(256, 128)
-#       self.fc4 = nn.Linear(128, 64)
-#       self.fc5 = nn.Linear(64, output_size)
-#       self.relu = nn.ReLU()
-#       self.sigmoid = nn.Sigmoid()
-#
-#   def forward(self, x):
-#       x = self.fc1(x)
-#       x = self.relu(x)
-#       x = self.fc2(x)
-#       x = self.relu(x)
-#       x = self.fc3(x)
-#       x = self.relu(x)
-#       x = self.fc4(x)
-#       x = self.relu(x)
-#       x = self.fc5(x)
-#       x = self.sigmoid(x)
-#       return x.squeeze(1)
 
 
 def reset_weights(m):
