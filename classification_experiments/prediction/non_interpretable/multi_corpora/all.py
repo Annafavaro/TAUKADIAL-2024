@@ -1,3 +1,7 @@
+
+
+#out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable_sigmoid/prediction/'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/'
 import os
 import numpy as np
 import torch
@@ -181,28 +185,6 @@ def reset_weights(m):
         if hasattr(layer, 'reset_parameters'):
             layer.reset_parameters()
 
-
-def add_labels_nls(df):
-    label_seneca = pd.read_csv("/export/b16/afavaro/Results_new_analysis/NLS/0.metadata.csv")
-    label = label_seneca['label'].tolist()
-    speak = label_seneca['subject'].tolist()  # id
-    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
-    speak2__ = df['ID'].tolist()
-    etichettex = []
-    for nome in speak2__:
-        if nome in spk2lab_.keys():
-            lav = spk2lab_[nome]
-            etichettex.append(([nome, lav]))
-        else:
-            etichettex.append(([nome, 'Unknown']))
-    label_new_ = []
-    for e in etichettex:
-        label_new_.append(e[1])
-    df['labels'] = label_new_
-
-    return df
-
-
 feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
                'multilingual-e5-large',
                'text2vec-base-multilingual', 'xlm-roberta-base',
@@ -329,7 +311,6 @@ for feat_name in feats_names:
     ####################################################################
 
     n_folds_names = []
-    n_folds_data = []
     all_folds_info = []
 
     read_dict = json.load(open(english_sps))
@@ -416,7 +397,6 @@ for feat_name in feats_names:
     ##########################################################################
 
     n_folds_names_zh = []
-    n_folds_data_zh = []
     all_folds_info_zh = []
 
     read_dict = json.load(open(chinese_sps))
@@ -535,22 +515,15 @@ for feat_name in feats_names:
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
        # Xtrain = np.concatenate([normalized_train_zh], axis=0)
-        Xtrain = np.concatenate([normalized_train_en, normalized_train_zh,
+        Xtrain = np.concatenate([normalized_train_en,
                                normalized_train_lu, normalized_train_del, normalized_train_adr,
                                 ], axis=0)
 
-        y_train = np.concatenate([y_train_en, y_train_zh, y_train_lu, y_train_del, y_train_adr], axis=0)
-
-        #Xtrain = np.concatenate([normalized_train_en,
-                              #   normalized_train_lu, normalized_train_del, normalized_train_adr,
-                             #    ], axis=0)
-
-        #y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
-
-        Xval = np.concatenate([normalized_val_en, normalized_val_zh], axis=0)
-        y_val = np.concatenate([y_val_en, y_val_zh], axis=0)
-        Xtest = np.concatenate([normalized_test_en, normalized_test_zh ], axis=0)
-        y_test = np.concatenate([y_test_en, y_test_zh ], axis=0)
+        y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
+        Xval = np.concatenate([normalized_val_en], axis=0)
+        y_val = np.concatenate([y_val_en], axis=0)
+        Xtest = np.concatenate([normalized_test_en], axis=0)
+        y_test = np.concatenate([y_test_en ], axis=0)
 
         batches_per_epoch = len(Xtrain) // batch_size
 
@@ -632,10 +605,22 @@ for feat_name in feats_names:
     df['AUROC'] = roc_auc_score(truth, test_scores)
     df['sensitivity'] = sensitivity
     df['specificity'] = specificity
-    # file_out = os.path.join(out_path, feat_name + "_" + ".csv")
-    # df.to_csv(file_out)
+    file_out = os.path.join(out_path, feat_name + "_" + ".csv")
+    df.to_csv(file_out)
 
     ########################################################################################################################
+    #all_names = (list(data_test_1_names_en) +
+    #          list(data_test_2_names_en) +
+    #          list(data_test_3_names_en) +
+    #          list(data_test_4_names_en) +
+    #          list(data_test_5_names_en) +
+    #          list(data_test_6_names_en) +
+    #          list(data_test_7_names_en) +
+    #          list(data_test_8_names_en) +
+    #          list(data_test_9_names_en) +
+    #          list(data_test_10_names_en))
+#
+
 
 # all_names = (list(data_test_1_names_en) + list(data_test_1_names_zh) +
 #          list(data_test_2_names_en) + list(data_test_2_names_zh) +
@@ -649,8 +634,8 @@ for feat_name in feats_names:
 #          list(data_test_10_names_en) + list(data_test_10_names_zh))
 #
 # print(all_names)
-# dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-# df2 = pd.DataFrame(dict)
-# file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-# #df2.to_csv(file_out2)
-#
+  #  dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
+  #  df2 = pd.DataFrame(dict)
+  #  file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+  #  #df2.to_csv(file_out2)
+##
