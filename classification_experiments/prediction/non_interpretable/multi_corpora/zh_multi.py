@@ -1,5 +1,5 @@
-out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
+out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese_multi/prediction/'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese_multi/prediction/'
 import os
 import numpy as np
 import torch
@@ -256,64 +256,7 @@ for feat_name in feats_names:
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
-    # For fold 1
-    data_train_1_en = np.concatenate(folds[:8])
-    data_val_1_en = np.concatenate(folds[8:9])
-    data_test_1_en = np.concatenate(folds[9:])
 
-    # For fold 2
-    data_train_2_en = np.concatenate((folds[1:-1]))
-    data_val_2_en = np.concatenate(folds[-1:])
-    data_test_2_en = np.concatenate(folds[:1])
-
-    # For fold 3
-    data_train_3_en = np.concatenate(folds[2:])
-    data_val_3_en = np.concatenate(folds[:1])
-    data_test_3_en = np.concatenate(folds[1:2])
-
-    # For fold 4
-    data_train_4_en = np.concatenate((folds[3:] + folds[:1]))
-    data_val_4_en = np.concatenate(folds[1:2])
-    data_test_4_en = np.concatenate(folds[2:3])
-    # For fold 5
-    data_train_5_en = np.concatenate((folds[4:] + folds[:2]))
-    data_val_5_en = np.concatenate(folds[2:3])
-    data_test_5_en = np.concatenate(folds[3:4])
-
-    # For fold 6
-    data_train_6_en = np.concatenate((folds[5:] + folds[:3]))
-    data_val_6_en = np.concatenate(folds[3:4])
-    data_test_6_en = np.concatenate(folds[4:5])
-    # For fold 7
-    data_train_7_en = np.concatenate((folds[6:] + folds[:4]))
-    data_val_7_en = np.concatenate(folds[4:5])
-    data_test_7_en = np.concatenate(folds[5:6])
-
-    # For fold 8
-    data_train_8_en = np.concatenate((folds[7:] + folds[:5]))
-    data_val_8_en = np.concatenate(folds[5:6])
-    data_test_8_en = np.concatenate(folds[6:7])
-
-    # For fold 9
-    data_train_9_en = np.concatenate((folds[8:] + folds[:6]))
-    data_val_9_en = np.concatenate(folds[6:7])
-    data_test_9_en = np.concatenate(folds[7:8])
-
-    # For fold 10
-    data_train_10_en = np.concatenate((folds[9:] + folds[:7]))
-    data_val_10_en = np.concatenate(folds[7:8])
-    data_test_10_en = np.concatenate(folds[8:9])
-
-    data_test_1_names_en = np.concatenate(n_folds_names[-1:])
-    data_test_2_names_en = np.concatenate(n_folds_names[:1])
-    data_test_3_names_en = np.concatenate(n_folds_names[1:2])
-    data_test_4_names_en = np.concatenate(n_folds_names[2:3])
-    data_test_5_names_en = np.concatenate(n_folds_names[3:4])
-    data_test_6_names_en = np.concatenate(n_folds_names[4:5])
-    data_test_7_names_en = np.concatenate(n_folds_names[5:6])
-    data_test_8_names_en = np.concatenate(n_folds_names[6:7])
-    data_test_9_names_en = np.concatenate(n_folds_names[7:8])
-    data_test_10_names_en = np.concatenate(n_folds_names[8:9])
 
     ##########################################################################
 
@@ -405,7 +348,6 @@ for feat_name in feats_names:
 
     n_epochs = 30
     batch_size = 36
-      # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
     learning_rate = 0.001
@@ -434,13 +376,13 @@ for feat_name in feats_names:
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
        # Xtrain = np.concatenate([normalized_train_zh], axis=0)
-        Xtrain = np.concatenate([normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
+        Xtrain = np.concatenate([normalized_train_zh, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
 
-        y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
-        Xval = np.concatenate([normalized_val_en], axis=0)
-        y_val = np.concatenate([y_val_en], axis=0)
-        Xtest = np.concatenate([normalized_test_en], axis=0)
-        y_test = np.concatenate([y_test_en], axis=0)
+        y_train = np.concatenate([y_train_zh, y_train_lu, y_train_del, y_train_adr], axis=0)
+        Xval = np.concatenate([normalized_val_zh], axis=0)
+        y_val = np.concatenate([y_val_zh], axis=0)
+        Xtest = np.concatenate([normalized_test_zh], axis=0)
+        y_test = np.concatenate([y_test_zh], axis=0)
 
         input_dim = Xtrain.shape[1]
         model = SingleLayerClassifier(input_dim, output_dim)
@@ -531,16 +473,16 @@ for feat_name in feats_names:
     print('saved')
 
     ########################################################################################################################
-    all_names = (list(data_test_1_names_en) +
-              list(data_test_2_names_en) +
-              list(data_test_3_names_en) +
-              list(data_test_4_names_en) +
-              list(data_test_5_names_en) +
-              list(data_test_6_names_en) +
-              list(data_test_7_names_en) +
-              list(data_test_8_names_en) +
-              list(data_test_9_names_en) +
-              list(data_test_10_names_en))
+    all_names = (list(data_test_1_names_zh) +
+              list(data_test_2_names_zh) +
+              list(data_test_3_names_zh) +
+              list(data_test_4_names_zh) +
+              list(data_test_5_names_zh) +
+              list(data_test_6_names_zh) +
+              list(data_test_7_names_zh) +
+              list(data_test_8_names_zh) +
+              list(data_test_9_names_zh) +
+              list(data_test_10_names_zh))
 #
     print(all_names)
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
