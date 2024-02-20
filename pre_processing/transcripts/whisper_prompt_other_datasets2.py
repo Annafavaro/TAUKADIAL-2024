@@ -1,6 +1,6 @@
 
-OUT_PATH = '/export/c06/afavaro/NCMMSC2021AD/NCMMSC2021_AD_Interspeech_2024/Transcripts_with_prompts/'
-root2 = '/export/c06/afavaro/NCMMSC2021AD/NCMMSC2021_AD_Interspeech_2024/Audios/'
+OUT_PATH = '/export/c06/afavaro/NCMMSC2021AD_3/yuzhe_reviewed/transcripts_with_prompt/'
+root2 = '/export/c06/afavaro/NCMMSC2021AD_3/yuzhe_reviewed/audio_experiments_trimmed/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
