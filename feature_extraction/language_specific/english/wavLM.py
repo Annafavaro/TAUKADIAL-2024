@@ -16,7 +16,7 @@ if __name__ == "__main__":
     model = WavLMForXVector.from_pretrained("microsoft/wavlm-base-plus-sv")
     all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
 
-    for audio in all_audios:
+    for audio in all_audios[69:]:
         print(audio)
         base = os.path.basename(audio).split('.wav')[0]
         x, fs = librosa.load(audio, sr=16000)
