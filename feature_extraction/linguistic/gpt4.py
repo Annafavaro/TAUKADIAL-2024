@@ -17,7 +17,7 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip()  # .lower()
-            inputs = tokenizer(sentences, return_tensors="pt")
+            inputs = tokenizer(sentences, return_tensors="pt", truncation=True)
             outputs = model(**inputs)
             last_hidden_states = outputs.last_hidden_state
             last_hidden_states = last_hidden_states.mean(axis=1).detach().numpy()
