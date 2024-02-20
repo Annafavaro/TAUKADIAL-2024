@@ -50,11 +50,12 @@ if __name__ == "__main__":
     output_path = sys.argv[2]
 
     all_audios = [os.path.join(path_audios, elem) for elem in os.listdir(path_audios)]
-    model_name = "facebook/wav2vec2-large-xlsr-53"
+    model_name = 'wcfr/wav2vec2-conformer-rel-pos-base-cantonese'
+    #model_name = "facebook/wav2vec2-large-xlsr-53"
     feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
     model = Wav2Vec2Model.from_pretrained(model_name)
 
-    for audio in all_audios:
+    for audio in all_audios[:1]:
         print(audio)
         base = os.path.basename(audio).split('.wav')[0]
         x, fs = librosa.load(audio, sr=16000)
@@ -72,4 +73,5 @@ if __name__ == "__main__":
         hidden_layer_avg = np.mean(embeddings, axis=0)
         hidden_layer_avg = hidden_layer_avg.reshape((1, 512))
         out_path = os.path.join(output_path, base + '.npy')
-        save(out_path, hidden_layer_avg)
+        print(hidden_layer_avg.shape)
+        #save(out_path, hidden_layer_avg)
