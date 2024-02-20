@@ -73,4 +73,4 @@ if __name__ == "__main__":
         hidden_layer_avg = hidden_layer_avg.reshape((1, 512))
         out_path = os.path.join(output_path, base + '.npy')
         print(hidden_layer_avg.shape)
-        #save(out_path, hidden_layer_avg)
+        save(out_path, hidden_layer_avg)
