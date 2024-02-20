@@ -3,6 +3,7 @@ import torch
 import sys
 import os
 import librosa
+from numpy import save
 
 if __name__ == "__main__":
 
@@ -23,6 +24,6 @@ if __name__ == "__main__":
         with torch.no_grad():
             embeddings = model(**inputs).embeddings
         embeddings = torch.nn.functional.normalize(embeddings, dim=-1).cpu()
-        print(type(embeddings))
-        print(embeddings.shape)
-
+        embeddings = embeddings.detach().numpy()
+        out_path = os.path.join(output_dir, base + '.npy')
+        save(out_path, embeddings)
