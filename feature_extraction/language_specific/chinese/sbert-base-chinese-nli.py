@@ -6,7 +6,7 @@ import os
 import re
 from numpy import save
 # yes
-os.environ["CUDA_LAUNCH_BLOCKING"] = "0"
+
 device = 'cpu'
 
 #no--> cannot be used
