@@ -6,7 +6,7 @@ import os
 import re
 from numpy import save
 # yes
-os.environ["CUDA_LAUNCH_BLOCKING"] = "1"
+os.environ["CUDA_LAUNCH_BLOCKING"] = "0"
 device = 'cpu'
 
 #no--> cannot be used
@@ -14,7 +14,7 @@ if __name__ == "__main__":
 
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
-    model = SentenceTransformer('uer/sbert-base-chinese-nli')#.to('cpu')
+    model = SentenceTransformer('uer/sbert-base-chinese-nli').to('cpu')
 
     all_sents = sorted([os.path.join(input_dir, elem) for elem in os.listdir(input_dir)])
     for sentences in all_sents:
