@@ -6,8 +6,8 @@ feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'mul
 feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
-#feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings_language_specific/chinese/'
+feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+#feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings_language_specific/chinese/'
 
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable_sigmoid/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese/prediction/non_interpretable_sigmoid/'
