@@ -1,5 +1,4 @@
 from transformers import AutoFeatureExtractor, WavLMForXVector
-from datasets import load_dataset
 import torch
 import sys
 import os
@@ -23,4 +22,6 @@ if __name__ == "__main__":
         with torch.no_grad():
             embeddings = model(**inputs).embeddings
         embeddings = torch.nn.functional.normalize(embeddings, dim=-1).cpu()
+        print(type(embeddings))
+        print(embeddings.shape)
 
