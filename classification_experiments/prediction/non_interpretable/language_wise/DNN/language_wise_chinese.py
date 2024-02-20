@@ -3,7 +3,8 @@ feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'mul
                'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
                'wav2vec_53', 'whisper', 'trillsson', 'xvector']
 
-feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
+#feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
+
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
