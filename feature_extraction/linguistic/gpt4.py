@@ -1,5 +1,5 @@
 from transformers import AutoTokenizer, OpenAIGPTModel
-import torch
+from numpy import save
 import sys
 import os
 
@@ -21,5 +21,6 @@ if __name__ == "__main__":
             outputs = model(**inputs)
             last_hidden_states = outputs.last_hidden_state
             last_hidden_states = last_hidden_states.mean(axis=1).detach().numpy()
+            save(output_dir + base_name + '.npy', last_hidden_states)
             print(type(last_hidden_states))
             print(last_hidden_states.shape)
