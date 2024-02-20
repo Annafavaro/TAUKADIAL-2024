@@ -1,5 +1,44 @@
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
+
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+               'multilingual-e5-large',
+               'text2vec-base-multilingual', 'xlm-roberta-base',
+               'distiluse-base-multilingual-cased',
+               'distiluse-base-multilingual-cased-v1',
+               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
+               'wav2vec_53', 'trillsson', 'xvector']
+
+names_to_keep_cn = [
+    # cn2 --> use this group if you want to consider only AD in the analysis.
+    'AD_002', 'AD_017', 'AD_020', 'NLS_006', 'NLS_073', 'NLS_075', 'NLS_107', 'NLS_111',
+    'PEC_002', 'PEC_003', 'PEC_006', 'PEC_007', 'PEC_010', 'PEC_011', 'PEC_012', 'PEC_013',
+    'PEC_021', 'PEC_024', 'PEC_028', 'PEC_031', 'PEC_032', 'PEC_037', 'PEC_038', 'PEC_040',
+    'PEC_042', 'PEC_043', 'PEC_046', 'PEC_047', 'PEC_049', 'PEC_050', 'PEC_059', 'PEC_060',
+    'PEC_062']
+
+names_to_keep_ad = [
+    'AD_001', 'AD_003', 'AD_004', 'AD_006', 'AD_007', 'AD_008', 'AD_009', 'AD_010', 'AD_011',
+    'AD_012', 'AD_013',
+    'AD_014',  'AD_015', 'AD_016', 'AD_018', 'AD_019', 'AD_021', 'AD_022',
+    'AD_023', 'AD_024']
+
+names_to_keep = names_to_keep_cn + names_to_keep_ad
+
+lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
+path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
+feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+
+english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
+chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
+
+delaware = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Delaware/embeddings/'
+lu = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Lu/embeddings/'
+adr = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Adress-M/embeddings/'
+pitt = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Pitt/embeddings/'
+nls = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/NLS/embeddings/'
+china = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Chinese/embeddings/'
+
 import os
 import numpy as np
 import torch
@@ -97,43 +136,6 @@ def reset_weights(m):
         if hasattr(layer, 'reset_parameters'):
             layer.reset_parameters()
 
-feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
-               'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base',
-               'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1',
-               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-               'wav2vec_53', 'trillsson', 'xvector']
-
-names_to_keep_cn = [
-    # cn2 --> use this group if you want to consider only AD in the analysis.
-    'AD_002', 'AD_017', 'AD_020', 'NLS_006', 'NLS_073', 'NLS_075', 'NLS_107', 'NLS_111',
-    'PEC_002', 'PEC_003', 'PEC_006', 'PEC_007', 'PEC_010', 'PEC_011', 'PEC_012', 'PEC_013',
-    'PEC_021', 'PEC_024', 'PEC_028', 'PEC_031', 'PEC_032', 'PEC_037', 'PEC_038', 'PEC_040',
-    'PEC_042', 'PEC_043', 'PEC_046', 'PEC_047', 'PEC_049', 'PEC_050', 'PEC_059', 'PEC_060',
-    'PEC_062']
-
-names_to_keep_ad = [
-    'AD_001', 'AD_003', 'AD_004', 'AD_006', 'AD_007', 'AD_008', 'AD_009', 'AD_010', 'AD_011',
-    'AD_012', 'AD_013',
-    'AD_014',  'AD_015', 'AD_016', 'AD_018', 'AD_019', 'AD_021', 'AD_022',
-    'AD_023', 'AD_024']
-
-names_to_keep = names_to_keep_cn + names_to_keep_ad
-
-lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
-path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
-feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-
-english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
-chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
-
-delaware = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Delaware/embeddings/'
-lu = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Lu/embeddings/'
-adr = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Adress-M/embeddings/'
-pitt = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Pitt/embeddings/'
-nls = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/NLS/embeddings/'
-china = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Chinese/embeddings/'
 
 train_labels = pd.read_csv('/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/training-groundtruth.csv')
 train_labels_adr = train_labels.sort_values(by=['adressfname'])['dx'].tolist()
@@ -232,10 +234,10 @@ for feat_name in feats_names:
         fold_info = read_dict[key]  # get data for
         for sp in fold_info:
             fold_info_general.append(
-                [os.path.join(feat_pths, feat_name, sp.split('.wav')[0] + '.npy'), (fold_info[sp])['label']]) #append paht and labels
+                [os.path.join(feat_pths, feat_name, sp.split('.wav')[0] + '.npy'), (fold_info[sp])['label']]) #append path and labels
         all_folds_info.append(fold_info_general)
 
-    #  print(n_folds_names[0])
+    print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
@@ -333,10 +335,11 @@ for feat_name in feats_names:
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
         Xtrain = np.concatenate([normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
-
         y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
+
         Xval = np.concatenate([normalized_val_en], axis=0)
         y_val = np.concatenate([y_val_en], axis=0)
+
         Xtest = np.concatenate([normalized_test_en], axis=0)
         y_test = np.concatenate([y_test_en], axis=0)
 
@@ -346,10 +349,10 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         batches_per_epoch = len(Xtrain) // batch_size
-
         best_val_loss = float('inf')
         patience = 5
         num_epochs_no_improve = 0
+
         for epoch in range(n_epochs):
             model.train()
             for i in range(batches_per_epoch):

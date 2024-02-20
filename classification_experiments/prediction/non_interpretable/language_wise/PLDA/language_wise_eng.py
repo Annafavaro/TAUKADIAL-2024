@@ -119,7 +119,7 @@ for feat_name in feats_names:
     data_test_9_names = np.concatenate(n_folds_names[7:8])
     data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    print('#################### Test China ############################')
+    print('#################### Test English ############################')
     ##   inner chinese
     if test_only == 0:
         best_params = []
