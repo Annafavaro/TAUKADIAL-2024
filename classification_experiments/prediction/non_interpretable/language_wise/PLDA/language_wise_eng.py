@@ -1,4 +1,4 @@
-feats_names = ['DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
+feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
                'text2vec-base-multilingual', 'xlm-roberta-base', 'distiluse-base-multilingual-cased',
                'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
                'wav2vec_53', 'whisper', 'trillsson', 'xvector']
