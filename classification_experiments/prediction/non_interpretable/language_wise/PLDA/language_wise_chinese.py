@@ -3,11 +3,15 @@ feats_names = ['DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingua
                'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
                'wav2vec_53', 'whisper', 'trillsson', 'xvector']
 
+feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
+
+
 # chinese speaker
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
-feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+#feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings_language_specific/chinese/'
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese/prediction/non_interpretable/'
 
