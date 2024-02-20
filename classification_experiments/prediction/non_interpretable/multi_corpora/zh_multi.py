@@ -548,21 +548,3 @@ for feat_name in feats_names:
     df2 = pd.DataFrame(dict)
     file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
     df2.to_csv(file_out2)
-
-# all_names = (list(data_test_1_names_en) + list(data_test_1_names_zh) +
-#          list(data_test_2_names_en) + list(data_test_2_names_zh) +
-#          list(data_test_3_names_en) + list(data_test_3_names_zh) +
-#          list(data_test_4_names_en) + list(data_test_4_names_zh) +
-#          list(data_test_5_names_en) + list(data_test_5_names_zh) +
-#          list(data_test_6_names_en) + list(data_test_6_names_zh) +
-#          list(data_test_7_names_en) + list(data_test_7_names_zh) +
-#          list(data_test_8_names_en) + list(data_test_8_names_zh) +
-#          list(data_test_9_names_en) + list(data_test_9_names_zh) +
-#          list(data_test_10_names_en) + list(data_test_10_names_zh))
-#
-# print(all_names)
-  #  dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-  #  df2 = pd.DataFrame(dict)
-  #  file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-  #  #df2.to_csv(file_out2)
-##
