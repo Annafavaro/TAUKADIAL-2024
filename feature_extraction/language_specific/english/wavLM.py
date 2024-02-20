@@ -18,7 +18,8 @@ if __name__ == "__main__":
     for audio in all_audios:
         print(audio)
         base = os.path.basename(audio).split('.wav')[0]
-        inputs, fs = librosa.load(audio, sr=16000)
+        x, fs = librosa.load(audio, sr=16000)
+        inputs = feature_extractor(x, sampling_rate=16000, padding=True, return_tensors="pt")
         with torch.no_grad():
             embeddings = model(**inputs).embeddings
         embeddings = torch.nn.functional.normalize(embeddings, dim=-1).cpu()
