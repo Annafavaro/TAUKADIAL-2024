@@ -54,7 +54,7 @@ if __name__ == "__main__":
     feature_extractor = Wav2Vec2FeatureExtractor.from_pretrained(model_name)
     model = Wav2Vec2Model.from_pretrained(model_name)
 
-    for audio in all_audios[:1]:
+    for audio in all_audios:
         print(audio)
         base = os.path.basename(audio).split('.wav')[0]
         x, fs = librosa.load(audio, sr=16000)
