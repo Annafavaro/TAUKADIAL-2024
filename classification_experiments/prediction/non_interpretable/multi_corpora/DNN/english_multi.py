@@ -143,15 +143,15 @@ for feat_name in feats_names:
 
     ############# China ###############
 
-    base_dir_china = os.path.join(china, feat_name)
-    all_files_china = [os.path.join(base_dir_china, elem) for elem in sorted(os.listdir(base_dir_china))]
-    data_fold_china = np.array(())
-    for file in all_files_china:
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'HC' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_china = np.vstack((data_fold_china, feat)) if data_fold_china.size else feat
+   # base_dir_china = os.path.join(china, feat_name)
+   # all_files_china = [os.path.join(base_dir_china, elem) for elem in sorted(os.listdir(base_dir_china))]
+   # data_fold_china = np.array(())
+   # for file in all_files_china:
+   #     label_row = os.path.basename(file).split('_')[0]
+   #     label_row = [1 if label_row == 'HC' else 0]
+   #     feat = np.load(file)
+   #     feat = np.append(feat, label_row)
+   #     data_fold_china = np.vstack((data_fold_china, feat)) if data_fold_china.size else feat
 
     ############# NLS ###############
 
@@ -330,7 +330,7 @@ for feat_name in feats_names:
         normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
         normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
-        normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
+      #  normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
         Xtrain = np.concatenate([normalized_train_nls, normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
         y_train = np.concatenate([y_train_nls, y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
