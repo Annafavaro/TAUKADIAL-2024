@@ -123,6 +123,7 @@ for feat_name in feats_names:
     ############# NLS ###############
 
     base_dir_nls = os.path.join(nls, feat_name)
+    print(base_dir_nls)
     all_files_nls = [os.path.join(base_dir_nls, elem) for elem in sorted(os.listdir(base_dir_nls))]
     data_fold_nls = np.array(())
     for file in all_files_nls:
