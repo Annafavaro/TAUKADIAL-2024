@@ -27,7 +27,6 @@ def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
 
-
 def get_n_folds(arrayOfSpeaker):
     data = list(arrayOfSpeaker)  # list(range(len(arrayOfSpeaker)))
     num_of_folds = 10
