@@ -172,17 +172,17 @@ for feat_name in feats_names:
 
     ############# PITT ###############
 
-    base_dir_pitt = os.path.join(pitt, feat_name)
-    all_files_pitt = [os.path.join(base_dir_pitt, elem) for elem in sorted(os.listdir(base_dir_pitt))]
-    data_fold_pitt = np.array(())
-    for file in all_files_pitt:
-        #  print(file)
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'CN' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_pitt = np.vstack((data_fold_pitt, feat)) if data_fold_pitt.size else feat
-
+    #base_dir_pitt = os.path.join(pitt, feat_name)
+    #all_files_pitt = [os.path.join(base_dir_pitt, elem) for elem in sorted(os.listdir(base_dir_pitt))]
+    #data_fold_pitt = np.array(())
+    #for file in all_files_pitt:
+    #    #  print(file)
+    #    label_row = os.path.basename(file).split('_')[0]
+    #    label_row = [1 if label_row == 'CN' else 0]
+    #    feat = np.load(file)
+    #    feat = np.append(feat, label_row)
+    #    data_fold_pitt = np.vstack((data_fold_pitt, feat)) if data_fold_pitt.size else feat
+#
     ############# ADRESS-M ###############
 
     base_dir_adr = os.path.join(adr, feat_name)
@@ -328,7 +328,7 @@ for feat_name in feats_names:
         normalized_train_del, y_train_del = normalize_train_set(data_fold_del)
         normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
         normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
-        normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
+        #normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
       #  normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
