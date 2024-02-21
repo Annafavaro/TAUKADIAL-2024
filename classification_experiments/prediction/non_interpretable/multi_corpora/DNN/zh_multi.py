@@ -6,6 +6,7 @@ feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
                'text2vec-base-multilingual', 'xlm-roberta-base',
                'distiluse-base-multilingual-cased',
                'distiluse-base-multilingual-cased-v1',
+               'whisper',
                'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
                'wav2vec_53', 'trillsson', 'xvector']
 
