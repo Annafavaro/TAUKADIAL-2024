@@ -316,6 +316,7 @@ for feat_name in feats_names:
 
         normalized_test_X = np.concatenate([normalized_test_en], axis=0)
         y_test = np.concatenate([y_test_en], axis=0)
+        y_test = y_test.tolist()
 
         model = PCA_PLDA_EER_Classifier(PCA_n=best_param, normalize=0)
         model.fit(normalized_train_X, y_train)
