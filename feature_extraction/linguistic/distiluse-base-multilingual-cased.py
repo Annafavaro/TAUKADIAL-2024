@@ -9,7 +9,7 @@ from numpy import save
 # YES:
 # LANGUAGES: ENGLISH AND CHINESE, AMONG OTHERS
 if __name__ == "__main__":
-    os.environ['CUDA_VISIBLE_DEVICES'] = '0'
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
     model = SentenceTransformer('distilbert/distilbert-base-multilingual-cased').to('cpu')
@@ -27,3 +27,5 @@ if __name__ == "__main__":
             print(embeddings.shape)
            # numpy_array = embeddings.numpy()
             save(output_dir + base_name + '.npy', embeddings)
+
+            # conda activate mulitlingual_clip
