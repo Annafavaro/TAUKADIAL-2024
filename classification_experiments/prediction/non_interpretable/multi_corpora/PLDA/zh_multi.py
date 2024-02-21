@@ -166,18 +166,19 @@ for feat_name in feats_names:
     ############# NLS ###############
 
     base_dir_nls = os.path.join(nls, feat_name)
+    print(base_dir_nls)
     all_files_nls = [os.path.join(base_dir_nls, elem) for elem in sorted(os.listdir(base_dir_nls))]
     data_fold_nls = np.array(())
     for file in all_files_nls:
+        print(file)
         name = os.path.basename(file).split('_ses')[0]
+        print(name)
         if name in names_to_keep:
-            if name in names_to_keep_ad:
-                label_row = 0
-            else:
-                label_row = 1
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
+            label_row = [0 if name in names_to_keep_ad else 1]
+            print(label_row)
+            feat = np.load(file)
+            feat = np.append(feat, label_row)
+            data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
 
     ############# PITT ###############
 

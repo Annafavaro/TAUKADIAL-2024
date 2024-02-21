@@ -297,7 +297,7 @@ for feat_name in feats_names:
     truth = []
     test_scores = []
     for n_fold in range(1, 11):
-        print(i)
+        print(n_fold)
         normalized_train_en, normalized_test_en, y_train_en, y_test_en = normalize_and_split(
             eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
 
