@@ -12,7 +12,7 @@ import sys
 from numpy import save
 
 if __name__ == "__main__":
-
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
     encoder = hub.KerasLayer("https://www.kaggle.com/models/google/lealla/frameworks/TensorFlow2/variations/lealla-base/versions/1")
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]

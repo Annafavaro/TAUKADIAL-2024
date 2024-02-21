@@ -11,7 +11,7 @@ device = 'cpu'
 
 #no--> cannot be used
 if __name__ == "__main__":
-
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
     model = SentenceTransformer('shibing624/text2vec-base-multilingual').to('cpu')

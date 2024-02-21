@@ -35,7 +35,7 @@ def get_stats_data(transcripts_path, output_dir):
 
 
 if __name__ == "__main__":
-
+    os.environ['CUDA_VISIBLE_DEVICES'] = '-1'
     input_dir = sys.argv[1] # path to transcripts
     output_dir = sys.argv[2]
 
