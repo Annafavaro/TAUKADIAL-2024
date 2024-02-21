@@ -25,7 +25,6 @@ def preprocess_function(examples):
     return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
     return_tensors="pt")
 
-
 def compute_metrics(pred):
     labels = pred.label_ids
     preds = pred.predictions.argmax(-1)
