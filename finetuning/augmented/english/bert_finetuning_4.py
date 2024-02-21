@@ -1,4 +1,5 @@
-out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/english/'
+out_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/augmented/english/'
+
 import os
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
