@@ -128,6 +128,7 @@ for feat_name in feats_names:
     data_fold_nls = np.array(())
     for file in all_files_nls:
         name = os.path.basename(file).split('_ses')[0]
+        print(name)
         if name in names_to_keep:
             if name in names_to_keep_ad:
                 label_row = 0
