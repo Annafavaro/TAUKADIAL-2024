@@ -15,9 +15,9 @@ from datasets import load_metric
 cv_num = 1
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-checkpoint = 'distilbert-base-cased'
+#checkpoint = 'distilbert-base-cased'
 print(checkpoint)
-#checkpoint = "bert-base-cased"
+checkpoint = "bert-base-cased"
 
 def preprocess_function(examples):
     if sentence2_key is None:
@@ -85,13 +85,13 @@ args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
     evaluation_strategy = "epoch",
     save_strategy = "epoch",
-    learning_rate=2e-5,
+    learning_rate=2e-6,
     #learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=10,
+    num_train_epochs=7,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
