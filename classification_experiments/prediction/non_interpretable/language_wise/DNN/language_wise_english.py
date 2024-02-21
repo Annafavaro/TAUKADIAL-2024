@@ -25,20 +25,6 @@ seed = 40
 torch.manual_seed(seed)
 
 
-def intersection(lst1, lst2):
-    lst3 = [value for value in lst1 if value in lst2]
-    return lst3
-
-
-def get_n_folds(arrayOfSpeaker):
-    data = list(arrayOfSpeaker)  # list(range(len(arrayOfSpeaker)))
-    num_of_folds = 10
-    n_folds = []
-    for i in range(num_of_folds):
-        n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
-    return n_folds
-
-
 def normalize_and_split(train_split, val_split, test_split):
     train_set = train_split
     test_set = test_split
