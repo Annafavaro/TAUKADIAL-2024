@@ -329,11 +329,11 @@ for feat_name in feats_names:
         normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
         normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
         #normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
-        normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
+        #normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
       #  normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
-        Xtrain = np.concatenate([normalized_train_nls, normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
-        y_train = np.concatenate([y_train_nls, y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
+        Xtrain = np.concatenate([normalized_train_en, normalized_train_lu, normalized_train_del, normalized_train_adr ], axis=0)
+        y_train = np.concatenate([y_train_en, y_train_lu, y_train_del, y_train_adr], axis=0)
 
         Xval = np.concatenate([normalized_val_en], axis=0)
         y_val = np.concatenate([y_val_en], axis=0)
