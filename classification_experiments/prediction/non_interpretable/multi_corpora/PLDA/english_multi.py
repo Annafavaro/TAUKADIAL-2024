@@ -135,10 +135,10 @@ for feat_name in feats_names:
                 label_row = 0
             else:
                 label_row = 1
-        print(label_row)
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
+            print(label_row)
+            feat = np.load(file)
+            feat = np.append(feat, label_row)
+            data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
 
     ############# PITT ###############
 
