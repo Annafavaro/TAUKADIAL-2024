@@ -1,20 +1,19 @@
 # ['wav2vec_128', 'wav2vec_53',  'trillsson', 'xvector']
-feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
-               'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base',
-               'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
-               'LaBSE']
+#feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+#               'multilingual-e5-large',
+#               'text2vec-base-multilingual', 'xlm-roberta-base',
+#               'distiluse-base-multilingual-cased',
+#               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
+#               'LaBSE', 'trillsson', 'xvector']
 
+feats_names = ['trillsson', 'xvector']
+
+#
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-feat_pths_augmented2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese2/'
-feat_pths_augmented3 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese3/'
-feat_pths_augmented4 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese4/'
-feat_pths_augmented6 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese6/'
-feat_pths_augmented8 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese8/'
+feat_pths_augmented = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_english/'
 
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_augmented/results_per_language/chinese/prediction/non_interpretable_sigmoid/'
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language_aug/chinese/non_interpretable_sigmoid/prediction/'
@@ -121,22 +120,15 @@ for feat_name in feats_names:
             # print(f'here {speaker_name}')
             label_row = speaker[-2]
             mmse = speaker[-1]
-            # all_copies = list(np.arange(0, 2))
-            all_copies = [0, 1, 2, 3]
+            if feat_name ==  'trillsson' or feat_name== 'xvector' or feat_name == 'wav2vec_128' or feat_name == 'wav2vec_53':
+                all_copies = [0, 3] #3 is the best x spech
+            else:
+                all_copies = [0, 1, 6]#np.arange(0, 7)
+           # print(all_copies, feat_name)
+            all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
 
-            all_augmented_copies2 = [os.path.join(feat_pths_augmented2, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
-            all_augmented_copies3 = [os.path.join(feat_pths_augmented3, feat_name, speaker_name + f'-{num}.npy') for num
-                                     in all_copies]
-            all_augmented_copies4 = [os.path.join(feat_pths_augmented4, feat_name, speaker_name + f'-{num}.npy') for num
-                                     in all_copies]
-            all_augmented_copies6 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))]# 0-3
-            all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 1))] #0-2
-            # all_augmented_copies = all_augmented_copies1 + all_augmented_copies2 + all_augmented_copies3 + all_augmented_copies4  +  all_augmented_copies8
-            #all_augmented_copies =  all_augmented_copies3 +  all_augmented_copies4 + all_augmented_copies2 works ok
-            all_augmented_copies = all_augmented_copies4 + all_augmented_copies2 + all_augmented_copies6
             for copy in all_augmented_copies:
-                #  print(copy)
-                # print(os.path.isfile(copy))
+
                 feat = np.load(copy)
                 feat = np.append(feat, label_row)
                 feat = np.append(feat, mmse)
@@ -312,7 +304,7 @@ for feat_name in feats_names:
                 + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
                 + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \
                 + list(data_test_10_names)
-    # print(all_names)
+    print(all_names)
 
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
 # df2 = pd.DataFrame(dict)
