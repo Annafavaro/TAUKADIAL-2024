@@ -16,8 +16,6 @@ from datasets import load_metric
 import torch
 torch.manual_seed(40)
 
-
-
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 #checkpoint = 'distilbert-base-cased'
@@ -117,16 +115,23 @@ trainer = Trainer(
 )
 
 trainer.train()
-#print(trainer.state.best_model_checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint)
+eval_trainer = Trainer(
+    model,
+    args,
+    num_labels=2,
+    tokenizer=tokenizer,
+    compute_metrics=compute_metrics
+)
 
-model = AutoModel.from_pretrained(trainer.state.best_model_checkpoint)
-evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
-print('RESULTS on the test set')
+print('best model loaded')
+evaluation_results = eval_trainer.evaluate(eval_dataset=encoded_dataset["test"])
+print('results test set')
 print(evaluation_results)
 acc = [evaluation_results['eval_accuracy']]
 print('Accuracy-->')
 print(acc)
-predictions = trainer.predict(encoded_dataset["test"])
+predictions = eval_trainer.predict(encoded_dataset["test"])
 print(predictions.predictions.shape, predictions.label_ids.shape)
 preds = np.argmax(predictions.predictions, axis=-1)
 print(f'predictions are {preds}')
