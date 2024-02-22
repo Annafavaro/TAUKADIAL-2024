@@ -309,7 +309,7 @@ for feat_name in feats_names:
     data_test_10_names_en = np.concatenate(n_folds_names[8:9])
 
     n_epochs = 30
-    batch_size = 48
+    batch_size = 36
       # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
