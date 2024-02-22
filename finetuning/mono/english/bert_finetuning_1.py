@@ -1,5 +1,5 @@
 cv_num = 1
-out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/english/'
+out_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/mono/english/
 finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/'
 
 import os
