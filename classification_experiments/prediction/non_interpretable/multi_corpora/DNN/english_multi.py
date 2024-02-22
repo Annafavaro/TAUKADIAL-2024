@@ -17,8 +17,11 @@ names_to_keep_cn = [
     'PEC_042', 'PEC_043', 'PEC_046', 'PEC_047', 'PEC_049', 'PEC_050', 'PEC_059', 'PEC_060',
     'PEC_062']
 
-names_to_keep_ad = ['AD_003', 'AD_004', 'AD_007', 'AD_008','AD_012', 'AD_013',  'AD_014',
-                    'AD_015',  'AD_018', 'AD_019', 'AD_021', 'AD_022', 'AD_023', 'AD_024']
+names_to_keep_ad = ['AD_001', 'AD_003', 'AD_004', 'AD_006', 'AD_007', 'AD_008',
+'AD_009', 'AD_010', 'AD_011', 'AD_012', 'AD_013', 'AD_014', 'AD_015',
+'AD_016', 'AD_018', 'AD_019', 'AD_021', 'AD_022', 'AD_023', 'AD_024',]
+#names_to_keep_ad = ['AD_003', 'AD_004', 'AD_007', 'AD_008','AD_012', 'AD_013',  'AD_014',
+                    #'AD_015',  'AD_018', 'AD_019', 'AD_021', 'AD_022', 'AD_023', 'AD_024']
 
 names_to_keep = names_to_keep_cn + names_to_keep_ad
 

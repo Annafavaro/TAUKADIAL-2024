@@ -1,14 +1,17 @@
-feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base', 'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-               'wav2vec_53', 'whisper', 'trillsson', 'xvector']
-
-feats_names = ['wavLM']
+# feats_names =
+feats_names = ['gpt4', 'lealla-base', 'XLM-Roberta-Large-Vit-L-14',
+               'multilingual-e5-large',
+               'text2vec-base-multilingual', 'xlm-roberta-base',
+               'distiluse-base-multilingual-cased',
+               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
+               'LaBSE']
 
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
-feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings_language_specific/english/'
-#feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+
+feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+feat_pths_augmented = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_english/'
+
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_overall/non_interpretable_sigmoid/prediction/'
 
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable_sigmoid/prediction/'
@@ -23,6 +26,7 @@ import torch.nn as nn
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
+
 seed = 40
 torch.manual_seed(seed)
 
@@ -105,6 +109,7 @@ class SingleLayerClassifier(nn.Module):
         x = self.sigmoid(x)
         return x.squeeze(1)
 
+
 def reset_weights(m):
     for layer in m.children():
         if hasattr(layer, 'reset_parameters'):
@@ -130,7 +135,6 @@ for feat_name in feats_names:
                  (fold_info[sp])['mmse']])
         all_folds_info.append(fold_info_general)
 
-    #  print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
@@ -138,59 +142,73 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             feat = np.load(speaker[0])
-            # print(label_row, row['path_feat'])
             feat = np.append(feat, label_row)
             feat = np.append(feat, mmse)
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
-    # print(folds[0])
+    folds_augmented = []
+    for fold in all_folds_info:
+        data_fold = np.array(())  # %
+        for speaker in fold:
+            speaker_name = os.path.basename(speaker[0]).split('.npy')[0]
+            label_row = speaker[-2]
+            mmse = speaker[-1]
+            # all_copies = list(np.arange(0, 2))
+            all_copies = [0, 1, 2, 3]
+            all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name + f'-{num}.npy') for num
+                                    in all_copies]
+            for copy in all_augmented_copies:
+                feat = np.load(copy)
+                feat = np.append(feat, label_row)
+                feat = np.append(feat, mmse)
+                data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
+        folds_augmented.append(data_fold)
 
-    # For fold 1
-    data_train_1 = np.concatenate(folds[:8])
+    data_train_1 = np.concatenate(folds_augmented[:8])
     data_val_1 = np.concatenate(folds[8:9])
     data_test_1 = np.concatenate(folds[9:])
 
     # For fold 2
-    data_train_2 = np.concatenate((folds[1:-1]))
+    data_train_2 = np.concatenate((folds_augmented[1:-1]))
     data_val_2 = np.concatenate(folds[-1:])
     data_test_2 = np.concatenate(folds[:1])
 
     # For fold 3
-    data_train_3 = np.concatenate(folds[2:])
+    data_train_3 = np.concatenate(folds_augmented[2:])
     data_val_3 = np.concatenate(folds[:1])
     data_test_3 = np.concatenate(folds[1:2])
 
     # For fold 4
-    data_train_4 = np.concatenate((folds[3:] + folds[:1]))
+    data_train_4 = np.concatenate((folds_augmented[3:] + folds_augmented[:1]))
     data_val_4 = np.concatenate(folds[1:2])
     data_test_4 = np.concatenate(folds[2:3])
     # For fold 5
-    data_train_5 = np.concatenate((folds[4:] + folds[:2]))
+    data_train_5 = np.concatenate((folds_augmented[4:] + folds_augmented[:2]))
     data_val_5 = np.concatenate(folds[2:3])
     data_test_5 = np.concatenate(folds[3:4])
 
     # For fold 6
-    data_train_6 = np.concatenate((folds[5:] + folds[:3]))
+    data_train_6 = np.concatenate((folds_augmented[5:] + folds_augmented[:3]))
     data_val_6 = np.concatenate(folds[3:4])
     data_test_6 = np.concatenate(folds[4:5])
     # For fold 7
-    data_train_7 = np.concatenate((folds[6:] + folds[:4]))
+    data_train_7 = np.concatenate((folds_augmented[6:] + folds_augmented[:4]))
     data_val_7 = np.concatenate(folds[4:5])
     data_test_7 = np.concatenate(folds[5:6])
 
     # For fold 8
-    data_train_8 = np.concatenate((folds[7:] + folds[:5]))
+    data_train_8 = np.concatenate((folds_augmented[7:] + folds_augmented[:5]))
     data_val_8 = np.concatenate(folds[5:6])
     data_test_8 = np.concatenate(folds[6:7])
 
     # For fold 9
-    data_train_9 = np.concatenate((folds[8:] + folds[:6]))
+    data_train_9 = np.concatenate((folds_augmented[8:] + folds_augmented[:6]))
     data_val_9 = np.concatenate(folds[6:7])
     data_test_9 = np.concatenate(folds[7:8])
 
     # For fold 10
-    data_train_10 = np.concatenate((folds[9:] + folds[:7]))
+    data_train_10 = np.concatenate((folds_augmented[9:] + folds_augmented[:7]))
     data_val_10 = np.concatenate(folds[7:8])
     data_test_10 = np.concatenate(folds[8:9])
 
@@ -205,7 +223,7 @@ for feat_name in feats_names:
     data_test_9_names = np.concatenate(n_folds_names[7:8])
     data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    n_epochs = 15
+    n_epochs = 40
     batch_size = 32
     input_dim = data_train_1.shape[1] - 2  # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
@@ -279,7 +297,6 @@ for feat_name in feats_names:
         truth.append(y_test_tensor.detach().numpy())
         results[n_fold] = accuracy
 
-
     test_scores = np.concatenate(test_scores)
     truth = np.concatenate(truth)
     predictions = np.concatenate(predictions)
@@ -308,8 +325,8 @@ for feat_name in feats_names:
     df['AUROC'] = roc_auc_score(truth, test_scores)
     df['sensitivity'] = sensitivity
     df['specificity'] = specificity
-    file_out = os.path.join(out_path, feat_name + "_" + ".csv")
-    df.to_csv(file_out)
+    # file_out = os.path.join(out_path, feat_name + "_" + ".csv")
+    # df.to_csv(file_out)
 
     ########################################################################################################################
 
@@ -320,6 +337,7 @@ for feat_name in feats_names:
     print(all_names)
 
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-    df2 = pd.DataFrame(dict)
-    file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-    df2.to_csv(file_out2)
+# df2 = pd.DataFrame(dict)
+# file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+# df2.to_csv(file_out2)
+
