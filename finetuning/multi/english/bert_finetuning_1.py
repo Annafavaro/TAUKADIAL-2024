@@ -20,7 +20,7 @@ os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 #checkpoint = 'distilbert-base-cased'
 #checkpoint='roberta-base'
-checkpoint = "bert-base-cased"
+checkpoint = "roberta-base"
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
