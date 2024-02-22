@@ -71,27 +71,6 @@ def normalize_and_split(train_split, val_split, test_split):
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
 
-def add_labels(df, path_labels):
-    path_labels_df = pd.read_csv(path_labels)
-    label = path_labels_df['dx'].tolist()
-    speak = path_labels_df['tkdname'].tolist()  # id
-    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
-    speak2__ = df['ID'].tolist()
-    etichettex = []
-    for nome in speak2__:
-        if nome in spk2lab_.keys():
-            lav = spk2lab_[nome]
-            etichettex.append(([nome, lav]))
-        else:
-            etichettex.append(([nome, 'Unknown']))
-    label_new_ = []
-    for e in etichettex:
-        label_new_.append(e[1])
-    df['labels'] = label_new_
-
-    return df
-
-
 class SingleLayerClassifier(nn.Module):
     def __init__(self, input_size, output_size):
         super(SingleLayerClassifier, self).__init__()
