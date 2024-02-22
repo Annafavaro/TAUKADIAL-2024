@@ -15,8 +15,6 @@ from datasets import load_metric
 import torch
 torch.manual_seed(40)
 
-
-
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 #checkpoint = 'distilbert-base-cased'
@@ -96,7 +94,7 @@ args = TrainingArguments(
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=6,
+    num_train_epochs=10,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
