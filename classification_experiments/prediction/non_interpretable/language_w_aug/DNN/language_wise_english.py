@@ -121,12 +121,11 @@ for feat_name in feats_names:
                 all_copies = [0, 1, 2]
             else:
                 all_copies = [0, 2, 6]#np.arange(0, 7)
-            print(all_copies, feat_name)
+           # print(all_copies, feat_name)
             all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
 
             for copy in all_augmented_copies:
-                #  print(copy)
-                # print(os.path.isfile(copy))
+
                 feat = np.load(copy)
                 feat = np.append(feat, label_row)
                 feat = np.append(feat, mmse)
