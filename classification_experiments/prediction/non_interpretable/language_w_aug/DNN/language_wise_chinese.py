@@ -124,15 +124,15 @@ for feat_name in feats_names:
             # all_copies = list(np.arange(0, 2))
             all_copies = [0, 1, 2]
 
-            # all_augmented_copies1 = [os.path.join(feat_pths_augmented2, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
-            all_augmented_copies2 = [os.path.join(feat_pths_augmented3, feat_name, speaker_name + f'-{num}.npy') for num
+            all_augmented_copies2 = [os.path.join(feat_pths_augmented2, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
+            all_augmented_copies3 = [os.path.join(feat_pths_augmented3, feat_name, speaker_name + f'-{num}.npy') for num
                                      in all_copies]
-            all_augmented_copies3 = [os.path.join(feat_pths_augmented4, feat_name, speaker_name + f'-{num}.npy') for num
+            all_augmented_copies4 = [os.path.join(feat_pths_augmented4, feat_name, speaker_name + f'-{num}.npy') for num
                                      in all_copies]
-            #  all_augmented_copies4 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 3))]
-            #  all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))]
+            all_augmented_copies6 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 3))]
+            all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))]
             # all_augmented_copies = all_augmented_copies1 + all_augmented_copies2 + all_augmented_copies3 + all_augmented_copies4  +  all_augmented_copies8
-            all_augmented_copies = all_augmented_copies2 + all_augmented_copies3
+            all_augmented_copies = all_augmented_copies2 + all_augmented_copies3 + all_augmented_copies4 +  all_augmented_copies6 +  all_augmented_copies8
             for copy in all_augmented_copies:
                 #  print(copy)
                 # print(os.path.isfile(copy))
@@ -201,7 +201,7 @@ for feat_name in feats_names:
     data_test_10_names = np.concatenate(n_folds_names[8:9])
 
     n_epochs = 40
-    batch_size = 32
+    batch_size = 48
     input_dim = data_train_1.shape[1] - 2  # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
