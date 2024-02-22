@@ -175,7 +175,7 @@ for feat_name in feats_names:
        # print(name)
         if name in names_to_keep:
             label_row = [0 if name in names_to_keep_ad else 1]
-            print(label_row)
+          #  print(label_row)
             feat = np.load(file)
             feat = np.append(feat, label_row)
             data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
