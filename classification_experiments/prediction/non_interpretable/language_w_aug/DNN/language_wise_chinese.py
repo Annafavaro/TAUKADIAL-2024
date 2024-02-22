@@ -133,7 +133,7 @@ for feat_name in feats_names:
             all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))] #0-2
 
             #all_augmented_copies =  all_augmented_copies3 +  all_augmented_copies4 + all_augmented_copies2 works ok
-            all_augmented_copies = all_augmented_copies2 + all_augmented_copies3 + all_augmented_copies4 +  all_augmented_copies8
+            all_augmented_copies = all_augmented_copies2 + all_augmented_copies3  +  all_augmented_copies8
             for copy in all_augmented_copies:
                 #  print(copy)
                 # print(os.path.isfile(copy))
