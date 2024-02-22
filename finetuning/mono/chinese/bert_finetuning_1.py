@@ -88,7 +88,7 @@ model_name = checkpoint.split("/")[-1]
 args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
     evaluation_strategy = "epoch",
-    save_strategy = "epoch",
+    save_strategy ='no', # "epoch",
     learning_rate=2e-5,
     #learning_rate=2e-5,
     fp16=True,
@@ -100,6 +100,7 @@ args = TrainingArguments(
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
    # push_to_hub=True,
+   # save_strategy = "no",
     logging_dir='./logs'#exp-dir
    # output_dir='./test_dir'
 )
