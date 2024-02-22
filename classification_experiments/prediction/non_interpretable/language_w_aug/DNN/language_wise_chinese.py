@@ -122,15 +122,15 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             # all_copies = list(np.arange(0, 4))
-            all_copies = [0, 1, 2, 3,4] # in tot
+            all_copies = [0, 1, 2, 3] # in tot
 
             all_augmented_copies2 = [os.path.join(feat_pths_augmented2, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
             all_augmented_copies3 = [os.path.join(feat_pths_augmented3, feat_name, speaker_name + f'-{num}.npy') for num
                                      in all_copies]
             all_augmented_copies4 = [os.path.join(feat_pths_augmented4, feat_name, speaker_name + f'-{num}.npy') for num
                                      in all_copies]
-            all_augmented_copies6 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 3))]# 0-3
-            all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))] #0-2
+            all_augmented_copies6 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 4))]# 0-3
+            all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 3))] #0-2
 
             #all_augmented_copies =  all_augmented_copies3 +  all_augmented_copies4 + all_augmented_copies2 works ok
             all_augmented_copies = all_augmented_copies2 + all_augmented_copies3  +  all_augmented_copies8
