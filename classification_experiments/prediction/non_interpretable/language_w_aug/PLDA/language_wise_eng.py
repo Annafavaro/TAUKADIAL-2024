@@ -1,12 +1,12 @@
 feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
                'text2vec-base-multilingual', 'xlm-roberta-base', 'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-               'wav2vec_53', 'whisper', 'trillsson', 'xvector']
+               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'trillsson', 'xvector']
 
-english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
+list_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+feat_pths_augmented = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_english/'
 
 out_path_scores ='/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/non_interpretable/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english/prediction/non_interpretable/'
@@ -54,12 +54,11 @@ def normalize(train_split, test_split): ## when prediction
 
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
-
     n_folds_names = []
     n_folds_data = []
     all_folds_info = []
 
-    read_dict = json.load(open(english_sps))
+    read_dict = json.load(open(list_sps))
     for key, values in read_dict.items():
         fold_info_general = []
         fold = list((read_dict[key]).keys())
@@ -71,7 +70,6 @@ for feat_name in feats_names:
                  (fold_info[sp])['mmse']])
         all_folds_info.append(fold_info_general)
 
-    print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
@@ -79,13 +77,33 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             feat = np.load(speaker[0])
-            # print(label_row, row['path_feat'])
             feat = np.append(feat, label_row)
             feat = np.append(feat, mmse)
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
-    print(folds[0])
+    folds_augmented = []
+    for fold in all_folds_info:
+        data_fold = np.array(())  # %
+        for speaker in fold:
+            speaker_name = os.path.basename(speaker[0]).split('.npy')[0]
+            # print(f'here {speaker_name}')
+            label_row = speaker[-2]
+            mmse = speaker[-1]
+            if feat_name ==  'trillsson' or feat_name== 'xvector' or feat_name == 'wav2vec_128' or feat_name == 'wav2vec_53':
+                all_copies = [0, 3] #3 is the best x spech
+            else:
+                all_copies = [0, 1, 6]#np.arange(0, 7)
+           # print(all_copies, feat_name)
+            all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
+
+            for copy in all_augmented_copies:
+
+                feat = np.load(copy)
+                feat = np.append(feat, label_row)
+                feat = np.append(feat, mmse)
+                data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
+        folds_augmented.append(data_fold)
 
     data_train_1 = np.concatenate(folds[:9])
     data_test_1 = np.concatenate(folds[-1:])
@@ -192,7 +210,7 @@ for feat_name in feats_names:
     df['sensitivity'] = sensitivity
     df['specificity'] = specificity
     file_out = os.path.join(out_path, feat_name + "_" + "PCA_results.csv")
-    df.to_csv(file_out)
+   # df.to_csv(file_out)
     #
     all_names = list(data_test_1_names) + list(data_test_2_names) + list(data_test_3_names) \
                 + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
@@ -203,4 +221,4 @@ for feat_name in feats_names:
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
     df2 = pd.DataFrame(dict)
     file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-    df2.to_csv(file_out2)
+  #  df2.to_csv(file_out2)
