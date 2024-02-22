@@ -11,8 +11,10 @@ from transformers import AutoModelForSequenceClassification, TrainingArguments, 
 from transformers import AutoTokenizer
 from datasets import list_metrics
 import numpy as np
-import torch
 from datasets import load_metric
+import torch
+torch.manual_seed(40)
+
 
 
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
@@ -40,7 +42,6 @@ def compute_metrics(pred):
         'precision': precision,
         'recall': recall
     }
-
 
 path_train = os.path.join(finetuning_data, 'train.csv')
 path_dev = os.path.join(finetuning_data, 'dev.csv')
@@ -94,7 +95,7 @@ args = TrainingArguments(
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=6,
+    num_train_epochs=12,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,

@@ -11,8 +11,10 @@ from transformers import AutoModelForSequenceClassification, TrainingArguments, 
 from transformers import AutoTokenizer
 from datasets import list_metrics
 import numpy as np
-import torch
 from datasets import load_metric
+import torch
+torch.manual_seed(40)
+
 
 
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
