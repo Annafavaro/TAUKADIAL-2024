@@ -30,9 +30,9 @@ feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/em
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 
-delaware = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Delaware/embeddings/'
-lu = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Lu/embeddings/'
-adr = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Adress-M/embeddings/'
+#delaware = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Delaware/embeddings/'
+#lu = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Lu/embeddings/'
+#adr = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Adress-M/embeddings/'
 pitt = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Pitt/embeddings/'
 nls = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/NLS/embeddings/'
 china = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Chinese/embeddings/'
@@ -182,52 +182,52 @@ for feat_name in feats_names:
 
     ############# PITT ###############
 
-    base_dir_pitt = os.path.join(pitt, feat_name)
-    all_files_pitt = [os.path.join(base_dir_pitt, elem) for elem in sorted(os.listdir(base_dir_pitt))]
-    data_fold_pitt = np.array(())
-    for file in all_files_pitt:
-        #  print(file)
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'CN' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_pitt = np.vstack((data_fold_pitt, feat)) if data_fold_pitt.size else feat
-
+   # base_dir_pitt = os.path.join(pitt, feat_name)
+   # all_files_pitt = [os.path.join(base_dir_pitt, elem) for elem in sorted(os.listdir(base_dir_pitt))]
+   # data_fold_pitt = np.array(())
+   # for file in all_files_pitt:
+   #     #  print(file)
+   #     label_row = os.path.basename(file).split('_')[0]
+   #     label_row = [1 if label_row == 'CN' else 0]
+   #     feat = np.load(file)
+   #     feat = np.append(feat, label_row)
+   #     data_fold_pitt = np.vstack((data_fold_pitt, feat)) if data_fold_pitt.size else feat
+#
     ############# ADRESS-M ###############
 
-    base_dir_adr = os.path.join(adr, feat_name)
-    all_files_adr = [os.path.join(base_dir_adr, elem) for elem in sorted(os.listdir(base_dir_adr))]
-    data_fold_adr = np.array(())
-    for file in zip(all_files_adr, train_labels_adr):
-        label_row = file[-1]
-        feat = np.load(file[0])
-        feat = np.append(feat, label_row)
-        data_fold_adr = np.vstack((data_fold_adr, feat)) if data_fold_adr.size else feat
-
+   # base_dir_adr = os.path.join(adr, feat_name)
+   # all_files_adr = [os.path.join(base_dir_adr, elem) for elem in sorted(os.listdir(base_dir_adr))]
+   # data_fold_adr = np.array(())
+   # for file in zip(all_files_adr, train_labels_adr):
+   #     label_row = file[-1]
+   #     feat = np.load(file[0])
+   #     feat = np.append(feat, label_row)
+   #     data_fold_adr = np.vstack((data_fold_adr, feat)) if data_fold_adr.size else feat
+#
     ############### Lu ###############
 
-    base_dir_lu = os.path.join(lu, feat_name)
-    all_files_lu = [os.path.join(base_dir_lu, elem) for elem in os.listdir(base_dir_lu)]
-    data_fold_lu = np.array(())
-    for file in all_files_lu:
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'CN' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_lu = np.vstack((data_fold_lu, feat)) if data_fold_lu.size else feat
-
+  #  base_dir_lu = os.path.join(lu, feat_name)
+  #  all_files_lu = [os.path.join(base_dir_lu, elem) for elem in os.listdir(base_dir_lu)]
+  #  data_fold_lu = np.array(())
+  #  for file in all_files_lu:
+  #      label_row = os.path.basename(file).split('_')[0]
+  #      label_row = [1 if label_row == 'CN' else 0]
+  #      feat = np.load(file)
+  #      feat = np.append(feat, label_row)
+  #      data_fold_lu = np.vstack((data_fold_lu, feat)) if data_fold_lu.size else feat
+#
     ############### Delaware ###############
 
-    base_dir_del = os.path.join(delaware, feat_name)
-    all_files_del = [os.path.join(base_dir_del, elem) for elem in os.listdir(base_dir_del)]
-    data_fold_del = np.array(())
-    for file in all_files_del:
-        #  print(file)
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'CN' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_del = np.vstack((data_fold_del, feat)) if data_fold_del.size else feat
+   # base_dir_del = os.path.join(delaware, feat_name)
+   # all_files_del = [os.path.join(base_dir_del, elem) for elem in os.listdir(base_dir_del)]
+   # data_fold_del = np.array(())
+   # for file in all_files_del:
+   #     #  print(file)
+   #     label_row = os.path.basename(file).split('_')[0]
+   #     label_row = [1 if label_row == 'CN' else 0]
+   #     feat = np.load(file)
+   #     feat = np.append(feat, label_row)
+   #     data_fold_del = np.vstack((data_fold_del, feat)) if data_fold_del.size else feat
 
     ####################################################################
 
@@ -425,10 +425,10 @@ for feat_name in feats_names:
             eval(f"data_train_{n_fold}_zh"), eval(f"data_val_{n_fold}_zh"), eval(f"data_test_{n_fold}_zh"))
 
 
-        normalized_train_del, y_train_del = normalize_train_set(data_fold_del)
-        normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
-        normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
-        normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
+      #  normalized_train_del, y_train_del = normalize_train_set(data_fold_del)
+      #  normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
+       # normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
+      #  normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
