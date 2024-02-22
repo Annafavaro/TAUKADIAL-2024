@@ -24,7 +24,6 @@ def create_data_frame(list_vals):
 sp_subset = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 tr_path_all = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/all/'
 output = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/multi/chinese/'
-#nls_transcript = '/export/c12/afavaro/New_NLS/Late_multimodal/ctp/all_transcripts_prompt_taukadial/'
 chinese_transcripts = '/export/c06/afavaro/NCMMSC2021AD_3/yuzhe_reviewed/transcripts_with_prompt/'
 
 n_folds_names = []
