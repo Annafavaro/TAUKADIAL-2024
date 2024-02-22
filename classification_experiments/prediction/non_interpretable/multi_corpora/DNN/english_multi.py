@@ -11,8 +11,8 @@ feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
 
 names_to_keep_cn = [
     # cn2 --> use this group if you want to consider only AD in the analysis.
-  #  'AD_002', 'AD_017', 'AD_020', 'NLS_006', 'NLS_073', 'NLS_075', 'NLS_107', 'NLS_111',
-  #  'PEC_002', 'PEC_003', 'PEC_006', 'PEC_007', 'PEC_010', 'PEC_011', 'PEC_012', 'PEC_013',
+    'AD_002', 'AD_017', 'AD_020', 'NLS_006', 'NLS_073', 'NLS_075', 'NLS_107', 'NLS_111',
+    'PEC_002', 'PEC_003', 'PEC_006', 'PEC_007', 'PEC_010', 'PEC_011', 'PEC_012', 'PEC_013',
     'PEC_021', 'PEC_024', 'PEC_028', 'PEC_031', 'PEC_032', 'PEC_037', 'PEC_038', 'PEC_040',
     'PEC_042', 'PEC_043', 'PEC_046', 'PEC_047', 'PEC_049', 'PEC_050', 'PEC_059', 'PEC_060',
     'PEC_062']
