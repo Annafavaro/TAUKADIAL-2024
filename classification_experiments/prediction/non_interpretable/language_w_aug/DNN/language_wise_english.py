@@ -4,17 +4,13 @@ feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
                'text2vec-base-multilingual', 'xlm-roberta-base',
                'distiluse-base-multilingual-cased',
                'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
-               'LaBSE']
+               'LaBSE', 'trillsson', 'xvector']
 
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-feat_pths_augmented2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese2/'
-feat_pths_augmented3 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese3/'
-feat_pths_augmented4 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese4/'
-feat_pths_augmented6 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese6/'
-feat_pths_augmented8 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese8/'
+feat_pths_augmented = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_english/'
 
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_augmented/results_per_language/english/prediction/non_interpretable_sigmoid/'
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language_aug/english/non_interpretable_sigmoid/prediction/'
@@ -122,18 +118,10 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             # all_copies = list(np.arange(0, 2))
-            all_copies = [0, 1, 2, 3]
+            all_copies = [0, 1, 2, 3, 4,]
 
-            all_augmented_copies2 = [os.path.join(feat_pths_augmented2, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
-            all_augmented_copies3 = [os.path.join(feat_pths_augmented3, feat_name, speaker_name + f'-{num}.npy') for num
-                                     in all_copies]
-            all_augmented_copies4 = [os.path.join(feat_pths_augmented4, feat_name, speaker_name + f'-{num}.npy') for num
-                                     in all_copies]
-            all_augmented_copies6 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))]# 0-3
-            all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 1))] #0-2
-            # all_augmented_copies = all_augmented_copies1 + all_augmented_copies2 + all_augmented_copies3 + all_augmented_copies4  +  all_augmented_copies8
-            #all_augmented_copies =  all_augmented_copies3 +  all_augmented_copies4 + all_augmented_copies2 works ok
-            all_augmented_copies = all_augmented_copies4 + all_augmented_copies2 + all_augmented_copies6
+            all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
+
             for copy in all_augmented_copies:
                 #  print(copy)
                 # print(os.path.isfile(copy))
