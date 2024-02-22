@@ -1,42 +1,36 @@
-feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base', 'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-               'wav2vec_53', 'whisper', 'trillsson', 'xvector']
-
-#feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
+# ['wav2vec_128', 'wav2vec_53',  'trillsson', 'xvector']
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+               'multilingual-e5-large',
+               'text2vec-base-multilingual', 'xlm-roberta-base',
+               'distiluse-base-multilingual-cased',
+               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
+               'LaBSE']
 
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
-feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-#feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings_language_specific/chinese/'
 
-out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable_sigmoid/prediction/'
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese/prediction/non_interpretable_sigmoid/'
-english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
+feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
+feat_pths_augmented2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese2/'
+feat_pths_augmented3 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese3/'
+feat_pths_augmented4 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese4/'
+feat_pths_augmented6 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese6/'
+feat_pths_augmented8 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese8/'
+
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_augmented/results_per_language/chinese/prediction/non_interpretable_sigmoid/'
+out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language_aug/chinese/non_interpretable_sigmoid/prediction/'
+list_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 
 import os
 import numpy as np
 import torch
+import pandas as pd
 import torch.nn as nn
 import json
-import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
+
 seed = 40
 torch.manual_seed(seed)
-
-
-def intersection(lst1, lst2):
-    lst3 = [value for value in lst1 if value in lst2]
-    return lst3
-
-def get_n_folds(arrayOfSpeaker):
-    data = list(arrayOfSpeaker)  # list(range(len(arrayOfSpeaker)))
-    num_of_folds = 10
-    n_folds = []
-    for i in range(num_of_folds):
-        n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
-    return n_folds
 
 
 def normalize_and_split(train_split, val_split, test_split):
@@ -71,27 +65,6 @@ def normalize_and_split(train_split, val_split, test_split):
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
 
-def add_labels(df, path_labels):
-    path_labels_df = pd.read_csv(path_labels)
-    label = path_labels_df['dx'].tolist()
-    speak = path_labels_df['tkdname'].tolist()  # id
-    spk2lab_ = {sp: lab for sp, lab in zip(speak, label)}
-    speak2__ = df['ID'].tolist()
-    etichettex = []
-    for nome in speak2__:
-        if nome in spk2lab_.keys():
-            lav = spk2lab_[nome]
-            etichettex.append(([nome, lav]))
-        else:
-            etichettex.append(([nome, 'Unknown']))
-    label_new_ = []
-    for e in etichettex:
-        label_new_.append(e[1])
-    df['labels'] = label_new_
-
-    return df
-
-
 class SingleLayerClassifier(nn.Module):
     def __init__(self, input_size, output_size):
         super(SingleLayerClassifier, self).__init__()
@@ -103,6 +76,7 @@ class SingleLayerClassifier(nn.Module):
         x = self.sigmoid(x)
         return x.squeeze(1)
 
+
 def reset_weights(m):
     for layer in m.children():
         if hasattr(layer, 'reset_parameters'):
@@ -111,12 +85,11 @@ def reset_weights(m):
 
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
-
     n_folds_names = []
     n_folds_data = []
     all_folds_info = []
 
-    read_dict = json.load(open(english_sps))
+    read_dict = json.load(open(list_sps))
     for key, values in read_dict.items():
         fold_info_general = []
         fold = list((read_dict[key]).keys())
@@ -128,7 +101,6 @@ for feat_name in feats_names:
                  (fold_info[sp])['mmse']])
         all_folds_info.append(fold_info_general)
 
-    #  print(n_folds_names[0])
     folds = []
     for fold in all_folds_info:
         data_fold = np.array(())  # %
@@ -136,59 +108,84 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             feat = np.load(speaker[0])
-            # print(label_row, row['path_feat'])
             feat = np.append(feat, label_row)
             feat = np.append(feat, mmse)
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
 
-    # print(folds[0])
+    folds_augmented = []
+    for fold in all_folds_info:
+        data_fold = np.array(())  # %
+        for speaker in fold:
+            speaker_name = os.path.basename(speaker[0]).split('.npy')[0]
+            # print(f'here {speaker_name}')
+            label_row = speaker[-2]
+            mmse = speaker[-1]
+            # all_copies = list(np.arange(0, 2))
+            all_copies = [0, 1, 2]
 
-    # For fold 1
-    data_train_1 = np.concatenate(folds[:8])
+            # all_augmented_copies1 = [os.path.join(feat_pths_augmented2, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
+            all_augmented_copies2 = [os.path.join(feat_pths_augmented3, feat_name, speaker_name + f'-{num}.npy') for num
+                                     in all_copies]
+            all_augmented_copies3 = [os.path.join(feat_pths_augmented4, feat_name, speaker_name + f'-{num}.npy') for num
+                                     in all_copies]
+            #  all_augmented_copies4 = [os.path.join(feat_pths_augmented6, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 3))]
+            #  all_augmented_copies8= [os.path.join(feat_pths_augmented8, feat_name, speaker_name +f'-{num}.npy')  for num in list(np.arange(0, 2))]
+            # all_augmented_copies = all_augmented_copies1 + all_augmented_copies2 + all_augmented_copies3 + all_augmented_copies4  +  all_augmented_copies8
+            all_augmented_copies = all_augmented_copies2 + all_augmented_copies3
+            for copy in all_augmented_copies:
+                #  print(copy)
+                # print(os.path.isfile(copy))
+                feat = np.load(copy)
+                feat = np.append(feat, label_row)
+                feat = np.append(feat, mmse)
+                data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
+        folds_augmented.append(data_fold)
+
+    data_train_1 = np.concatenate(folds_augmented[:8])
     data_val_1 = np.concatenate(folds[8:9])
     data_test_1 = np.concatenate(folds[9:])
 
     # For fold 2
-    data_train_2 = np.concatenate((folds[1:-1]))
+    data_train_2 = np.concatenate((folds_augmented[1:-1]))
     data_val_2 = np.concatenate(folds[-1:])
     data_test_2 = np.concatenate(folds[:1])
 
     # For fold 3
-    data_train_3 = np.concatenate(folds[2:])
+    data_train_3 = np.concatenate(folds_augmented[2:])
     data_val_3 = np.concatenate(folds[:1])
     data_test_3 = np.concatenate(folds[1:2])
 
     # For fold 4
-    data_train_4 = np.concatenate((folds[3:] + folds[:1]))
+    data_train_4 = np.concatenate((folds_augmented[3:] + folds_augmented[:1]))
     data_val_4 = np.concatenate(folds[1:2])
     data_test_4 = np.concatenate(folds[2:3])
     # For fold 5
-    data_train_5 = np.concatenate((folds[4:] + folds[:2]))
+    data_train_5 = np.concatenate((folds_augmented[4:] + folds_augmented[:2]))
     data_val_5 = np.concatenate(folds[2:3])
     data_test_5 = np.concatenate(folds[3:4])
 
     # For fold 6
-    data_train_6 = np.concatenate((folds[5:] + folds[:3]))
+    data_train_6 = np.concatenate((folds_augmented[5:] + folds_augmented[:3]))
     data_val_6 = np.concatenate(folds[3:4])
     data_test_6 = np.concatenate(folds[4:5])
     # For fold 7
-    data_train_7 = np.concatenate((folds[6:] + folds[:4]))
+    data_train_7 = np.concatenate((folds_augmented[6:] + folds_augmented[:4]))
     data_val_7 = np.concatenate(folds[4:5])
     data_test_7 = np.concatenate(folds[5:6])
 
     # For fold 8
-    data_train_8 = np.concatenate((folds[7:] + folds[:5]))
+    data_train_8 = np.concatenate((folds_augmented[7:] + folds_augmented[:5]))
     data_val_8 = np.concatenate(folds[5:6])
     data_test_8 = np.concatenate(folds[6:7])
 
     # For fold 9
-    data_train_9 = np.concatenate((folds[8:] + folds[:6]))
+    data_train_9 = np.concatenate((folds_augmented[8:] + folds_augmented[:6]))
     data_val_9 = np.concatenate(folds[6:7])
     data_test_9 = np.concatenate(folds[7:8])
 
     # For fold 10
-    data_train_10 = np.concatenate((folds[9:] + folds[:7]))
+    data_train_10 = np.concatenate((folds_augmented[9:] + folds_augmented[:7]))
     data_val_10 = np.concatenate(folds[7:8])
     data_test_10 = np.concatenate(folds[8:9])
 
@@ -203,7 +200,7 @@ for feat_name in feats_names:
     data_test_9_names = np.concatenate(n_folds_names[7:8])
     data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    n_epochs = 15
+    n_epochs = 40
     batch_size = 32
     input_dim = data_train_1.shape[1] - 2  # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
@@ -277,7 +274,6 @@ for feat_name in feats_names:
         truth.append(y_test_tensor.detach().numpy())
         results[n_fold] = accuracy
 
-
     test_scores = np.concatenate(test_scores)
     truth = np.concatenate(truth)
     predictions = np.concatenate(predictions)
@@ -306,8 +302,8 @@ for feat_name in feats_names:
     df['AUROC'] = roc_auc_score(truth, test_scores)
     df['sensitivity'] = sensitivity
     df['specificity'] = specificity
-    file_out = os.path.join(out_path, feat_name + "_" + ".csv")
-    df.to_csv(file_out)
+    # file_out = os.path.join(out_path, feat_name + "_" + ".csv")
+    # df.to_csv(file_out)
 
     ########################################################################################################################
 
@@ -315,9 +311,10 @@ for feat_name in feats_names:
                 + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
                 + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \
                 + list(data_test_10_names)
-    print(all_names)
+    # print(all_names)
 
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-    df2 = pd.DataFrame(dict)
-    file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-    df2.to_csv(file_out2)
+# df2 = pd.DataFrame(dict)
+# file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+# df2.to_csv(file_out2)
+
