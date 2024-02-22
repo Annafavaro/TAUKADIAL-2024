@@ -170,9 +170,9 @@ for feat_name in feats_names:
     all_files_nls = [os.path.join(base_dir_nls, elem) for elem in sorted(os.listdir(base_dir_nls))]
     data_fold_nls = np.array(())
     for file in all_files_nls:
-        print(file)
+     #   print(file)
         name = os.path.basename(file).split('_ses')[0]
-        print(name)
+       # print(name)
         if name in names_to_keep:
             label_row = [0 if name in names_to_keep_ad else 1]
             print(label_row)
