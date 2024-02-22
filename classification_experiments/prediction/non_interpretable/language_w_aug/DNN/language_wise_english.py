@@ -118,7 +118,7 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             # all_copies = list(np.arange(0, 2))
-            all_copies = [0, 1, 2, 3, 4,]
+            all_copies = [0, 1, 2]
 
             all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
 
