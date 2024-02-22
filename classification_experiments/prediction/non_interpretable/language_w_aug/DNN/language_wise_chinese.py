@@ -303,8 +303,8 @@ for feat_name in feats_names:
     df['AUROC'] = roc_auc_score(truth, test_scores)
     df['sensitivity'] = sensitivity
     df['specificity'] = specificity
-    # file_out = os.path.join(out_path, feat_name + "_" + ".csv")
-    # df.to_csv(file_out)
+    file_out = os.path.join(out_path, feat_name + "_" + ".csv")
+    df.to_csv(file_out)
 
     ########################################################################################################################
 
@@ -315,7 +315,7 @@ for feat_name in feats_names:
     # print(all_names)
 
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
-# df2 = pd.DataFrame(dict)
-# file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
-# df2.to_csv(file_out2)
+    df2 = pd.DataFrame(dict)
+    file_out2 = os.path.join(out_path_scores, feat_name + '.csv')
+    df2.to_csv(file_out2)
 
