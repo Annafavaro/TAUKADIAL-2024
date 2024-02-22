@@ -115,11 +115,10 @@ trainer = Trainer(
 )
 
 trainer.train()
-model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint)
+model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint, num_labels=2)
 eval_trainer = Trainer(
     model,
     args,
-    num_labels=2,
     tokenizer=tokenizer,
     compute_metrics=compute_metrics
 )
