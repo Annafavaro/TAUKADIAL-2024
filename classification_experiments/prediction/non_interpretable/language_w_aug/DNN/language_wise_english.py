@@ -117,9 +117,11 @@ for feat_name in feats_names:
             # print(f'here {speaker_name}')
             label_row = speaker[-2]
             mmse = speaker[-1]
-            # all_copies = list(np.arange(0, 2))
-            all_copies = [0, 1, 2]
-
+            if feat_name ==  'trillsson' or feat_name== 'xvector' or feat_name == 'wav2vec_128' or feat_name 'wav2vec_53':
+                all_copies = [0, 1, 2, 3, 4]
+            else:
+                all_copies = np.arange(0, 7)
+            print(all_copies, feat_name)
             all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
 
             for copy in all_augmented_copies:
