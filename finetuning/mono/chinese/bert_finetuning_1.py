@@ -116,7 +116,8 @@ trainer = Trainer(
 )
 
 trainer.train()
-
+print('look hereeee')
+print(trainer.state.best_model_checkpoint)
 evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print('RESULTS on the test set')
 print(evaluation_results)
