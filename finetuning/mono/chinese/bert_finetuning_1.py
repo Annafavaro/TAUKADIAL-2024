@@ -110,18 +110,11 @@ trainer = Trainer(
     train_dataset=encoded_dataset["train"],
     eval_dataset=encoded_dataset["dev"],
     tokenizer=tokenizer,
-    compute_metrics=compute_metrics
-
-)
+    compute_metrics=compute_metrics)
 
 trainer.train()
 model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint, num_labels=2)
-eval_trainer = Trainer(
-    model,
-    args,
-    tokenizer=tokenizer,
-    compute_metrics=compute_metrics
-)
+eval_trainer = Trainer(model, args, tokenizer=tokenizer, compute_metrics=compute_metrics)
 
 print('best model loaded')
 evaluation_results = eval_trainer.evaluate(eval_dataset=encoded_dataset["test"])
