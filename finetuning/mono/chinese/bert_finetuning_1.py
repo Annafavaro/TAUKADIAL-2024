@@ -10,6 +10,7 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 from transformers import AutoTokenizer
 from datasets import list_metrics
+from transformers import AutoConfig, AutoModel
 import numpy as np
 from datasets import load_metric
 import torch
@@ -95,7 +96,7 @@ args = TrainingArguments(
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=12,
+    num_train_epochs=17,
     weight_decay=0.01,
     load_best_model_at_end=True,
     save_total_limit=1,
@@ -116,8 +117,9 @@ trainer = Trainer(
 )
 
 trainer.train()
-print('look hereeee')
-print(trainer.state.best_model_checkpoint)
+#print(trainer.state.best_model_checkpoint)
+
+model = AutoModel.from_pretrained(trainer.state.best_model_checkpoint)
 evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
 print('RESULTS on the test set')
 print(evaluation_results)
