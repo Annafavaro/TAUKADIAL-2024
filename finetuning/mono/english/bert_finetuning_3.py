@@ -1,4 +1,7 @@
-out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/english/'
+cv_num = 3
+out_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/mono/english/'
+finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/'
+
 import os
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
@@ -7,14 +10,16 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 from transformers import AutoTokenizer
 from datasets import list_metrics
+from transformers import AutoConfig, AutoModel
 import numpy as np
-import torch
 from datasets import load_metric
+import torch
+torch.manual_seed(40)
 
-cv_num = 3
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-checkpoint = 'distilbert-base-cased'
+#checkpoint = 'distilbert-base-cased'
+checkpoint='roberta-base'
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
@@ -37,7 +42,6 @@ def compute_metrics(pred):
         'recall': recall
     }
 
-finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/english/cv_{cv_num}/'
 path_train = os.path.join(finetuning_data, 'train.csv')
 path_dev = os.path.join(finetuning_data, 'dev.csv')
 path_test = os.path.join(finetuning_data, 'test.csv')
@@ -90,9 +94,10 @@ args = TrainingArguments(
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=6,
+    num_train_epochs=12,
     weight_decay=0.01,
     load_best_model_at_end=True,
+    save_total_limit=1,
     metric_for_best_model=metric_name,
    # push_to_hub=True,
     logging_dir='./logs'#exp-dir
@@ -105,19 +110,20 @@ trainer = Trainer(
     train_dataset=encoded_dataset["train"],
     eval_dataset=encoded_dataset["dev"],
     tokenizer=tokenizer,
-    compute_metrics=compute_metrics
-
-)
+    compute_metrics=compute_metrics)
 
 trainer.train()
+model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint, num_labels=2)
+eval_trainer = Trainer(model, args, tokenizer=tokenizer, compute_metrics=compute_metrics)
 
-evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
-print('RESULTS on the test set')
+print('best model loaded')
+evaluation_results = eval_trainer.evaluate(eval_dataset=encoded_dataset["test"])
+print('results test set')
 print(evaluation_results)
 acc = [evaluation_results['eval_accuracy']]
 print('Accuracy-->')
 print(acc)
-predictions = trainer.predict(encoded_dataset["test"])
+predictions = eval_trainer.predict(encoded_dataset["test"])
 print(predictions.predictions.shape, predictions.label_ids.shape)
 preds = np.argmax(predictions.predictions, axis=-1)
 print(f'predictions are {preds}')
