@@ -437,9 +437,8 @@ for feat_name in feats_names:
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
        # Xtrain = np.concatenate([normalized_train_zh], axis=0)
-        Xtrain = np.concatenate([normalized_train_nls, normalized_train_zh], axis=0)
-
-        y_train = np.concatenate([y_train_nls, y_train_zh], axis=0)
+        Xtrain = np.concatenate([normalized_train_china, normalized_train_nls, normalized_train_zh], axis=0)
+        y_train = np.concatenate([y_train_china, y_train_nls, y_train_zh], axis=0)
         Xval = np.concatenate([normalized_val_zh], axis=0)
         y_val = np.concatenate([y_val_zh], axis=0)
         Xtest = np.concatenate([normalized_test_zh], axis=0)
