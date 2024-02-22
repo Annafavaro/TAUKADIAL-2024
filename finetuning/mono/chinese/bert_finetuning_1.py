@@ -1,4 +1,6 @@
+cv_num = 1
 out_scores = '/export/b16/afavaro/TAUKADIAL-2024/finetuning/scores/chinese/'
+finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/'
 
 import os
 from datasets import Dataset, DatasetDict
@@ -12,12 +14,11 @@ import numpy as np
 import torch
 from datasets import load_metric
 
-cv_num = 1
+
 os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-checkpoint = 'bert-base-chinese'
-finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/chinese/cv_{cv_num}/'
-
+#checkpoint = 'distilbert-base-cased'
+checkpoint='roberta-base-chinese'
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
@@ -39,6 +40,7 @@ def compute_metrics(pred):
         'precision': precision,
         'recall': recall
     }
+
 
 path_train = os.path.join(finetuning_data, 'train.csv')
 path_dev = os.path.join(finetuning_data, 'dev.csv')
@@ -86,13 +88,13 @@ args = TrainingArguments(
     f"{model_name}-finetuned-{task}",
     evaluation_strategy = "epoch",
     save_strategy = "epoch",
-    learning_rate=2e-6,
+    learning_rate=2e-5,
     #learning_rate=2e-5,
     fp16=True,
     logging_steps=1,
     per_device_train_batch_size=16,
     per_device_eval_batch_size=64,
-    num_train_epochs=10,
+    num_train_epochs=6,
     weight_decay=0.01,
     load_best_model_at_end=True,
     metric_for_best_model=metric_name,
