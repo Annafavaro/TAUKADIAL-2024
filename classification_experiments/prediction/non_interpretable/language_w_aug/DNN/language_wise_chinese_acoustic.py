@@ -16,9 +16,9 @@ feat_pths_augmented4 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/traini
 feat_pths_augmented6 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese6/'
 feat_pths_augmented8 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_augmented/embeddings_chinese/chinese8/'
 
-out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_augmented/results_per_language/english/prediction/non_interpretable_sigmoid/'
-out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language_aug/english/non_interpretable_sigmoid/prediction/'
-list_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
+out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_augmented/results_per_language/chinese/prediction/non_interpretable_sigmoid/'
+out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language_aug/chinese/non_interpretable_sigmoid/prediction/'
+list_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 
 import os
 import numpy as np
