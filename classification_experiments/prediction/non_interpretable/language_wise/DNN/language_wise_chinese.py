@@ -294,7 +294,7 @@ for feat_name in feats_names:
                 + list(data_test_4_names) + list(data_test_5_names) + list(data_test_6_names) \
                 + list(data_test_7_names) + list(data_test_8_names) + list(data_test_9_names) \
                 + list(data_test_10_names)
-    print(all_names)
+  #  print(all_names)
 
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
     df2 = pd.DataFrame(dict)
