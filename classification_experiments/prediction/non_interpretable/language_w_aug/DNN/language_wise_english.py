@@ -1,11 +1,14 @@
 # ['wav2vec_128', 'wav2vec_53',  'trillsson', 'xvector']
-feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
-               'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base',
-               'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
-               'LaBSE', 'trillsson', 'xvector']
+#feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+#               'multilingual-e5-large',
+#               'text2vec-base-multilingual', 'xlm-roberta-base',
+#               'distiluse-base-multilingual-cased',
+#               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
+#               'LaBSE', 'trillsson', 'xvector']
 
+feats_names = ['trillsson', 'xvector']
+
+#
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 
@@ -118,9 +121,9 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             if feat_name ==  'trillsson' or feat_name== 'xvector' or feat_name == 'wav2vec_128' or feat_name == 'wav2vec_53':
-                all_copies = [0,  2, 4]
+                all_copies = [0, 1, 4]
             else:
-                all_copies = [0, 6]#np.arange(0, 7)
+                all_copies = [0, 1, 6]#np.arange(0, 7)
            # print(all_copies, feat_name)
             all_augmented_copies = [os.path.join(feat_pths_augmented, feat_name, speaker_name +f'-{num}.npy')  for num in all_copies]
 
