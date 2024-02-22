@@ -118,7 +118,7 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             if feat_name ==  'trillsson' or feat_name== 'xvector' or feat_name == 'wav2vec_128' or feat_name == 'wav2vec_53':
-                all_copies = [0, 1, 2]
+                all_copies = [0,  2, 4]
             else:
                 all_copies = [0, 1, 6]#np.arange(0, 7)
            # print(all_copies, feat_name)
