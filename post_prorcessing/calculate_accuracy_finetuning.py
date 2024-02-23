@@ -15,4 +15,5 @@ all_accs = []
 for data in all_res:
     all_accs.append(pd.read_csv(data)['accuracy'].tolist())
 
+print(all_accs)
 print(all_accs/len(all_accs))
