@@ -17,4 +17,4 @@ for data in all_res:
 
 print(all_accs)
 print('ACCURACY:')
-print(float(np.sum(all_accs)/len(all_accs), 2))
+print(round(np.sum(all_accs)/len(all_accs), 2))
