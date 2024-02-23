@@ -13,6 +13,6 @@ all_res = [os.path.join(list_results, elem)  for elem in os.listdir(list_results
 
 all_accs = []
 for data in all_res:
-    all_accs.append(['accuracy'].tolist())
+    all_accs.append(pd.read_csv(data)['accuracy'].tolist())
 
 print(all_accs/len(all_accs))
