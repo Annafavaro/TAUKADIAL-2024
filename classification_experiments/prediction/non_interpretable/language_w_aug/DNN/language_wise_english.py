@@ -1,10 +1,10 @@
-# ['wav2vec_128', 'wav2vec_53',  'trillsson', 'xvector']
-feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
-               'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base',
-               'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
-               'LaBSE', 'trillsson', 'xvector']
+feats_names = ['wav2vec_128', 'wav2vec_53',  'trillsson', 'xvector',
+        'XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+        'multilingual-e5-large',
+        'text2vec-base-multilingual', 'xlm-roberta-base',
+        'distiluse-base-multilingual-cased',
+        'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased',
+        'LaBSE', 'trillsson', 'xvector']
 
 #feats_names = ['trillsson', 'xvector']
 
