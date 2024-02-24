@@ -27,7 +27,7 @@ torch.manual_seed(seed)
 
 
 class MMSE_ModelBasic(nn.Module):
-    def __init__(self, input_size, hidden_size, dropout_rate=0.2):
+    def __init__(self, input_size, hidden_size, dropout_rate=0.7):
         super(MMSE_ModelBasic, self).__init__()
         self.fc1 = nn.Linear(input_size, hidden_size)
         self.bn1 = nn.BatchNorm1d(hidden_size)
