@@ -192,7 +192,7 @@ for feat_name in feats_names:
     data_test_9_names = np.concatenate(n_folds_names[7:8])
     data_test_10_names = np.concatenate(n_folds_names[8:9])
 
-    learning_rate = 0.01
+    learning_rate = 0.001
     num_epochs = 300
     batch_size = 64
     input_size = data_train_1.shape[1] - 2
