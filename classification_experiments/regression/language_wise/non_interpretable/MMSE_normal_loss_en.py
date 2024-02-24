@@ -259,7 +259,7 @@ for feat_name in feats_names:
             else:
                 num_epochs_no_improve += 1
                 if num_epochs_no_improve >= patience:
-                    print(f"Early stopping at epoch {epoch}")
+                   # print(f"Early stopping at epoch {epoch}")
                     break
 
         # Testing
