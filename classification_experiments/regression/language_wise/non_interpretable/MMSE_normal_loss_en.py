@@ -22,7 +22,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import r2_score
 
-seed = 99 #100
+seed = 100
 torch.manual_seed(seed)
 
 
