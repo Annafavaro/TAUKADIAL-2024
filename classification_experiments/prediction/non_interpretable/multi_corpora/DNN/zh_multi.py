@@ -11,19 +11,13 @@ feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
                'wav2vec_53', 'trillsson', 'xvector']
 
 names_to_keep_cn = [
-    # cn2 --> use this group if you want to consider only AD in the analysis.
-  #  'AD_002', 'AD_017', 'AD_020', 'NLS_006', 'NLS_073', 'NLS_075', 'NLS_107', 'NLS_111',
-  #  'PEC_002', 'PEC_003', 'PEC_006', 'PEC_007', 'PEC_010', 'PEC_011', 'PEC_012', 'PEC_013',
     'PEC_021', 'PEC_024', 'PEC_028', 'PEC_031', 'PEC_032', 'PEC_037', 'PEC_038', 'PEC_040',
     'PEC_042', 'PEC_043', 'PEC_046', 'PEC_047', 'PEC_049', 'PEC_050', 'PEC_059', 'PEC_060',
     'PEC_062']
 
-
 names_to_keep_ad = ['AD_001', 'AD_003', 'AD_004', 'AD_006', 'AD_007', 'AD_008',
 'AD_009', 'AD_010', 'AD_011', 'AD_012', 'AD_013', 'AD_014', 'AD_015',
 'AD_016', 'AD_018', 'AD_019', 'AD_021', 'AD_022', 'AD_023', 'AD_024',]
-#names_to_keep_ad = ['AD_003', 'AD_004', 'AD_007', 'AD_008','AD_012', 'AD_013',  'AD_014',
-                   # 'AD_015',  'AD_018', 'AD_019', 'AD_021', 'AD_022', 'AD_023', 'AD_024']
 
 names_to_keep = names_to_keep_cn + names_to_keep_ad
 
@@ -126,32 +120,13 @@ class SingleLayerClassifier(nn.Module):
         x = self.sigmoid(x)
         return x.squeeze(1)
 
-
 def reset_weights(m):
     for layer in m.children():
         if hasattr(layer, 'reset_parameters'):
             layer.reset_parameters()
 
-train_labels = pd.read_csv('/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/training-groundtruth.csv')
-train_labels_adr = train_labels.sort_values(by=['adressfname'])['dx'].tolist()
-train_labels_adr = [1 if ids == 'Control' else 0 for ids in train_labels_adr]
-
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
-
-    ############# China ###############
-
-    base_dir_china = os.path.join(china, feat_name)
-    all_files_china = [os.path.join(base_dir_china, elem) for elem in sorted(os.listdir(base_dir_china))]
-    data_fold_china = np.array(())
-    for file in all_files_china:
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'HC' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_china = np.vstack((data_fold_china, feat)) if data_fold_china.size else feat
-
-    ############# NLS ###############
 
     base_dir_nls = os.path.join(nls, feat_name)
     print(base_dir_nls)
@@ -363,13 +338,8 @@ for feat_name in feats_names:
         normalized_train_zh, normalized_val_zh, normalized_test_zh, y_train_zh, y_val_zh, y_test_zh = normalize_and_split(
             eval(f"data_train_{n_fold}_zh"), eval(f"data_val_{n_fold}_zh"), eval(f"data_test_{n_fold}_zh"))
 
-
-      #  normalized_train_del, y_train_del = normalize_train_set(data_fold_del)
-      #  normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
-       # normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
-      #  normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
-        normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
+       # normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
         Xtrain = np.concatenate([normalized_train_nls, normalized_train_zh], axis=0)
         y_train = np.concatenate([y_train_nls, y_train_zh], axis=0)
