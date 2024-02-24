@@ -193,7 +193,7 @@ for feat_name in feats_names:
     num_epochs = 300
     batch_size = 64
     input_size = data_train_1.shape[1] - 2
-    hidden_size = 60
+    hidden_size = 100
     criterion = nn.MSELoss()
     # criterion = CustomLoss()
 
