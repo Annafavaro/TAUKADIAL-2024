@@ -248,7 +248,7 @@ for feat_name in feats_names:
                 total_mmse_rmse += rmse_function(outputs, y_train_batch_mmse).item()
 
             avg_train_loss = total_loss / len(Xtrain)
-            print(f'training loss:{avg_train_loss}')
+            #print(f'training loss:{avg_train_loss}')
             avg_train_mmse_rmse = total_mmse_rmse / len(Xtrain)
 
             model.eval()
