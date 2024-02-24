@@ -24,7 +24,7 @@ MAX_LENGTH = math.ceil((X_train.apply(lambda x: len(str(x).split())).mean())) + 
 PAD_TOKEN = "<|pad|>"
 EOS_TOKEN = "<|endoftext|>"
 
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium",
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2-large",
                                           pad_token=PAD_TOKEN,
                                           eos_token=EOS_TOKEN,
                                           max_length=MAX_LENGTH,
@@ -46,7 +46,7 @@ X_train_mask = tf.squeeze(tf.convert_to_tensor(X_train_mask_), axis=1)
 X_test_mask = tf.squeeze(tf.convert_to_tensor(X_test_mask_), axis=1)
 
 # Increase GPT-2 model size
-model = TFGPT2Model.from_pretrained("gpt2-large", use_cache=False,
+model = TFGPT2Model.from_pretrained("gpt2-medium", use_cache=False,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=tokenizer.eos_token_id)
 model.training = True
@@ -59,15 +59,14 @@ for layer in model.layers:
 input = tf.keras.layers.Input(shape=(None,), dtype='int32')
 mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
 x = model(input, attention_mask=mask)
-# x = x.last_hidden_state[:, -1]
 x = tf.reduce_mean(x.last_hidden_state, axis=1)
-x = tf.keras.layers.Dense(36, activation='relu')(x)
+x = tf.keras.layers.Dense(16, activation='relu')(x)
 x = tf.keras.layers.Dropout(0.3)(x)
 output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
 
 clf = tf.keras.Model([input, mask], output)
 
-base_learning_rate = 0.000001
+base_learning_rate = 0.00001
 optimizer = tf.keras.optimizers.Adam(learning_rate=base_learning_rate)
 loss = tf.keras.losses.BinaryCrossentropy()
 
