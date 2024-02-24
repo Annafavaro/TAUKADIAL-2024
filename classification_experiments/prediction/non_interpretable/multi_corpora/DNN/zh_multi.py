@@ -34,10 +34,6 @@ feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/em
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 
-#delaware = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Delaware/embeddings/'
-#lu = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Lu/embeddings/'
-#adr = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Adress-M/embeddings/'
-pitt = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Pitt/embeddings/'
 nls = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/NLS/embeddings/'
 china = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Chinese/embeddings/'
 
@@ -49,7 +45,7 @@ import pandas as pd
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 19
+seed = 10
 torch.manual_seed(seed)
 
 def normalize_train_set(train_split):
@@ -95,8 +91,6 @@ def normalize_and_split(train_split, val_split, test_split):
     lab_test = test_set[:, -1:]
     lab_test = lab_test.astype('int')
 
-    # X = StandardScaler().fit_transform(matrix_feat)
-
     X_train, X_val, X_test, y_train, y_val, y_test = feat_train, feat_val, feat_test, lab_train, lab_val, lab_test
     y_train = y_train.ravel()
     y_val = y_val.ravel()
@@ -112,16 +106,6 @@ def normalize_and_split(train_split, val_split, test_split):
 
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
-
-#class SingleLayerClassifier(nn.Module):
-#   def __init__(self, input_size, output_size):
-#       super(SingleLayerClassifier, self).__init__()
-#       self.fc = nn.Linear(input_size, output_size)
-#       self.sigmoid = nn.Sigmoid()
-#   def forward(self, x):
-#       x = self.fc(x)
-#       x = self.sigmoid(x)
-#       return x.squeeze(1)
 
 class SingleLayerClassifier(nn.Module):
 
@@ -184,55 +168,6 @@ for feat_name in feats_names:
             feat = np.append(feat, label_row)
             data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
 
-    ############# PITT ###############
-
-   # base_dir_pitt = os.path.join(pitt, feat_name)
-   # all_files_pitt = [os.path.join(base_dir_pitt, elem) for elem in sorted(os.listdir(base_dir_pitt))]
-   # data_fold_pitt = np.array(())
-   # for file in all_files_pitt:
-   #     #  print(file)
-   #     label_row = os.path.basename(file).split('_')[0]
-   #     label_row = [1 if label_row == 'CN' else 0]
-   #     feat = np.load(file)
-   #     feat = np.append(feat, label_row)
-   #     data_fold_pitt = np.vstack((data_fold_pitt, feat)) if data_fold_pitt.size else feat
-#
-    ############# ADRESS-M ###############
-
-   # base_dir_adr = os.path.join(adr, feat_name)
-   # all_files_adr = [os.path.join(base_dir_adr, elem) for elem in sorted(os.listdir(base_dir_adr))]
-   # data_fold_adr = np.array(())
-   # for file in zip(all_files_adr, train_labels_adr):
-   #     label_row = file[-1]
-   #     feat = np.load(file[0])
-   #     feat = np.append(feat, label_row)
-   #     data_fold_adr = np.vstack((data_fold_adr, feat)) if data_fold_adr.size else feat
-#
-    ############### Lu ###############
-
-  #  base_dir_lu = os.path.join(lu, feat_name)
-  #  all_files_lu = [os.path.join(base_dir_lu, elem) for elem in os.listdir(base_dir_lu)]
-  #  data_fold_lu = np.array(())
-  #  for file in all_files_lu:
-  #      label_row = os.path.basename(file).split('_')[0]
-  #      label_row = [1 if label_row == 'CN' else 0]
-  #      feat = np.load(file)
-  #      feat = np.append(feat, label_row)
-  #      data_fold_lu = np.vstack((data_fold_lu, feat)) if data_fold_lu.size else feat
-#
-    ############### Delaware ###############
-
-   # base_dir_del = os.path.join(delaware, feat_name)
-   # all_files_del = [os.path.join(base_dir_del, elem) for elem in os.listdir(base_dir_del)]
-   # data_fold_del = np.array(())
-   # for file in all_files_del:
-   #     #  print(file)
-   #     label_row = os.path.basename(file).split('_')[0]
-   #     label_row = [1 if label_row == 'CN' else 0]
-   #     feat = np.load(file)
-   #     feat = np.append(feat, label_row)
-   #     data_fold_del = np.vstack((data_fold_del, feat)) if data_fold_del.size else feat
-
     ####################################################################
 
     n_folds_names = []
@@ -245,8 +180,8 @@ for feat_name in feats_names:
         n_folds_names.append(list([os.path.basename(sp) for sp in fold]))
         fold_info = read_dict[key]  # get data for
         for sp in fold_info:
-            fold_info_general.append(
-                [os.path.join(feat_pths, feat_name, sp.split('.wav')[0] + '.npy'), (fold_info[sp])['label']]) #append paht and labels
+            fold_info_general.append([os.path.join(feat_pths, feat_name, sp.split('.wav')[0] + '.npy'),
+                                      (fold_info[sp])['label']])
         all_folds_info.append(fold_info_general)
 
     #  print(n_folds_names[0])
@@ -436,7 +371,6 @@ for feat_name in feats_names:
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
         normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
 
-       # Xtrain = np.concatenate([normalized_train_zh], axis=0)
         Xtrain = np.concatenate([normalized_train_nls, normalized_train_zh], axis=0)
         y_train = np.concatenate([y_train_nls, y_train_zh], axis=0)
         Xval = np.concatenate([normalized_val_zh], axis=0)

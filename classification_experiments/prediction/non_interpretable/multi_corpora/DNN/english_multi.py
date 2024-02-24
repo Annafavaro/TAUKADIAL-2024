@@ -1,3 +1,6 @@
+
+
+
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
 
@@ -30,14 +33,7 @@ path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/traini
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
 
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
-chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
-
-delaware = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Delaware/embeddings/'
-lu = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Lu/embeddings/'
-adr = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Adress-M/embeddings/'
-pitt = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Pitt/embeddings/'
 nls = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/NLS/embeddings/'
-china = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/Chinese/embeddings/'
 
 import os
 import numpy as np
@@ -47,7 +43,7 @@ import pandas as pd
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 19
+seed = 100
 torch.manual_seed(seed)
 
 def normalize_train_set(train_split):
@@ -328,13 +324,7 @@ for feat_name in feats_names:
         normalized_train_en, normalized_val_en, normalized_test_en, y_train_en, y_val_en, y_test_en = normalize_and_split(
             eval(f"data_train_{n_fold}_en"), eval(f"data_val_{n_fold}_en"), eval(f"data_test_{n_fold}_en"))
 
-        #normalized_train_del, y_train_del = normalize_train_set(data_fold_del)
-        #normalized_train_lu, y_train_lu = normalize_train_set(data_fold_lu)
-       # normalized_train_adr, y_train_adr = normalize_train_set(data_fold_adr)
-        #normalized_train_pitt, y_train_pitt = normalize_train_set(data_fold_pitt)
         normalized_train_nls, y_train_nls = normalize_train_set(data_fold_nls)
-      #  normalized_train_china, y_train_china = normalize_train_set(data_fold_china)
-
         Xtrain = np.concatenate([normalized_train_nls, normalized_train_en ], axis=0)
         y_train = np.concatenate([y_train_nls, y_train_en], axis=0)
 
