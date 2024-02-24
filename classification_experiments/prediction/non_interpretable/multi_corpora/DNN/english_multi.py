@@ -133,24 +133,8 @@ def reset_weights(m):
             layer.reset_parameters()
 
 
-train_labels = pd.read_csv('/export/c06/afavaro/DementiaBank/ADReSS-M/ADReSS-M-train/training-groundtruth.csv')
-train_labels_adr = train_labels.sort_values(by=['adressfname'])['dx'].tolist()
-train_labels_adr = [1 if ids == 'Control' else 0 for ids in train_labels_adr]
-
 for feat_name in feats_names:
     print(f"Experiments with {feat_name}")
-
-    ############# China ###############
-
-   # base_dir_china = os.path.join(china, feat_name)
-   # all_files_china = [os.path.join(base_dir_china, elem) for elem in sorted(os.listdir(base_dir_china))]
-   # data_fold_china = np.array(())
-   # for file in all_files_china:
-   #     label_row = os.path.basename(file).split('_')[0]
-   #     label_row = [1 if label_row == 'HC' else 0]
-   #     feat = np.load(file)
-   #     feat = np.append(feat, label_row)
-   #     data_fold_china = np.vstack((data_fold_china, feat)) if data_fold_china.size else feat
 
     ############# NLS ###############
 
@@ -168,55 +152,6 @@ for feat_name in feats_names:
             feat = np.load(file)
             feat = np.append(feat, label_row)
             data_fold_nls = np.vstack((data_fold_nls, feat)) if data_fold_nls.size else feat
-
-    ############# PITT ###############
-
-    #base_dir_pitt = os.path.join(pitt, feat_name)
-    #all_files_pitt = [os.path.join(base_dir_pitt, elem) for elem in sorted(os.listdir(base_dir_pitt))]
-    #data_fold_pitt = np.array(())
-    #for file in all_files_pitt:
-    #    #  print(file)
-    #    label_row = os.path.basename(file).split('_')[0]
-    #    label_row = [1 if label_row == 'CN' else 0]
-    #    feat = np.load(file)
-    #    feat = np.append(feat, label_row)
-    #    data_fold_pitt = np.vstack((data_fold_pitt, feat)) if data_fold_pitt.size else feat
-#
-    ############# ADRESS-M ###############
-
-    base_dir_adr = os.path.join(adr, feat_name)
-    all_files_adr = [os.path.join(base_dir_adr, elem) for elem in sorted(os.listdir(base_dir_adr))]
-    data_fold_adr = np.array(())
-    for file in zip(all_files_adr, train_labels_adr):
-        label_row = file[-1]
-        feat = np.load(file[0])
-        feat = np.append(feat, label_row)
-        data_fold_adr = np.vstack((data_fold_adr, feat)) if data_fold_adr.size else feat
-
-    ############### Lu ###############
-
-    base_dir_lu = os.path.join(lu, feat_name)
-    all_files_lu = [os.path.join(base_dir_lu, elem) for elem in os.listdir(base_dir_lu)]
-    data_fold_lu = np.array(())
-    for file in all_files_lu:
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'CN' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_lu = np.vstack((data_fold_lu, feat)) if data_fold_lu.size else feat
-
-    ############### Delaware ###############
-
-    base_dir_del = os.path.join(delaware, feat_name)
-    all_files_del = [os.path.join(base_dir_del, elem) for elem in os.listdir(base_dir_del)]
-    data_fold_del = np.array(())
-    for file in all_files_del:
-        #  print(file)
-        label_row = os.path.basename(file).split('_')[0]
-        label_row = [1 if label_row == 'CN' else 0]
-        feat = np.load(file)
-        feat = np.append(feat, label_row)
-        data_fold_del = np.vstack((data_fold_del, feat)) if data_fold_del.size else feat
 
     ####################################################################
 
