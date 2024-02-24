@@ -22,7 +22,7 @@ import torch
 import torch.nn as nn
 from sklearn.metrics import r2_score
 
-seed = 100
+seed = 700
 torch.manual_seed(seed)
 
 
@@ -214,9 +214,9 @@ for feat_name in feats_names:
         Xtrain, Xval, Xtest, mmse_labels_train, mmse_labels_val, mmse_labels_test = normalize(
             eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
-        print(mmse_labels_val)
-        print(mmse_labels_train)
-        print(mmse_labels_test)
+        #print(mmse_labels_val)
+        #print(mmse_labels_train)
+        #print(mmse_labels_test)
         batches_per_epoch = len(Xtrain) // batch_size
         best_val_loss = float('inf')
         for epoch in range(num_epochs):
