@@ -63,14 +63,13 @@ x = model(input, attention_mask=mask)
 x = tf.reduce_mean(x.last_hidden_state, axis=1)
 x = tf.keras.layers.Dense(16, activation='relu')(x)
 x = tf.keras.layers.Dropout(0.3)(x)
-output = tf.keras.layers.Dense(3, activation='softmax')(x)
+output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
 
 clf = tf.keras.Model([input, mask], output)
 
 base_learning_rate = 0.00001
 optimizer = tf.keras.optimizers.Adam(learning_rate=base_learning_rate)
-# loss=tf.keras.losses.BinaryCrossentropy()
-loss = tf.keras.losses.SparseCategoricalCrossentropy()
+loss = tf.keras.losses.BinaryCrossentropy()
 
 clf.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
 
