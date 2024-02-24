@@ -24,7 +24,7 @@ MAX_LENGTH = math.ceil((X_train.apply(lambda x: len(str(x).split())).mean())) + 
 PAD_TOKEN = "<|pad|>"
 EOS_TOKEN = "<|endoftext|>"
 
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2",
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2-medium",
                                           pad_token=PAD_TOKEN,
                                           eos_token=EOS_TOKEN,
                                           max_length=MAX_LENGTH,
