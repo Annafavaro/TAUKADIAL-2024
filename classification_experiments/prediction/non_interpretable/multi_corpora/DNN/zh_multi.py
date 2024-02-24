@@ -39,7 +39,7 @@ import pandas as pd
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 10
+seed = 100
 torch.manual_seed(seed)
 
 def normalize_train_set(train_split):
@@ -169,6 +169,7 @@ for feat_name in feats_names:
             feat = np.append(feat, label_row)
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
+
     ###############################  ENGLISH SPLIT ###########################################
 
     data_train_1_en = np.concatenate(folds[:8])
