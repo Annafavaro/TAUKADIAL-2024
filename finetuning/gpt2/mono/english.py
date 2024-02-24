@@ -1,6 +1,9 @@
 import pandas as pd
 import tensorflow as tf
 from transformers import GPT2Tokenizer, TFGPT2Model
+from matplotlib import pyplot as plt
+import seaborn as sns
+from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 import math
 
@@ -44,42 +47,51 @@ X_test_mask = tf.squeeze(tf.convert_to_tensor(X_test_mask_), axis=1)
 
 # Increase GPT-2 model size
 model = TFGPT2Model.from_pretrained("gpt2-large", use_cache=False,
-                                    pad_token_id=tokenizer.pad_token_id,
-                                    eos_token_id=tokenizer.eos_token_id)
-print('loaded data')
-# Fine-tune some GPT-2 layers
-for layer in model.layers[-10:]:
-    layer.trainable = True
+        pad_token_id=tokenizer.pad_token_id,
+        eos_token_id=tokenizer.eos_token_id)
+model.training = True
 
 model.resize_token_embeddings(len(tokenizer))
+
+for layer in model.layers:
+    layer.trainable = False
+
+input = tf.keras.layers.Input(shape=(None,), dtype='int32')
 mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
-# Experiment with dropout rate
-x = model(X_train_in, attention_mask=X_train_mask)
+x = model(input, attention_mask=mask)
+# x = x.last_hidden_state[:, -1]
 x = tf.reduce_mean(x.last_hidden_state, axis=1)
 x = tf.keras.layers.Dense(16, activation='relu')(x)
 x = tf.keras.layers.Dropout(0.3)(x)
-output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
+output = tf.keras.layers.Dense(3, activation='softmax')(x)
 
 clf = tf.keras.Model([input, mask], output)
 
-# Experiment with learning rate
-base_learning_rate = 0.0001
+base_learning_rate = 0.00001
 optimizer = tf.keras.optimizers.Adam(learning_rate=base_learning_rate)
-loss = tf.keras.losses.BinaryCrossentropy()
+# loss=tf.keras.losses.BinaryCrossentropy()
+loss = tf.keras.losses.SparseCategoricalCrossentropy()
+
 clf.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
 
 callbacks = tf.keras.callbacks.EarlyStopping(
     monitor="accuracy", verbose=1, patience=3, restore_best_weights=True)
+
 
 y_train_in = tf.constant(y_train, dtype=tf.int32)
 y_test_in = tf.constant(y_test, dtype=tf.int32)
 
 tf.config.experimental_run_functions_eagerly(True)
 
-history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=20, batch_size=32, validation_split=0.2, callbacks=callbacks)
+history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=30, batch_size=32, validation_split=0.2,
+                  callbacks=callbacks)
+
 clf.evaluate([X_test_in, X_test_mask], y_test_in)
+
 clf.training = False
 y_pred = clf.predict([X_test_in, X_test_mask])
+
 y_pred_out = tf.math.argmax(y_pred, axis=-1)
+
 
 print(classification_report(y_test_in, y_pred_out))
