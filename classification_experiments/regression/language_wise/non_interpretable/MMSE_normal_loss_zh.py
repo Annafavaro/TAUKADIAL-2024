@@ -1,7 +1,10 @@
-feats_names = ['DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base', 'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-               'wav2vec_53', 'whisper', 'trillsson', 'xvector']
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+               'multilingual-e5-large', 'whisper',
+               'text2vec-base-multilingual', 'xlm-roberta-base',
+               'distiluse-base-multilingual-cased',
+               'distiluse-base-multilingual-cased-v1',
+               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
+               'wav2vec_53', 'trillsson', 'xvector']
 
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
@@ -128,27 +131,6 @@ for feat_name in feats_names:
 
     print(folds[0])
 
-    # data_train_1 = np.concatenate(folds[:9])
-    # data_test_1 = np.concatenate(folds[-1:])
-    # data_train_2 = np.concatenate(folds[1:])
-    # data_test_2 = np.concatenate(folds[:1])
-    # data_train_3 = np.concatenate(folds[2:] + folds[:1])
-    # data_test_3 = np.concatenate(folds[1:2])
-    # data_train_4 = np.concatenate(folds[3:] + folds[:2])
-    # data_test_4 = np.concatenate(folds[2:3])
-    # data_train_5 = np.concatenate(folds[4:] + folds[:3])
-    # data_test_5 = np.concatenate(folds[3:4])
-    # data_train_6 = np.concatenate(folds[5:] + folds[:4])
-    # data_test_6 = np.concatenate(folds[4:5])
-    # data_train_7 = np.concatenate(folds[6:] + folds[:5])
-    # data_test_7 = np.concatenate(folds[5:6])
-    # data_train_8 = np.concatenate(folds[7:] + folds[:6])
-    # data_test_8 = np.concatenate(folds[6:7])
-    # data_train_9 = np.concatenate(folds[8:] + folds[:7])
-    # data_test_9 = np.concatenate(folds[7:8])
-    # data_train_10 = np.concatenate(folds[9:] + folds[:8])
-    # data_test_10 = np.concatenate(folds[8:9])
-
     # For fold 1
     data_train_1 = np.concatenate(folds[:8])
     data_val_1 = np.concatenate(folds[8:9])
@@ -232,7 +214,6 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
-        # Xtrain, Xtest, mmse_labels_train, mmse_labels_test = normalize(eval(f"data_train_{n_fold}"), eval(f"data_test_{n_fold}"))
         Xtrain, Xval, Xtest, mmse_labels_train, mmse_labels_val, mmse_labels_test = normalize(
             eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 

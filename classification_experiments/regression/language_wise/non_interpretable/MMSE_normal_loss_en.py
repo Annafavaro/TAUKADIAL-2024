@@ -1,7 +1,10 @@
-feats_names = ['DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'multilingual-e5-large',
-               'text2vec-base-multilingual', 'xlm-roberta-base', 'distiluse-base-multilingual-cased',
-               'distiluse-base-multilingual-cased-v1', 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-               'wav2vec_53', 'whisper', 'trillsson', 'xvector']
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+               'multilingual-e5-large', 'whisper',
+               'text2vec-base-multilingual', 'xlm-roberta-base',
+               'distiluse-base-multilingual-cased',
+               'distiluse-base-multilingual-cased-v1',
+               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
+               'wav2vec_53', 'trillsson', 'xvector']
 
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
@@ -21,41 +24,6 @@ from sklearn.metrics import r2_score
 
 seed = 40
 torch.manual_seed(seed)
-
-
-# Define a custom neural network model
-#class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size, hidden_size):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.fc2 = nn.Linear(hidden_size, 1)
-#
-#    def forward(self, x):
-#        x = torch.relu(self.fc1(x))
-#        x = self.fc2(x)
-#        return x
-#
-
-#class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size, hidden_size, dropout_rate=0.5):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.bn1 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the first fully connected layer
-#        self.dropout1 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
-#        self.fc2 = nn.Linear(hidden_size, hidden_size)
-#        self.bn2 = nn.BatchNorm1d(hidden_size)  # Batch normalization after the second fully connected layer
-#        self.dropout2 = nn.Dropout(p=dropout_rate)  # Dropout with probability dropout_rate
-#        self.fc3 = nn.Linear(hidden_size, 1)
-#
-#    def forward(self, x):
-#        x = torch.relu(self.bn1(self.fc1(x)))  # Apply batch normalization after the first fully connected layer
-#        x = self.dropout1(x)  # Apply dropout
-#        x = torch.relu(self.bn2(self.fc2(x)))  # Apply batch normalization after the second fully connected layer
-#        x = self.dropout2(x)  # Apply dropout
-#        x = self.fc3(x)
-#        return x
-#
-
 
 
 class MMSE_ModelBasic(nn.Module):
@@ -153,7 +121,6 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             feat = np.load(speaker[0])
-            # print(label_row, row['path_feat'])
             feat = np.append(feat, label_row)
             feat = np.append(feat, mmse)
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
@@ -270,8 +237,6 @@ for feat_name in feats_names:
                 outputs = model(Xbatch)
                 # Compute loss
                 loss = criterion(outputs.squeeze(), y_train_batch_mmse)
-                # print(loss)
-                # Backward pass
                 loss.backward()
                 optimizer.step()
                 total_loss += loss.item()
@@ -305,7 +270,7 @@ for feat_name in feats_names:
             y_pred = model(Xtest_tensor)
         rmse_val = rmse_function(y_pred.squeeze(), y_test_mmse)
         rmse_vals.append(rmse_val)
-        r2_val = r2_score(y_test_mmse.numpy(), y_pred.squeeze().numpy())
+        #r2_val = r2_score(y_test_mmse.numpy(), y_pred.squeeze().numpy())
 
         # Store ground truth and predictions
         truth.extend(y_test_mmse.numpy())
