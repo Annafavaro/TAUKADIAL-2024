@@ -39,7 +39,7 @@ import pandas as pd
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 55 #50
+seed = 50 #50
 torch.manual_seed(seed)
 
 def normalize_train_set(train_split):
