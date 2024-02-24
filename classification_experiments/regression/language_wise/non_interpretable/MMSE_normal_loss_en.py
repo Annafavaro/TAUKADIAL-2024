@@ -215,6 +215,8 @@ for feat_name in feats_names:
             eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
         print(mmse_labels_val)
+        print(mmse_labels_train)
+        print(mmse_labels_test)
         batches_per_epoch = len(Xtrain) // batch_size
         best_val_loss = float('inf')
         for epoch in range(num_epochs):
