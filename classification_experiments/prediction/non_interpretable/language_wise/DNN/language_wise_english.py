@@ -18,7 +18,7 @@ import torch.nn as nn
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 40
+seed = 19
 torch.manual_seed(seed)
 
 def normalize_and_split(train_split, val_split, test_split):
@@ -97,13 +97,10 @@ for feat_name in feats_names:
             label_row = speaker[-2]
             mmse = speaker[-1]
             feat = np.load(speaker[0])
-            # print(label_row, row['path_feat'])
             feat = np.append(feat, label_row)
             feat = np.append(feat, mmse)
             data_fold = np.vstack((data_fold, feat)) if data_fold.size else feat
         folds.append(data_fold)
-
-    # print(folds[0])
 
     # For fold 1
     data_train_1 = np.concatenate(folds[:8])
@@ -167,7 +164,6 @@ for feat_name in feats_names:
     n_epochs = 15
     batch_size = 32
     input_dim = data_train_1.shape[1] - 2  # Subtract 1 for the label column and 1 for mmse
-    # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
     learning_rate = 0.001
     criterion = nn.BCELoss()  # Binary Cross Entropy Loss
