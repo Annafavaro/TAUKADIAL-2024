@@ -4,12 +4,9 @@ feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'mul
                'wav2vec_53', 'whisper', 'trillsson', 'xvector']
 
 #feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
-
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-#feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings_language_specific/chinese/'
-
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/chinese/non_interpretable_sigmoid/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/chinese/prediction/non_interpretable_sigmoid/'
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
@@ -22,9 +19,9 @@ import json
 import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
+
 seed = 40
 torch.manual_seed(seed)
-
 
 def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
