@@ -23,7 +23,7 @@ import torch
 import sklearn
 from sklearn.metrics import r2_score
 
-seed = 100
+seed = 44
 torch.manual_seed(seed)
 
 class MMSE_ModelBasic(nn.Module):
