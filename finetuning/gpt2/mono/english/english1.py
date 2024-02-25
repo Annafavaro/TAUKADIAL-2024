@@ -5,7 +5,7 @@ from transformers import GPT2Tokenizer, TFGPT2Model
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import math
-seed_value = 100
+seed_value = 19
 tf.random.set_seed(seed_value)
 
 # Define the range of cross-validation splits
