@@ -99,7 +99,8 @@ accuracy = accuracy_score(y_test_in, y_pred_out)
 # Convert y_pred_out and y_test_in to NumPy arrays
 y_pred_out_array = y_pred_out.numpy()
 y_test_in_array = y_test_in.numpy()
-score_list = [item[0] for item in y_pred.numpy()]
+score_list = [item[0] for item in y_pred.tolist()]
+print(score_list)
 # Create a DataFrame
 data = {'idx': cv_test['idx'].tolist(), 'preds': y_pred_out_array.tolist(), 'score': score_list, 'label': y_test_in_array.tolist(), 'accuracy': [accuracy] * len(y_pred_out_array)}
 df = pd.DataFrame(data)
