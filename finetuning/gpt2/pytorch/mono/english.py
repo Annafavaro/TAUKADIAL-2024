@@ -193,6 +193,7 @@ def train(dataloader, optimizer_, scheduler_, device_):
         # loss value out of the tuple along with the logits. We will use logits
         # later to calculate training accuracy.
         loss, logits = outputs[:2]
+
         # from the tensor.
         total_loss += loss.item()
 
