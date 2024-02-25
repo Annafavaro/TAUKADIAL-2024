@@ -1,9 +1,12 @@
 import pandas as pd
 import tensorflow as tf
+impoer numpy as np
 from transformers import GPT2Tokenizer, TFGPT2Model
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import math
+seed_value = 100
+tf.random.set_seed(seed_value)
 
 # Define the range of cross-validation splits
 cv_range = range(1, 11)
@@ -83,19 +86,11 @@ for cv_num in cv_range:
     print("Predictions:", y_pred_out)
     print(classification_report(y_test_in, y_pred_out))
 
-    # Save predictions to CSV
-    #accuracy = accuracy_score(y_test_in, y_pred_out)
-    #score_list = [item[0] for item in y_pred.tolist()]
-    #data = {'idx': cv_test['idx'].tolist(), 'predictions': y_pred_out, 'score': score_list,
-    #        'label': y_test_in.tolist(), 'accuracy': [accuracy] * len(y_pred_out)}
-    #df = pd.DataFrame(data)
-    #df.to_csv(out_path, index=False)
-
     accuracy = accuracy_score(y_test_in, y_pred_out)
     score_list = [item[0] for item in y_pred.tolist()]
     data = {
         'idx': cv_test['idx'].tolist(),
-        'preds': y_pred_out.numpy().tolist(),
+        'preds': y_pred_out,
         'score': score_list,
         'label':  cv_test['label'].tolist(),
         'accuracy': [accuracy] * len(cv_test['label'].tolist())
