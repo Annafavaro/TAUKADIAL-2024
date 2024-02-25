@@ -16,35 +16,6 @@ from transformers import (set_seed,
                           GPT2ForSequenceClassification)
 
 
-
-#cv_num = 1
-#out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
-#cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
-#cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
-#cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
-#
-#cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
-#cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
-#cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
-#cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
-#
-#cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
-#cv_test = cv_test.drop(columns=['Unnamed: 0'])
-#cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
-#
-#
-#
-## Set seed for reproducibility.
-#set_seed(123)
-#epochs = 4
-#batch_size = 6
-#max_length = 512
-#device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-#model_name_or_path = 'gpt2'
-#labels_ids = {'MCI': 0, 'CN': 1}
-#n_labels = len(labels_ids)
-#print(n_labels)
-
 class MovieReviewsDataset2(Dataset):
     """
  a   PyTorch Dataset class for loading data from Pandas DataFrames.
@@ -372,7 +343,7 @@ for cv_num in cv_range:
 
 
     set_seed(123)
-    epochs = 3
+    epochs = 1
     batch_size = 4
     max_length = 512
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
