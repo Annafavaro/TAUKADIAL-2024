@@ -343,7 +343,7 @@ for cv_num in cv_range:
 
 
     set_seed(123)
-    epochs = 1
+    epochs = 7
     batch_size = 4
     max_length = 512
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -420,7 +420,12 @@ for cv_num in cv_range:
     all_acc = {'train_acc':[], 'val_acc':[]}
 
     # Loop through each epoch.
+    best_val_acc = 0.0  # Best validation accuracy seen so far
+    patience = 3  # Number of epochs to wait after last time validation accuracy improved
+    epochs_since_improvement = 0  # Counter for epochs since last improvement
+
     print('Epoch')
+
     for epoch in tqdm(range(epochs)):
       print()
       print('Training on batches...')
@@ -433,6 +438,7 @@ for cv_num in cv_range:
       valid_labels, valid_predict, val_scores, val_loss = validation(valid_dataloader, device)
       val_acc = accuracy_score(valid_labels, valid_predict)
 
+
       # Print loss and accuracy values to see how training evolves.
       print("  train_loss: %.5f - val_loss: %.5f - train_acc: %.5f - valid_acc: %.5f"%(train_loss, val_loss, train_acc, val_acc))
       print()
@@ -442,6 +448,18 @@ for cv_num in cv_range:
       all_loss['val_loss'].append(val_loss)
       all_acc['train_acc'].append(train_acc)
       all_acc['val_acc'].append(val_acc)
+
+      if val_acc > best_val_acc:
+          best_val_acc = val_acc
+          epochs_since_improvement = 0
+          print(f"Validation accuracy improved to {val_acc:.5f}, saving model...")
+          # Optionally, save the model here
+      else:
+          epochs_since_improvement += 1
+          print(f"No improvement in validation accuracy for {epochs_since_improvement} epochs...")
+          if epochs_since_improvement >= patience:
+              print("Early stopping triggered.")
+              break
 
 
     true_labels, predictions_labels, pred_scores, avg_epoch_loss = validation(valid_dataloader, device)
