@@ -1,4 +1,5 @@
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
@@ -6,43 +7,43 @@ from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from transformers import AutoModelForSequenceClassification, TrainingArguments, Trainer
 from transformers import AutoTokenizer
 from datasets import list_metrics
+from transformers import AutoConfig, AutoModel
 import numpy as np
-import torch
-import sys
 from datasets import load_metric
+import torch
+torch.manual_seed(40)
 
-if __name__ == "__main__":
+device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+#checkpoint = 'distilbert-base-cased'
+checkpoint='bert-base-cased'
+print(checkpoint)
+#checkpoint = "bert-base-cased"
 
-    finetuning_data = sys.argv[1] # path to transcripts
-    out_scores = sys.argv[2]
-    cv_num = int(sys.argv[3])
+def preprocess_function(examples):
+    if sentence2_key is None:
+        return tokenizer(examples[sentence1_key], truncation=True, padding=True)
+    return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=512,
+    return_tensors="pt")
 
-    def preprocess_function(examples):
-        if sentence2_key is None:
-            return tokenizer(examples[sentence1_key], truncation=True, padding=True)
-        return tokenizer(examples[sentence1_key], examples[sentence2_key], truncation=True, padding=True, max_length=50,
-         add_special_tokens = True, return_tensors="pt")
+def compute_metrics(pred):
+    labels = pred.label_ids
+    preds = pred.predictions.argmax(-1)
+    precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary')
+    acc = accuracy_score(labels, preds)
+    return {
+        'accuracy': acc,
+        'f1': f1,
+        'precision': precision,
+        'recall': recall }
 
-    def compute_metrics(pred):
-        labels = pred.label_ids
-        preds = pred.predictions.argmax(-1)
-        precision, recall, f1, _ = precision_recall_fscore_support(labels, preds, average='binary')
-        acc = accuracy_score(labels, preds)
-        return {
-            'accuracy': acc,
-            'f1': f1,
-            'precision': precision,
-            'recall': recall
-        }
 
-    os.environ['TRANSFORMERS_NO_ADVISORY_WARNINGS'] = 'true'
-    device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
+cv_range = range(1, 11)
 
-    checkpoint = 'sentence-transformers/distiluse-base-multilingual-cased-v1'
-    finetuning_data = os.path.join(finetuning_data, f"cv_{cv_num}")
+for cv_num in cv_range:
+    print(f'fold number {cv_num}')
 
-    print(checkpoint)
-    #checkpoint = "bert-base-cased"
+    out_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/bert/augmented/english/'
+    finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/'
 
     path_train = os.path.join(finetuning_data, 'train.csv')
     path_dev = os.path.join(finetuning_data, 'dev.csv')
@@ -90,15 +91,16 @@ if __name__ == "__main__":
         f"{model_name}-finetuned-{task}",
         evaluation_strategy = "epoch",
         save_strategy = "epoch",
-        learning_rate=2e-6,
+        learning_rate=2e-5,
         #learning_rate=2e-5,
         fp16=True,
         logging_steps=1,
-        per_device_train_batch_size=16,
+        per_device_train_batch_size=8,
         per_device_eval_batch_size=64,
-        num_train_epochs=10,
+        num_train_epochs=8,
         weight_decay=0.01,
         load_best_model_at_end=True,
+        save_total_limit=1,
         metric_for_best_model=metric_name,
        # push_to_hub=True,
         logging_dir='./logs'#exp-dir
@@ -111,25 +113,29 @@ if __name__ == "__main__":
         train_dataset=encoded_dataset["train"],
         eval_dataset=encoded_dataset["dev"],
         tokenizer=tokenizer,
-        compute_metrics=compute_metrics
-
-    )
+        compute_metrics=compute_metrics)
 
     trainer.train()
 
-    evaluation_results = trainer.evaluate(eval_dataset=encoded_dataset["test"])
-    print('RESULTS on the test set')
+
+    model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint, num_labels=2)
+
+    eval_trainer = Trainer(model, args, tokenizer=tokenizer, compute_metrics=compute_metrics)
+
+    print('best model loaded')
+    evaluation_results = eval_trainer.evaluate(eval_dataset=encoded_dataset["test"])
+    print('results test set')
     print(evaluation_results)
     acc = [evaluation_results['eval_accuracy']]
     print('Accuracy-->')
     print(acc)
-    predictions = trainer.predict(encoded_dataset["test"])
+    predictions = eval_trainer.predict(encoded_dataset["test"])
     print(predictions.predictions.shape, predictions.label_ids.shape)
     preds = np.argmax(predictions.predictions, axis=-1)
     print(f'predictions are {preds}')
     sp_test = df_test['idx'].tolist()
     y_test = df_test['label'].tolist()
-    dict = {'idx': sp_test, 'preds':preds, 'label': y_test, 'accuracy': acc*len(sp_test)}
+    dict = {'idx': sp_test, 'predictions':preds, 'label': y_test, 'accuracy': acc*len(sp_test)}
     df = pd.DataFrame(dict)
-    out_scores = os.path.join(out_scores, f'cv_{cv_num}.csv')
+    out_scores = os.path.join(out_scores, f'{cv_num}.csv')
     df.to_csv(out_scores)
