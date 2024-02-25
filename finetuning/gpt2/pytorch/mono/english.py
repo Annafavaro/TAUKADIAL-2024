@@ -341,7 +341,6 @@ for cv_num in cv_range:
     cv_test = cv_test.drop(columns=['Unnamed: 0'])
     cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
-
     set_seed(123)
     epochs = 1
     batch_size = 6
@@ -375,6 +374,30 @@ for cv_num in cv_range:
 
     # Load model to defined device.
     model.to(device)
+
+
+
+    # NEWWWWW
+    # Freeze parameters of all layers except the last three transformer layers
+    for name, param in model.named_parameters():
+        if 'transformer.h' in name:
+            # Extract the layer number from the parameter name, e.g., transformer.h.10.attn.c_proj.weight
+            layer_num = int(name.split('.')[2])
+            if layer_num < model.config.n_layer - 3:
+                param.requires_grad = False
+        elif 'lm_head' not in name:  # Optionally, exclude lm_head from freezing if it's part of your model architecture
+            param.requires_grad = False
+
+    # Verify which parameters are frozen and which are not (Optional debugging step)
+    for name, param in model.named_parameters():
+        print(f"{name} is {'not ' if not param.requires_grad else ''}trainable")
+
+
+
+
+
+
+
     print('Model loaded to `%s`'%device)
 
     # Create data collator to encode text and labels into numbers.
