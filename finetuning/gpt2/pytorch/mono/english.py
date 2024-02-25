@@ -17,33 +17,33 @@ from transformers import (set_seed,
 
 
 
-cv_num = 1
-out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
-cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
-cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
-cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
-
-cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
-cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
-cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
-cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
-
-cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
-cv_test = cv_test.drop(columns=['Unnamed: 0'])
-cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
-
-
-
-# Set seed for reproducibility.
-set_seed(123)
-epochs = 4
-batch_size = 6
-max_length = 512
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model_name_or_path = 'gpt2'
-labels_ids = {'MCI': 0, 'CN': 1}
-n_labels = len(labels_ids)
-print(n_labels)
+#cv_num = 1
+#out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
+#cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
+#cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
+#cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
+#
+#cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
+#cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
+#cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
+#cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
+#
+#cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
+#cv_test = cv_test.drop(columns=['Unnamed: 0'])
+#cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
+#
+#
+#
+## Set seed for reproducibility.
+#set_seed(123)
+#epochs = 4
+#batch_size = 6
+#max_length = 512
+#device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+#model_name_or_path = 'gpt2'
+#labels_ids = {'MCI': 0, 'CN': 1}
+#n_labels = len(labels_ids)
+#print(n_labels)
 
 class MovieReviewsDataset2(Dataset):
     """
@@ -351,8 +351,36 @@ def validation(dataloader, device_):
     return true_labels, predictions_labels, predictions_scores, avg_epoch_loss
 
 
+cv_num = 1
+out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
+cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
+cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
+cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
+
+cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
+cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
+cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
+cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
+
+cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
+cv_test = cv_test.drop(columns=['Unnamed: 0'])
+cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
+
+
+
+# Set seed for reproducibility.
+set_seed(123)
+epochs = 4
+batch_size = 6
+max_length = 512
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+model_name_or_path = 'gpt2'
+labels_ids = {'MCI': 0, 'CN': 1}
+n_labels = len(labels_ids)
+print(n_labels)
+
 # Get model configuration.
-print('Loading configuraiton...')
+print('Loading configuration...')
 model_config = GPT2Config.from_pretrained(pretrained_model_name_or_path=model_name_or_path, num_labels=n_labels)
 
 # Get model's tokenizer.
@@ -447,11 +475,6 @@ for epoch in tqdm(range(epochs)):
   all_acc['train_acc'].append(train_acc)
   all_acc['val_acc'].append(val_acc)
 
-# Plot loss curves.
-#plot_dict(all_loss, use_xlabel='Epochs', use_ylabel='Value', use_linestyles=['-', '--'])
-
-# Plot accuracy curves.
-#plot_dict(all_acc, use_xlabel='Epochs', use_ylabel='Value', use_linestyles=['-', '--'])
 
 true_labels, predictions_labels, pred_scores, avg_epoch_loss = validation(valid_dataloader, device)
 
