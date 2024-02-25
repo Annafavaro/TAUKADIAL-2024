@@ -343,7 +343,7 @@ for cv_num in cv_range:
 
     set_seed(123)
     epochs = 6
-    batch_size = 6
+    batch_size = 8
     max_length = 512
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model_name_or_path = 'gpt2'
@@ -414,13 +414,12 @@ for cv_num in cv_range:
 
 
     # Create the learning rate scheduler.
-    scheduler = get_cosine_schedule_with_warmup(optimizer,
-                                                num_warmup_steps=0,  # No warmup steps
-                                                num_training_steps=total_steps)
+    #scheduler = get_cosine_schedule_with_warmup(optimizer,
+    #                                            num_warmup_steps=0,  # No warmup steps
+    #                                            num_training_steps=total_steps)
 
-    #scheduler = get_linear_schedule_with_warmup(optimizer,
-                                               # num_warmup_steps = 0, # Default value in run_glue.py
-                                              #  num_training_steps = total_steps)
+    scheduler = get_linear_schedule_with_warmup(optimizer, num_warmup_steps = 0, # Default value in run_glue.py
+                 num_training_steps = total_steps)
 
     # Store the average loss after each epoch so we can plot them.
     all_loss = {'train_loss':[], 'val_loss':[]}
