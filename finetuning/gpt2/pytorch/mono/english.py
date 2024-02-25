@@ -328,16 +328,16 @@ for cv_num in cv_range:
     print(f'fold number {cv_num}')
     out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
 
-    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
+    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/multi/english/cv_{cv_num}/train.csv')
     cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
     cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
 
-    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
+    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/multi/english/cv_{cv_num}/dev.csv')
     cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
     cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
     cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
 
-    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
+    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/multi/english/cv_{cv_num}/test.csv')
     cv_test = cv_test.drop(columns=['Unnamed: 0'])
     cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
@@ -406,7 +406,7 @@ for cv_num in cv_range:
     # I believe the 'W' stands for 'Weight Decay fix"
     optimizer = AdamW(model.parameters(),
                       lr = 2e-5, # default is 5e-5, our notebook had 2e-5
-                      eps = 1e-7 # default is 1e-8.
+                      eps = 1e-8 # default is 1e-8.
                       )
 
     total_steps = len(train_dataloader) * epochs
