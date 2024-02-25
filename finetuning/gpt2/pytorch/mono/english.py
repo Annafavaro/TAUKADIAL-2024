@@ -475,7 +475,7 @@ data = {
         'idx': cv_test['idx'].tolist(),
         'preds': predictions_labels,
         'score': pred_scores,
-        'label':  cv_test['label'].tolist(),
+        'label':  true_labels,
         'accuracy': [accuracy] * len(cv_test['label'].tolist())
     }
 df = pd.DataFrame(data)
