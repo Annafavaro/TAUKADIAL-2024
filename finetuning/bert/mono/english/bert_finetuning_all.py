@@ -97,7 +97,7 @@ for cv_num in cv_range:
         #learning_rate=2e-5,
         fp16=True,
         logging_steps=1,
-        per_device_train_batch_size=16,
+        per_device_train_batch_size=8,
         per_device_eval_batch_size=64,
         num_train_epochs=16,
         weight_decay=0.01,
