@@ -82,7 +82,7 @@ for cv_num in cv_range:
     print(y_pred)
   #  y_pred_out = tf.math.argmax(y_pred, axis=-1)
     y_pred_out = (y_pred[:, 0] >= 0.5).astype(int)
-    print("Predictions:", predictions)
+    print("Predictions:", y_pred_out)
     print('predictions')
     print(y_pred_out)
     print(classification_report(y_test_in, y_pred_out))
