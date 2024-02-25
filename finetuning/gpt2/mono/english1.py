@@ -60,19 +60,9 @@ model.resize_token_embeddings(len(tokenizer))
 for layer in model.layers:
     layer.trainable = False
 
-# prev code
-#input = tf.keras.layers.Input(shape=(None,), dtype='int32')
-#mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
-#x = model(input, attention_mask=mask)
-#x = tf.reduce_mean(x.last_hidden_state, axis=1)
-#x = tf.keras.layers.Dense(40, activation='relu')(x)
-#x = tf.keras.layers.Dropout(0.3)(x)
-#output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
-#clf = tf.keras.Model([input, mask], output)#
 
 input = tf.keras.layers.Input(shape=(None,), dtype='int32')
 mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
-
 # GPT-2 model
 x = model(input, attention_mask=mask)
 # Pooling layer to aggregate information from the sequence
