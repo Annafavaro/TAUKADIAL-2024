@@ -84,27 +84,18 @@ clf = tf.keras.Model([input, mask], output)
 base_learning_rate = 0.0001
 optimizer = tf.keras.optimizers.Adam(learning_rate=base_learning_rate)
 loss = tf.keras.losses.BinaryCrossentropy()
-
 clf.compile(optimizer=optimizer, loss=loss, metrics=['accuracy'])
-
 callbacks = tf.keras.callbacks.EarlyStopping(
     monitor="accuracy", verbose=1, patience=3, restore_best_weights=True)
 
-
 y_train_in = tf.constant(y_train, dtype=tf.int32)
 y_test_in = tf.constant(y_test, dtype=tf.int32)
-
 tf.config.experimental_run_functions_eagerly(True)
-
 history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=30, batch_size=32, validation_split=0.2,
                   callbacks=callbacks)
 
 clf.evaluate([X_test_in, X_test_mask], y_test_in)
-
 clf.training = False
 y_pred = clf.predict([X_test_in, X_test_mask])
-
 y_pred_out = tf.math.argmax(y_pred, axis=-1)
-
-
 print(classification_report(y_test_in, y_pred_out))
