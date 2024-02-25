@@ -367,7 +367,6 @@ cv_test = cv_test.drop(columns=['Unnamed: 0'])
 cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
 
-
 # Set seed for reproducibility.
 set_seed(123)
 epochs = 4
@@ -409,11 +408,9 @@ gpt2_classificaiton_collator = Gpt2ClassificationCollator(use_tokenizer=tokenize
                                                           labels_encoder=labels_ids,
                                                           max_sequence_len=max_length)
 
-
 print('Dealing with Train...')
 # Create pytorch dataset.
-train_dataset = MovieReviewsDataset2(cv_train,
-                               use_tokenizer=tokenizer)
+train_dataset = MovieReviewsDataset2(cv_train, use_tokenizer=tokenizer)
 print('Created `train_dataset` with %d examples!'%len(train_dataset))
 
 # Move pytorch dataset into dataloader.
@@ -432,7 +429,6 @@ print('Created `valid_dataset` with %d examples!'%len(valid_dataset))
 valid_dataloader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False, collate_fn=gpt2_classificaiton_collator)
 print('Created `eval_dataloader` with %d batches!'%len(valid_dataloader))
 
-
 # Note: AdamW is a class from the huggingface library (as opposed to pytorch)
 # I believe the 'W' stands for 'Weight Decay fix"
 optimizer = AdamW(model.parameters(),
@@ -441,7 +437,6 @@ optimizer = AdamW(model.parameters(),
                   )
 
 total_steps = len(train_dataloader) * epochs
-
 # Create the learning rate scheduler.
 scheduler = get_linear_schedule_with_warmup(optimizer,
                                             num_warmup_steps = 0, # Default value in run_glue.py
