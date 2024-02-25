@@ -13,18 +13,20 @@ cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
 cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/multi/english/cv_{cv_num}/dev.csv')
 cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
 cv_train = pd.concat([cv_train1, cv_train2])
-
+print(len(cv_train))
 cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/multi/english/cv_{cv_num}/test.csv')
 cv_test = cv_test.drop(columns=['Unnamed: 0'])
 X_train = cv_train['sentences']
 y_train = cv_train['label']
-X_test, y_test = cv_test['sentences'], cv_test['label']
+X_test =  cv_test['sentences']
+y_test = cv_test['label']
+print(len(X_test))
 
 MAX_LENGTH = math.ceil((X_train.apply(lambda x: len(str(x).split())).mean())) + 2
 PAD_TOKEN = "<|pad|>"
 EOS_TOKEN = "<|endoftext|>"
 
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2",
+tokenizer = GPT2Tokenizer.from_pretrained("gpt3",
                                           pad_token=PAD_TOKEN,
                                           eos_token=EOS_TOKEN,
                                           max_length=MAX_LENGTH,
@@ -46,7 +48,7 @@ X_train_mask = tf.squeeze(tf.convert_to_tensor(X_train_mask_), axis=1)
 X_test_mask = tf.squeeze(tf.convert_to_tensor(X_test_mask_), axis=1)
 
 # Increase GPT-2 model size
-model = TFGPT2Model.from_pretrained("gpt2", use_cache=False,
+model = TFGPT2Model.from_pretrained("gpt3", use_cache=False,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=tokenizer.eos_token_id)
 model.training = True
