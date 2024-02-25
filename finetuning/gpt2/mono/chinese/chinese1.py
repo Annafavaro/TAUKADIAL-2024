@@ -77,6 +77,7 @@ for cv_num in cv_range:
     clf.evaluate([X_test_in, X_test_mask], y_test_in)
     clf.training = False
     y_pred = clf.predict([X_test_in, X_test_mask])
+    print(y_pred)
     y_pred_out = tf.math.argmax(y_pred, axis=-1)
     print(classification_report(y_test_in, y_pred_out))
 
