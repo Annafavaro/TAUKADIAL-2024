@@ -343,8 +343,8 @@ for cv_num in cv_range:
 
 
     set_seed(123)
-    epochs = 7
-    batch_size = 4
+    epochs = 1
+    batch_size = 6
     max_length = 512
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model_name_or_path = 'gpt2'
