@@ -80,7 +80,7 @@ for cv_num in cv_range:
 
     # Threshold predictions
     y_pred_out = (y_pred[:, 0] >= 0.5).astype(int)
-
+    print('score',y_pred_out )
     # Print and save results
     print("Predictions:", y_pred_out)
     print(classification_report(y_test_in, y_pred_out))
