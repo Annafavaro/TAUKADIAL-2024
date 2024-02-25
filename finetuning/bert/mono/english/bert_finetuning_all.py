@@ -37,7 +37,7 @@ def compute_metrics(pred):
         'recall': recall }
 
 
-cv_range = range(1, 11)
+cv_range = range(5, 11) ## change here
 
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
@@ -97,7 +97,7 @@ for cv_num in cv_range:
         logging_steps=1,
         per_device_train_batch_size=8,
         per_device_eval_batch_size=64,
-        num_train_epochs=12,
+        num_train_epochs=6,
         weight_decay=0.01,
         load_best_model_at_end=True,
         save_total_limit=1,
