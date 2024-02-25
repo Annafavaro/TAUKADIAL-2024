@@ -455,7 +455,7 @@ for cv_num in cv_range:
       all_acc['train_acc'].append(train_acc)
       all_acc['val_acc'].append(val_acc)
 
-      if val_acc > best_val_acc:
+      if val_acc >= best_val_acc:
           best_val_acc = val_acc
           epochs_since_improvement = 0
           print(f"Validation accuracy improved to {val_acc:.5f}, saving model...")
