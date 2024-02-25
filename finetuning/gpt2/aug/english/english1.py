@@ -14,15 +14,15 @@ cv_range = range(1, 11)
 # Loop over cross-validation splits
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
-    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt/mono/english/cv_{cv_num}.csv'
+    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt/augmented_gpt/english/cv_{cv_num}.csv'
 
     # Load data for the current cross-validation split
-    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
+    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/train.csv')
     cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
-    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
+    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/dev.csv')
     cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
     cv_train = pd.concat([cv_train1, cv_train2])
-    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
+    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/test.csv')
     cv_test = cv_test.drop(columns=['Unnamed: 0'])
     X_train = cv_train['sentences']
     y_train = cv_train['label']
