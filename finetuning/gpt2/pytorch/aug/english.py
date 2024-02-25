@@ -35,9 +35,6 @@ class MovieReviewsDataset2(Dataset):
         self.texts = dataframe['sentences'].tolist()
         self.labels = dataframe['label'].tolist()  # Assuming binary labels are already 0s and 1s
 
-        # Tokenization can be performed here if needed, for example:
-        # self.tokenized_texts = [use_tokenizer(text) for text in self.texts]
-
         # Number of examples
         self.n_examples = len(self.labels)
 
@@ -405,8 +402,6 @@ for cv_num in cv_range:
 
     total_steps = len(train_dataloader) * epochs
     # Create the learning rate scheduler.
-
-
     # Create the learning rate scheduler.
     #scheduler = get_cosine_schedule_with_warmup(optimizer,
     #                                            num_warmup_steps=0,  # No warmup steps
