@@ -1,6 +1,5 @@
-
 import os
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
+os.environ['CUDA_VISIBLE_DEVICES'] = '0'
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
