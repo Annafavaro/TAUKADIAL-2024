@@ -8,13 +8,13 @@ from sklearn.metrics import classification_report
 import math
 
 cv_num = 1
-cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/all/cv_{cv_num}/train.csv')
+cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
 cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
-cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/all/cv_{cv_num}/dev.csv')
+cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
 cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
 cv_train = pd.concat([cv_train1, cv_train2])
 
-cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/all/cv_{cv_num}/test.csv')
+cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
 cv_test = cv_test.drop(columns=['Unnamed: 0'])
 X_train = cv_train['sentences']
 y_train = cv_train['label']
@@ -60,7 +60,7 @@ input = tf.keras.layers.Input(shape=(None,), dtype='int32')
 mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
 x = model(input, attention_mask=mask)
 x = tf.reduce_mean(x.last_hidden_state, axis=1)
-x = tf.keras.layers.Dense(16, activation='relu')(x)
+x = tf.keras.layers.Dense(40, activation='relu')(x)
 x = tf.keras.layers.Dropout(0.3)(x)
 output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
 
