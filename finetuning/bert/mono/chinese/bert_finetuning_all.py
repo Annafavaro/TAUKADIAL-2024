@@ -134,7 +134,7 @@ for cv_num in cv_range:
     print(f'predictions are {preds}')
     sp_test = df_test['idx'].tolist()
     y_test = df_test['label'].tolist()
-    dict = {'idx': sp_test, 'preds':preds, 'label': y_test, 'accuracy': acc*len(sp_test)}
+    dict = {'idx': sp_test, 'predictions':preds, 'label': y_test, 'accuracy': acc*len(sp_test)}
     df = pd.DataFrame(dict)
     out_scores = os.path.join(out_scores, f'{cv_num}.csv')
     df.to_csv(out_scores)
