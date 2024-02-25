@@ -71,7 +71,7 @@ for cv_num in cv_range:
     y_train_in = tf.constant(y_train, dtype=tf.int32)
     y_test_in = tf.constant(y_test, dtype=tf.int32)
     tf.config.experimental_run_functions_eagerly(True)
-    history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=1, batch_size=32, validation_split=0.2, callbacks=callbacks)
+   # history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=1, batch_size=32, validation_split=0.2, callbacks=callbacks)
 
     # Model evaluation
     clf.evaluate([X_test_in, X_test_mask], y_test_in)
@@ -84,9 +84,21 @@ for cv_num in cv_range:
     print(classification_report(y_test_in, y_pred_out))
 
     # Save predictions to CSV
+    #accuracy = accuracy_score(y_test_in, y_pred_out)
+    #score_list = [item[0] for item in y_pred.tolist()]
+    #data = {'idx': cv_test['idx'].tolist(), 'predictions': y_pred_out, 'score': score_list,
+    #        'label': y_test_in.tolist(), 'accuracy': [accuracy] * len(y_pred_out)}
+    #df = pd.DataFrame(data)
+    #df.to_csv(out_path, index=False)
+
     accuracy = accuracy_score(y_test_in, y_pred_out)
     score_list = [item[0] for item in y_pred.tolist()]
-    data = {'idx': cv_test['idx'].tolist(), 'predictions': y_pred_out, 'score': score_list,
-            'label': y_test_in.tolist(), 'accuracy': [accuracy] * len(y_pred_out)}
+    data = {
+        'idx': cv_test['idx'].tolist(),
+        'preds': y_pred_out.numpy().tolist(),
+        'score': score_list,
+        'label':  cv_test['label'].tolist(),
+        'accuracy': [accuracy] * len(cv_test['label'].tolist())
+    }
     df = pd.DataFrame(data)
     df.to_csv(out_path, index=False)
