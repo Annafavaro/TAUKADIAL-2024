@@ -339,7 +339,7 @@ for cv_num in cv_range:
     epochs = 6
     batch_size = 6
     max_length = 512
-    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    device = 'cpu' #torch.device('cuda' if torch.cuda.is_available() else 'cpu')
     model_name_or_path = 'gpt2'
     labels_ids = {'MCI': 0, 'CN': 1}
     n_labels = len(labels_ids)
