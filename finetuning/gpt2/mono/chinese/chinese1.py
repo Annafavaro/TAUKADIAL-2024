@@ -77,9 +77,9 @@ for cv_num in cv_range:
     clf.evaluate([X_test_in, X_test_mask], y_test_in)
     clf.training = False
     y_pred = clf.predict([X_test_in, X_test_mask])
-    probabilities_list = y_pred[:, 1].tolist()
+    #probabilities_list = y_pred[:, 0].tolist()
     print('look here')
-    print(probabilities_list)
+    print(y_pred)
     y_pred_out = tf.math.argmax(y_pred, axis=-1)
     print('predictions')
     print(y_pred_out)
