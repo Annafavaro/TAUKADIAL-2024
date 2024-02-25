@@ -1,22 +1,24 @@
+cv_num = 1
+out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt/mono/english/cv_{cv_num}.csv'
+
 import pandas as pd
 import tensorflow as tf
 from transformers import GPT2Tokenizer, TFGPT2Model
 from matplotlib import pyplot as plt
-import seaborn as sns
+from sklearn.metrics import accuracy_score
 from sklearn.metrics import confusion_matrix
 from sklearn.metrics import classification_report
 import math
 
-cv_num = 1
-cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/train.csv')
+cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
 cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
-cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/dev.csv')
+cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
 cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
 cv_train = pd.concat([cv_train1, cv_train2])
-print(len(cv_train))
-cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/test.csv')
+cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
 cv_test = cv_test.drop(columns=['Unnamed: 0'])
 X_train = cv_train['sentences']
+print(len(X_train))
 y_train = cv_train['label']
 X_test =  cv_test['sentences']
 y_test = cv_test['label']
@@ -99,6 +101,12 @@ history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=30, batch_size=
 clf.evaluate([X_test_in, X_test_mask], y_test_in)
 clf.training = False
 y_pred = clf.predict([X_test_in, X_test_mask])
-print(y_pred)
 y_pred_out = tf.math.argmax(y_pred, axis=-1)
 print(classification_report(y_test_in, y_pred_out))
+
+test_predictions = y_pred_out.numpy()
+accuracy = accuracy_score(y_test_in, y_pred_out)
+
+dict = {'idx': cv_test['idx'].tolist(), 'preds':y_pred_out, 'score':y_pred,  'label': y_test_in, 'accuracy': accuracy*len(y_pred_out)}
+df = pd.DataFrame(dict)
+df.to_csv(out_path)
