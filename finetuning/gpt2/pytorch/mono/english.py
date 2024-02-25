@@ -351,145 +351,148 @@ def validation(dataloader, device_):
     return true_labels, predictions_labels, predictions_scores, avg_epoch_loss
 
 
-cv_num = 1
-out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
-cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
-cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
-cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
+cv_range = range(1, 11)
 
-cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
-cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
-cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
-cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
+for cv_num in cv_range:
+    print(f'fold number {cv_num}')
+    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
+    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
+    cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
+    cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
 
-cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
-cv_test = cv_test.drop(columns=['Unnamed: 0'])
-cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
+    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
+    cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
+    cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
+    cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
 
-
-# Set seed for reproducibility.
-set_seed(123)
-epochs = 4
-batch_size = 6
-max_length = 512
-device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-model_name_or_path = 'gpt2'
-labels_ids = {'MCI': 0, 'CN': 1}
-n_labels = len(labels_ids)
-print(n_labels)
-
-# Get model configuration.
-print('Loading configuration...')
-model_config = GPT2Config.from_pretrained(pretrained_model_name_or_path=model_name_or_path, num_labels=n_labels)
-
-# Get model's tokenizer.
-print('Loading tokenizer...')
-tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model_name_or_path=model_name_or_path)
-# default to left padding
-tokenizer.padding_side = "left"
-# Define PAD Token = EOS Token = 50256
-tokenizer.pad_token = tokenizer.eos_token
-
-# Get the actual model.
-print('Loading model...')
-model = GPT2ForSequenceClassification.from_pretrained(pretrained_model_name_or_path=model_name_or_path, config=model_config)
-# resize model embedding to match new tokenizer
-model.resize_token_embeddings(len(tokenizer))
-
-# fix model padding token id
-model.config.pad_token_id = model.config.eos_token_id
-
-# Load model to defined device.
-model.to(device)
-print('Model loaded to `%s`'%device)
-
-# Create data collator to encode text and labels into numbers.
-gpt2_classificaiton_collator = Gpt2ClassificationCollator(use_tokenizer=tokenizer,
-                                                          labels_encoder=labels_ids,
-                                                          max_sequence_len=max_length)
-
-print('Dealing with Train...')
-# Create pytorch dataset.
-train_dataset = MovieReviewsDataset2(cv_train, use_tokenizer=tokenizer)
-print('Created `train_dataset` with %d examples!'%len(train_dataset))
-
-# Move pytorch dataset into dataloader.
-train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=gpt2_classificaiton_collator)
-print('Created `train_dataloader` with %d batches!'%len(train_dataloader))
-
-print()
-
-print('Dealing with Validation...')
-# Create pytorch dataset.
-valid_dataset =  MovieReviewsDataset2(cv_test,
-                               use_tokenizer=tokenizer)
-print('Created `valid_dataset` with %d examples!'%len(valid_dataset))
-
-# Move pytorch dataset into dataloader.
-valid_dataloader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False, collate_fn=gpt2_classificaiton_collator)
-print('Created `eval_dataloader` with %d batches!'%len(valid_dataloader))
-
-# Note: AdamW is a class from the huggingface library (as opposed to pytorch)
-# I believe the 'W' stands for 'Weight Decay fix"
-optimizer = AdamW(model.parameters(),
-                  lr = 2e-5, # default is 5e-5, our notebook had 2e-5
-                  eps = 1e-8 # default is 1e-8.
-                  )
-
-total_steps = len(train_dataloader) * epochs
-# Create the learning rate scheduler.
-scheduler = get_linear_schedule_with_warmup(optimizer,
-                                            num_warmup_steps = 0, # Default value in run_glue.py
-                                            num_training_steps = total_steps)
-
-# Store the average loss after each epoch so we can plot them.
-all_loss = {'train_loss':[], 'val_loss':[]}
-all_acc = {'train_acc':[], 'val_acc':[]}
-
-# Loop through each epoch.
-print('Epoch')
-for epoch in tqdm(range(epochs)):
-  print()
-  print('Training on batches...')
-  # Perform one full pass over the training set.
-  train_labels, train_predict, train_loss = train(train_dataloader, optimizer, scheduler, device)
-  train_acc = accuracy_score(train_labels, train_predict)
-
-  # Get prediction form model on validation data.
-  print('Validation on batches...')
-  valid_labels, valid_predict, val_scores, val_loss = validation(valid_dataloader, device)
-  val_acc = accuracy_score(valid_labels, valid_predict)
-
-  # Print loss and accuracy values to see how training evolves.
-  print("  train_loss: %.5f - val_loss: %.5f - train_acc: %.5f - valid_acc: %.5f"%(train_loss, val_loss, train_acc, val_acc))
-  print()
-
-  # Store the loss value for plotting the learning curve.
-  all_loss['train_loss'].append(train_loss)
-  all_loss['val_loss'].append(val_loss)
-  all_acc['train_acc'].append(train_acc)
-  all_acc['val_acc'].append(val_acc)
+    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
+    cv_test = cv_test.drop(columns=['Unnamed: 0'])
+    cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
 
-true_labels, predictions_labels, pred_scores, avg_epoch_loss = validation(valid_dataloader, device)
+    # Set seed for reproducibility.
+    set_seed(123)
+    epochs = 4
+    batch_size = 6
+    max_length = 512
+    device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+    model_name_or_path = 'gpt2'
+    labels_ids = {'MCI': 0, 'CN': 1}
+    n_labels = len(labels_ids)
+    print(n_labels)
 
-# Create the evaluation report.
-evaluation_report = classification_report(true_labels, predictions_labels, labels=list(labels_ids.values()), target_names=list(labels_ids.keys()))
-# Show the evaluation report.
-print(evaluation_report)
+    # Get model configuration.
+    print('Loading configuration...')
+    model_config = GPT2Config.from_pretrained(pretrained_model_name_or_path=model_name_or_path, num_labels=n_labels)
 
-# Calculate accuacy
-accuracy = accuracy_score(true_labels, predictions_labels)
-print(f"Accuracy: {accuracy * 100:.2f}%")
+    # Get model's tokenizer.
+    print('Loading tokenizer...')
+    tokenizer = GPT2Tokenizer.from_pretrained(pretrained_model_name_or_path=model_name_or_path)
+    # default to left padding
+    tokenizer.padding_side = "left"
+    # Define PAD Token = EOS Token = 50256
+    tokenizer.pad_token = tokenizer.eos_token
 
-data = {
-        'idx': cv_test['idx'].tolist(),
-        'preds': predictions_labels,
-        'score': pred_scores,
-        'label':  true_labels,
-        'accuracy': [accuracy] * len(cv_test['label'].tolist())
-    }
-df = pd.DataFrame(data)
-df.to_csv(out_path, index=False)
+    # Get the actual model.
+    print('Loading model...')
+    model = GPT2ForSequenceClassification.from_pretrained(pretrained_model_name_or_path=model_name_or_path, config=model_config)
+    # resize model embedding to match new tokenizer
+    model.resize_token_embeddings(len(tokenizer))
+
+    # fix model padding token id
+    model.config.pad_token_id = model.config.eos_token_id
+
+    # Load model to defined device.
+    model.to(device)
+    print('Model loaded to `%s`'%device)
+
+    # Create data collator to encode text and labels into numbers.
+    gpt2_classificaiton_collator = Gpt2ClassificationCollator(use_tokenizer=tokenizer,
+                                                              labels_encoder=labels_ids,
+                                                              max_sequence_len=max_length)
+
+    print('Dealing with Train...')
+    # Create pytorch dataset.
+    train_dataset = MovieReviewsDataset2(cv_train, use_tokenizer=tokenizer)
+    print('Created `train_dataset` with %d examples!'%len(train_dataset))
+
+    # Move pytorch dataset into dataloader.
+    train_dataloader = DataLoader(train_dataset, batch_size=batch_size, shuffle=True, collate_fn=gpt2_classificaiton_collator)
+    print('Created `train_dataloader` with %d batches!'%len(train_dataloader))
+
+    print()
+
+    print('Dealing with Validation...')
+    # Create pytorch dataset.
+    valid_dataset =  MovieReviewsDataset2(cv_test,
+                                   use_tokenizer=tokenizer)
+    print('Created `valid_dataset` with %d examples!'%len(valid_dataset))
+
+    # Move pytorch dataset into dataloader.
+    valid_dataloader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False, collate_fn=gpt2_classificaiton_collator)
+    print('Created `eval_dataloader` with %d batches!'%len(valid_dataloader))
+
+    # Note: AdamW is a class from the huggingface library (as opposed to pytorch)
+    # I believe the 'W' stands for 'Weight Decay fix"
+    optimizer = AdamW(model.parameters(),
+                      lr = 2e-5, # default is 5e-5, our notebook had 2e-5
+                      eps = 1e-8 # default is 1e-8.
+                      )
+
+    total_steps = len(train_dataloader) * epochs
+    # Create the learning rate scheduler.
+    scheduler = get_linear_schedule_with_warmup(optimizer,
+                                                num_warmup_steps = 0, # Default value in run_glue.py
+                                                num_training_steps = total_steps)
+
+    # Store the average loss after each epoch so we can plot them.
+    all_loss = {'train_loss':[], 'val_loss':[]}
+    all_acc = {'train_acc':[], 'val_acc':[]}
+
+    # Loop through each epoch.
+    print('Epoch')
+    for epoch in tqdm(range(epochs)):
+      print()
+      print('Training on batches...')
+      # Perform one full pass over the training set.
+      train_labels, train_predict, train_loss = train(train_dataloader, optimizer, scheduler, device)
+      train_acc = accuracy_score(train_labels, train_predict)
+
+      # Get prediction form model on validation data.
+      print('Validation on batches...')
+      valid_labels, valid_predict, val_scores, val_loss = validation(valid_dataloader, device)
+      val_acc = accuracy_score(valid_labels, valid_predict)
+
+      # Print loss and accuracy values to see how training evolves.
+      print("  train_loss: %.5f - val_loss: %.5f - train_acc: %.5f - valid_acc: %.5f"%(train_loss, val_loss, train_acc, val_acc))
+      print()
+
+      # Store the loss value for plotting the learning curve.
+      all_loss['train_loss'].append(train_loss)
+      all_loss['val_loss'].append(val_loss)
+      all_acc['train_acc'].append(train_acc)
+      all_acc['val_acc'].append(val_acc)
+
+
+    true_labels, predictions_labels, pred_scores, avg_epoch_loss = validation(valid_dataloader, device)
+
+    # Create the evaluation report.
+    evaluation_report = classification_report(true_labels, predictions_labels, labels=list(labels_ids.values()), target_names=list(labels_ids.keys()))
+    # Show the evaluation report.
+    print(evaluation_report)
+
+    # Calculate accuacy
+    accuracy = accuracy_score(true_labels, predictions_labels)
+    print(f"Accuracy: {accuracy * 100:.2f}%")
+
+    data = {
+            'idx': cv_test['idx'].tolist(),
+            'preds': predictions_labels,
+            'score': pred_scores,
+            'label':  true_labels,
+            'accuracy': [accuracy] * len(cv_test['label'].tolist())
+        }
+    df = pd.DataFrame(data)
+    df.to_csv(out_path, index=False)
 
 
