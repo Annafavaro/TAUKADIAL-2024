@@ -356,6 +356,7 @@ cv_range = range(1, 11)
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
     out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
+
     cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
     cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
     cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
@@ -370,7 +371,6 @@ for cv_num in cv_range:
     cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
 
-    # Set seed for reproducibility.
     set_seed(123)
     epochs = 4
     batch_size = 6
@@ -423,11 +423,10 @@ for cv_num in cv_range:
     print()
 
     print('Dealing with Validation...')
-    # Create pytorch dataset.
+    # Create pytorch dataset. # test set
     valid_dataset =  MovieReviewsDataset2(cv_test,
                                    use_tokenizer=tokenizer)
     print('Created `valid_dataset` with %d examples!'%len(valid_dataset))
-
     # Move pytorch dataset into dataloader.
     valid_dataloader = DataLoader(valid_dataset, batch_size=batch_size, shuffle=False, collate_fn=gpt2_classificaiton_collator)
     print('Created `eval_dataloader` with %d batches!'%len(valid_dataloader))
