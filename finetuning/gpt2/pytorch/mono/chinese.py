@@ -404,7 +404,7 @@ for cv_num in cv_range:
 
     # Loop through each epoch.
     best_val_acc = 0.0  # Best validation accuracy seen so far
-    patience = 1  # Number of epochs to wait after last time validation accuracy improved
+    patience = 3 # Number of epochs to wait after last time validation accuracy improved
     epochs_since_improvement = 0  # Counter for epochs since last improvement
 
     print('Epoch')
