@@ -5,7 +5,6 @@ import torch
 from sklearn.metrics import accuracy_score
 from tqdm.notebook import tqdm
 from torch.utils.data import Dataset, DataLoader
-from ml_things import plot_dict, plot_confusion_matrix, fix_text
 from sklearn.metrics import classification_report, accuracy_score
 from transformers import (set_seed,
                           TrainingArguments,
