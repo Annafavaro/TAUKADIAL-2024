@@ -5,7 +5,7 @@ from transformers import GPT2Tokenizer, TFGPT2Model
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
 import math
-seed_value = 19
+seed_value = 50
 tf.random.set_seed(seed_value)
 
 # Define the range of cross-validation splits
@@ -14,7 +14,7 @@ cv_range = range(1, 11)
 # Loop over cross-validation splits
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
-    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt/augmented_gpt/english/cv_{cv_num}.csv'
+    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt/augmented_gtp/english/cv_{cv_num}.csv'
 
     # Load data for the current cross-validation split
     cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/train.csv')
