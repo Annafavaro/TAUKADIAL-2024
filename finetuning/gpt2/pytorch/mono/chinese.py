@@ -183,24 +183,14 @@ def train(dataloader, optimizer_, scheduler_, device_):
         # backward pass.
         model.zero_grad()
 
-        # Perform a forward pass (evaluate the model on this training batch).
-        # This will return the loss (rather than the model output) because we
-        # have provided the `labels`.
-        # The documentation for this a bert model function is here:
-        # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
+
         outputs = model(**batch)
-        # The call to `model` always returns a tuple, so we need to pull the
-        # loss value out of the tuple along with the logits. We will use logits
-        # later to calculate training accuracy.
+
         loss, logits = outputs[:2]
-        # from the tensor.
         total_loss += loss.item()
 
         # Perform a backward pass to calculate the gradients.
         loss.backward()
-
-        # Clip the norm of the gradients to 1.0.
-        # This is to help prevent the "exploding gradients" problem.
         torch.nn.utils.clip_grad_norm_(model.parameters(), 1.0)
 
         # Update parameters and take a step using the computed gradient.
@@ -275,12 +265,7 @@ def validation(dataloader, device_):
         # Telling the model not to compute or store gradients, saving memory and
         # speeding up validation
         with torch.no_grad():
-            # Forward pass, calculate logit predictions.
-            # This will return the logits rather than the loss because we have
-            # not provided labels.
-            # token_type_ids is the same as the "segment ids", which
-            # differentiates sentence 1 and 2 in 2-sentence tasks.
-            # The documentation for this `model` function is here:
+
             # https://huggingface.co/transformers/v2.2.0/model_doc/bert.html#transformers.BertForSequenceClassification
             outputs = model(**batch)
 
@@ -294,10 +279,7 @@ def validation(dataloader, device_):
             # Move logits and labels to CPU
             logits = logits.detach().cpu().numpy()
 
-            # Accumulate the training loss over all of the batches so that we can
-            # calculate the average loss at the end. `loss` is a Tensor containing a
-            # single value; the `.item()` function just returns the Python value
-            # from the tensor.
+
             total_loss += loss.item()
 
             # get predicitons to list
@@ -319,18 +301,18 @@ cv_range = range(1, 11)
 
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
-    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/cv_{cv_num}.csv'
+    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/chinese/cv_{cv_num}.csv'
 
-    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/train.csv')
+    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/train.csv')
     cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
     cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
 
-    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/dev.csv')
+    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/dev.csv')
     cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
     cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
     cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
 
-    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/test.csv')
+    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/chinese/cv_{cv_num}/test.csv')
     cv_test = cv_test.drop(columns=['Unnamed: 0'])
     cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
