@@ -2,7 +2,7 @@ import io
 import os
 import pandas as pd
 import torch
-from transformers import get_cosine_schedule_with_warmup
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 from tqdm.notebook import tqdm
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import classification_report, accuracy_score
