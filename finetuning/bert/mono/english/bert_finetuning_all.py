@@ -44,7 +44,7 @@ cv_range = range(1, 11)
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
 
-    out_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/mono/english/'
+    out_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/bert/mono/english/'
     finetuning_data = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/cv_{cv_num}/'
 
     path_train = os.path.join(finetuning_data, 'train.csv')
