@@ -2,6 +2,8 @@ import io
 import os
 import pandas as pd
 import torch
+import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 from transformers import get_cosine_schedule_with_warmup
 from tqdm.notebook import tqdm
 from torch.utils.data import Dataset, DataLoader
