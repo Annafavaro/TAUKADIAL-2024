@@ -37,21 +37,14 @@ cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label
 
 # Set seed for reproducibility.
 set_seed(123)
-
 epochs = 4
-
-# Number of batches - depending on the max sequence length and GPU memory.
-# For 512 sequence length batch of 10 works without cuda memory issues.
-# For small sequence length can try batch of 32 or higher.
 batch_size = 6
 max_length = 512
-device = 'cpu'#torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 model_name_or_path = 'gpt2'
 labels_ids = {'MCI': 0, 'CN': 1}
 n_labels = len(labels_ids)
 print(n_labels)
-
 
 class MovieReviewsDataset2(Dataset):
     """
