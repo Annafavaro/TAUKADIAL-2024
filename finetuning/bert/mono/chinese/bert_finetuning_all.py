@@ -1,5 +1,6 @@
 
 import os
+os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 from datasets import Dataset, DatasetDict
 from datasets import Dataset
 import pandas as pd
@@ -12,8 +13,6 @@ import numpy as np
 from datasets import load_metric
 import torch
 torch.manual_seed(40)
-
-os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 #checkpoint = 'distilbert-base-cased'
 checkpoint='bert-base-chinese'
