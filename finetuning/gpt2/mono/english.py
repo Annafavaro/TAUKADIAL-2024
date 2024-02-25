@@ -81,7 +81,7 @@ x = tf.keras.layers.Dropout(0.4)(x)
 output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
 clf = tf.keras.Model([input, mask], output)
 
-base_learning_rate = 0.00001
+base_learning_rate = 0.0001
 optimizer = tf.keras.optimizers.Adam(learning_rate=base_learning_rate)
 loss = tf.keras.losses.BinaryCrossentropy()
 
