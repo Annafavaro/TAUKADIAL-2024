@@ -1,12 +1,23 @@
 
-sp_subset = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/all.json'
+sp_subset = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 tr_path_all = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/all/'
-output = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/all/'
+output = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/mono/english/'
+
+
 
 import json
 import numpy as np
 import os
 import pandas as pd
+
+
+def flatten_extend(matrix):
+    flat_list = []
+    for row in matrix:
+        flat_list.extend(row)
+    return flat_list
+
+
 
 def create_data_frame(list_vals):
     names = []
@@ -58,54 +69,53 @@ for fold in all_folds_info:
 
 
 # For fold 1
-data_train_1 = folds[:8][0]
-data_val_1 = folds[8:9][0]
-data_test_1 = folds[9:][0]
+data_train_1 = flatten_extend(folds[:8])
+data_val_1 = flatten_extend(folds[8:9])
+data_test_1 = flatten_extend(folds[9:])
 
 # For fold 2
-data_train_2 = (folds[1:-1])[0]
-data_val_2 = folds[-1:][0]
-data_test_2 = folds[:1][0]
+data_train_2 = flatten_extend((folds[1:-1]))
+data_val_2 =   flatten_extend(folds[-1:])
+data_test_2 =  flatten_extend(folds[:1])
 
 # For fold 3
-data_train_3 = folds[2:][0]
-data_val_3 = folds[:1][0]
-data_test_3 = folds[1:2][0]
+data_train_3 =flatten_extend( folds[2:])
+data_val_3 =  flatten_extend(folds[:1])
+data_test_3 = flatten_extend(folds[1:2])
 
 # For fold 4
-data_train_4 = (folds[3:] + folds[:1])[0]
-data_val_4 = folds[1:2][0]
-data_test_4 = folds[2:3][0]
+data_train_4 = flatten_extend((folds[3:] + folds[:1]))
+data_val_4 =   flatten_extend(folds[1:2])
+data_test_4 =  flatten_extend(folds[2:3])
 
 # For fold 5
-data_train_5 = (folds[4:] + folds[:2])[0]
-data_val_5 = folds[2:3][0]
-data_test_5 = folds[3:4][0]
+data_train_5 = flatten_extend((folds[4:] + folds[:2]))
+data_val_5 =   flatten_extend(folds[2:3])
+data_test_5  = flatten_extend(folds[3:4])
 
 # For fold 6
-data_train_6 =(folds[5:] + folds[:3])[0]
-data_val_6 = folds[3:4][0]
-data_test_6 = folds[4:5][0]
+data_train_6 =flatten_extend((folds[5:] + folds[:3]))
+data_val_6 =  flatten_extend(folds[3:4])
+data_test_6 = flatten_extend(folds[4:5])
 
 # For fold 7
-data_train_7 = (folds[6:] + folds[:4])[0]
-data_val_7 = folds[4:5][0]
-data_test_7 = folds[5:6][0]
+data_train_7 = flatten_extend((folds[6:] + folds[:4]))
+data_val_7 =   flatten_extend(folds[4:5])
+data_test_7 =  flatten_extend(folds[5:6])
 
 # For fold 8
-data_train_8 = (folds[7:] + folds[:5])[0]
-data_val_8 = folds[5:6][0]
-data_test_8 = folds[6:7][0]
-
+data_train_8 = flatten_extend((folds[7:] + folds[:5]))
+data_val_8 =   flatten_extend(folds[5:6])
+data_test_8 =  flatten_extend(folds[6:7])
 # For fold 9
-data_train_9 = (folds[8:] + folds[:6])[0]
-data_val_9 = folds[6:7][0]
-data_test_9 = folds[7:8][0]
+data_train_9 = flatten_extend((folds[8:] + folds[:6]))
+data_val_9 = flatten_extend(folds[6:7])
+data_test_9 = flatten_extend(folds[7:8])
 
 # For fold 10
-data_train_10 = (folds[9:] + folds[:7])[0]
-data_val_10 = folds[7:8][0]
-data_test_10 = folds[8:9][0]
+data_train_10 = flatten_extend((folds[9:] + folds[:7]))
+data_val_10 =   flatten_extend(folds[7:8])
+data_test_10 =  flatten_extend(folds[8:9])
 
 for i in range(1, 11):
     print(i)
