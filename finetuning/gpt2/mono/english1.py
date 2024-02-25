@@ -106,7 +106,11 @@ print(classification_report(y_test_in, y_pred_out))
 
 test_predictions = y_pred_out.numpy()
 accuracy = accuracy_score(y_test_in, y_pred_out)
-
-dict = {'idx': cv_test['idx'].tolist(), 'preds':y_pred_out, 'score':y_pred,  'label': y_test_in, 'accuracy': accuracy*len(y_pred_out)}
-df = pd.DataFrame(dict)
-df.to_csv(out_path)
+# Convert y_pred_out and y_test_in to NumPy arrays
+y_pred_out_array = y_pred_out.numpy()
+y_test_in_array = y_test_in.numpy()
+# Create a DataFrame
+data = {'idx': cv_test['idx'].tolist(), 'preds': y_pred_out_array.tolist(), 'score': y_pred.tolist(), 'label': y_test_in_array.tolist(), 'accuracy': [accuracy] * len(y_pred_out_array)}
+df = pd.DataFrame(data)
+# Save to CSV
+df.to_csv(out_path, index=False)
