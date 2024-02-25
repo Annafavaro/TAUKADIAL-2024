@@ -24,7 +24,7 @@ MAX_LENGTH = math.ceil((X_train.apply(lambda x: len(str(x).split())).mean())) + 
 PAD_TOKEN = "<|pad|>"
 EOS_TOKEN = "<|endoftext|>"
 
-tokenizer = GPT2Tokenizer.from_pretrained("gpt2-large",
+tokenizer = GPT2Tokenizer.from_pretrained("gpt2",
                                           pad_token=PAD_TOKEN,
                                           eos_token=EOS_TOKEN,
                                           max_length=MAX_LENGTH,
@@ -46,7 +46,7 @@ X_train_mask = tf.squeeze(tf.convert_to_tensor(X_train_mask_), axis=1)
 X_test_mask = tf.squeeze(tf.convert_to_tensor(X_test_mask_), axis=1)
 
 # Increase GPT-2 model size
-model = TFGPT2Model.from_pretrained("gpt2-medium", use_cache=False,
+model = TFGPT2Model.from_pretrained("gpt2", use_cache=False,
         pad_token_id=tokenizer.pad_token_id,
         eos_token_id=tokenizer.eos_token_id)
 model.training = True
