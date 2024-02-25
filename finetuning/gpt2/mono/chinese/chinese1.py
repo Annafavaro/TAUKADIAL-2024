@@ -77,10 +77,8 @@ for cv_num in cv_range:
     clf.evaluate([X_test_in, X_test_mask], y_test_in)
     clf.training = False
     y_pred = clf.predict([X_test_in, X_test_mask])
-
-    # Threshold predictions
+    print('score',y_pred )
     y_pred_out = (y_pred[:, 0] >= 0.5).astype(int)
-    print('score',y_pred_out )
     # Print and save results
     print("Predictions:", y_pred_out)
     print(classification_report(y_test_in, y_pred_out))
@@ -88,7 +86,7 @@ for cv_num in cv_range:
     # Save predictions to CSV
     accuracy = accuracy_score(y_test_in, y_pred_out)
     score_list = [item[0] for item in y_pred.tolist()]
-    data = {'idx': cv_test['idx'].tolist(), 'predictions': y_pred_out.tolist(), 'score': score_list,
+    data = {'idx': cv_test['idx'].tolist(), 'predictions': y_pred_out, 'score': score_list,
             'label': y_test_in.tolist(), 'accuracy': [accuracy] * len(y_pred_out)}
     df = pd.DataFrame(data)
     df.to_csv(out_path, index=False)
