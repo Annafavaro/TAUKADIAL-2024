@@ -460,13 +460,6 @@ evaluation_report = classification_report(true_labels, predictions_labels, label
 # Show the evaluation report.
 print(evaluation_report)
 
-# Plot confusion matrix.
-#plot_confusion_matrix(y_true=true_labels, y_pred=predictions_labels,
-     #                 classes=list(labels_ids.keys()), normalize=True,
-            #          magnify=0.1,
-             #         );
-
-
 # Calculate accuacy
 accuracy = accuracy_score(true_labels, predictions_labels)
 print(f"Accuracy: {accuracy * 100:.2f}%")
