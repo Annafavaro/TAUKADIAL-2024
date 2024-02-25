@@ -97,5 +97,6 @@ history = clf.fit([X_train_in, X_train_mask], y_train_in, epochs=30, batch_size=
 clf.evaluate([X_test_in, X_test_mask], y_test_in)
 clf.training = False
 y_pred = clf.predict([X_test_in, X_test_mask])
+print(y_pred)
 y_pred_out = tf.math.argmax(y_pred, axis=-1)
 print(classification_report(y_test_in, y_pred_out))
