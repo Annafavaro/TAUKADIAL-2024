@@ -320,18 +320,18 @@ cv_range = range(1, 11)
 
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
-    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/augmented_gtp/english/cv_{cv_num}.csv'
+    out_path = f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/augmented_gpt/english/cv_{cv_num}.csv'
 
-    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gtp/english/cv_{cv_num}/train.csv')
+    cv_train1 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/train.csv')
     cv_train1 = cv_train1.drop(columns=['Unnamed: 0'])
     cv_train1['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train1['label'])]
 
-    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gtp/english/cv_{cv_num}/dev.csv')
+    cv_train2 = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/dev.csv')
     cv_train2 = cv_train2.drop(columns=['Unnamed: 0'])
     cv_train2['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_train2['label'])]
     cv_train = pd.concat([cv_train1, cv_train2]).reset_index(drop=True)
 
-    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gtp/english/cv_{cv_num}/test.csv')
+    cv_test = pd.read_csv(f'/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/data/augmented_gpt/english/cv_{cv_num}/test.csv')
     cv_test = cv_test.drop(columns=['Unnamed: 0'])
     cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
