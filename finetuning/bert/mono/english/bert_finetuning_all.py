@@ -16,7 +16,7 @@ torch.manual_seed(40)
 os.environ['CUDA_VISIBLE_DEVICES'] = '1'
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
 #checkpoint = 'distilbert-base-cased'
-checkpoint='roberta-base'
+checkpoint='bert-base-cased'
 print(checkpoint)
 #checkpoint = "bert-base-cased"
 
