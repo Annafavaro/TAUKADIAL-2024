@@ -33,7 +33,7 @@ for cv_num in cv_range:
     MAX_LENGTH = math.ceil((X_train.apply(lambda x: len(str(x).split())).mean())) + 2
     PAD_TOKEN = "<|pad|>"
     EOS_TOKEN = "<|endoftext|>"
-    tokenizer = GPT2Tokenizer.from_pretrained("gpt2-large", pad_token=PAD_TOKEN, eos_token=EOS_TOKEN, max_length=MAX_LENGTH, is_split_into_words=True)
+    tokenizer = GPT2Tokenizer.from_pretrained("gpt2", pad_token=PAD_TOKEN, eos_token=EOS_TOKEN, max_length=MAX_LENGTH, is_split_into_words=True)
     X_train = [str(ex) + EOS_TOKEN for ex in X_train]
     X_test = [str(ex) + EOS_TOKEN for ex in X_test]
     X_train_ = [tokenizer(str(x), return_tensors='tf', max_length=MAX_LENGTH, truncation=True, pad_to_max_length=True, add_special_tokens=True)['input_ids'] for x in X_train]
@@ -46,7 +46,7 @@ for cv_num in cv_range:
     X_test_mask = tf.squeeze(tf.convert_to_tensor(X_test_mask_), axis=1)
 
     # Model setup
-    model = TFGPT2Model.from_pretrained("gpt2-large", use_cache=False, pad_token_id=tokenizer.pad_token_id, eos_token_id=tokenizer.eos_token_id)
+    model = TFGPT2Model.from_pretrained("gpt2", use_cache=False, pad_token_id=tokenizer.pad_token_id, eos_token_id=tokenizer.eos_token_id)
     model.training = True
     model.resize_token_embeddings(len(tokenizer))
 
