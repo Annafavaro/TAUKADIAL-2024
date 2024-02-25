@@ -116,7 +116,10 @@ for cv_num in cv_range:
         compute_metrics=compute_metrics)
 
     trainer.train()
+
+
     model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint, num_labels=2)
+
     eval_trainer = Trainer(model, args, tokenizer=tokenizer, compute_metrics=compute_metrics)
 
     print('best model loaded')
