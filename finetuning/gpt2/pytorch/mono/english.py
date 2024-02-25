@@ -405,7 +405,7 @@ for cv_num in cv_range:
     # Note: AdamW is a class from the huggingface library (as opposed to pytorch)
     # I believe the 'W' stands for 'Weight Decay fix"
     optimizer = AdamW(model.parameters(),
-                      lr = 2e-5, # default is 5e-5, our notebook had 2e-5
+                      lr = 2e-6, # default is 5e-5, our notebook had 2e-5
                       eps = 1e-8 # default is 1e-8.
                       )
 
