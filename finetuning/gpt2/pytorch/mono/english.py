@@ -342,7 +342,7 @@ for cv_num in cv_range:
     cv_test['label'] = ['MCI' if elem == 0 else 'CN' for elem in list(cv_test['label'])]
 
     set_seed(123)
-    epochs = 1
+    epochs = 6
     batch_size = 6
     max_length = 512
     device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -383,7 +383,7 @@ for cv_num in cv_range:
         if 'transformer.h' in name:
             # Extract the layer number from the parameter name, e.g., transformer.h.10.attn.c_proj.weight
             layer_num = int(name.split('.')[2])
-            if layer_num < model.config.n_layer - 3:
+            if layer_num < model.config.n_layer - 2:
                 param.requires_grad = False
         elif 'lm_head' not in name:  # Optionally, exclude lm_head from freezing if it's part of your model architecture
             param.requires_grad = False
