@@ -95,7 +95,7 @@ y_pred_out = tf.math.argmax(y_pred, axis=-1)
 print(classification_report(y_test_in, y_pred_out))
 
 test_predictions = y_pred_out.numpy()
-accuracy = float(accuracy_score(y_test_in, y_pred_out), 2)
+accuracy = accuracy_score(y_test_in, y_pred_out)
 # Convert y_pred_out and y_test_in to NumPy arrays
 y_pred_out_array = y_pred_out.numpy()
 y_test_in_array = y_test_in.numpy()
