@@ -1,6 +1,6 @@
 import pandas as pd
 import tensorflow as tf
-impoer numpy as np
+import numpy as np
 from transformers import GPT2Tokenizer, TFGPT2Model
 from sklearn.metrics import accuracy_score
 from sklearn.metrics import classification_report
