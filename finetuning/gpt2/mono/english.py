@@ -56,23 +56,30 @@ model.resize_token_embeddings(len(tokenizer))
 for layer in model.layers:
     layer.trainable = False
 
+# prev code
+#input = tf.keras.layers.Input(shape=(None,), dtype='int32')
+#mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
+#x = model(input, attention_mask=mask)
+#x = tf.reduce_mean(x.last_hidden_state, axis=1)
+#x = tf.keras.layers.Dense(40, activation='relu')(x)
+#x = tf.keras.layers.Dropout(0.3)(x)
+#output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
+#clf = tf.keras.Model([input, mask], output)#
 
 input = tf.keras.layers.Input(shape=(None,), dtype='int32')
 mask = tf.keras.layers.Input(shape=(None,), dtype='int32')
+
+# GPT-2 model
 x = model(input, attention_mask=mask)
-x = tf.reduce_mean(x.last_hidden_state, axis=1)
-x = tf.keras.layers.Dense(40, activation='relu')(x)
-x = tf.keras.layers.Dropout(0.3)(x)
+# Pooling layer to aggregate information from the sequence
+x_pool = tf.reduce_mean(x.last_hidden_state, axis=1)
+# Additional Dense layers
+x = tf.keras.layers.Dense(256, activation='relu')(x_pool)
+x = tf.keras.layers.Dropout(0.5)(x)
+x = tf.keras.layers.Dense(128, activation='relu')(x)
+x = tf.keras.layers.Dropout(0.4)(x)
 output = tf.keras.layers.Dense(1, activation='sigmoid')(x)
-
 clf = tf.keras.Model([input, mask], output)
-
-# Determine the number of layers you want to fine-tune at the end of the model
-num_fine_tune_layers = 3  # You can adjust this number based on your requirements
-
-# Set the last few layers and the classification layer to trainable
-for layer in model.layers[-num_fine_tune_layers:] + clf.layers[-2:]:
-    layer.trainable = True
 
 base_learning_rate = 0.00001
 optimizer = tf.keras.optimizers.Adam(learning_rate=base_learning_rate)
