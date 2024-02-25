@@ -2,7 +2,7 @@ import io
 import os
 import pandas as pd
 import torch
-from sklearn.metrics import accuracy_score
+from transformers import get_cosine_schedule_with_warmup
 from tqdm.notebook import tqdm
 from torch.utils.data import Dataset, DataLoader
 from sklearn.metrics import classification_report, accuracy_score
@@ -375,29 +375,6 @@ for cv_num in cv_range:
     # Load model to defined device.
     model.to(device)
 
-
-
-    # NEWWWWW
-    # Freeze parameters of all layers except the last three transformer layers
-    for name, param in model.named_parameters():
-        if 'transformer.h' in name:
-            # Extract the layer number from the parameter name, e.g., transformer.h.10.attn.c_proj.weight
-            layer_num = int(name.split('.')[2])
-            if layer_num < model.config.n_layer - 2:
-                param.requires_grad = False
-        elif 'lm_head' not in name:  # Optionally, exclude lm_head from freezing if it's part of your model architecture
-            param.requires_grad = False
-
-    # Verify which parameters are frozen and which are not (Optional debugging step)
-    for name, param in model.named_parameters():
-        print(f"{name} is {'not ' if not param.requires_grad else ''}trainable")
-
-
-
-
-
-
-
     print('Model loaded to `%s`'%device)
 
     # Create data collator to encode text and labels into numbers.
@@ -434,9 +411,16 @@ for cv_num in cv_range:
 
     total_steps = len(train_dataloader) * epochs
     # Create the learning rate scheduler.
-    scheduler = get_linear_schedule_with_warmup(optimizer,
-                                                num_warmup_steps = 0, # Default value in run_glue.py
-                                                num_training_steps = total_steps)
+
+
+    # Create the learning rate scheduler.
+    scheduler = get_cosine_schedule_with_warmup(optimizer,
+                                                num_warmup_steps=0,  # No warmup steps
+                                                num_training_steps=total_steps)
+
+    #scheduler = get_linear_schedule_with_warmup(optimizer,
+                                               # num_warmup_steps = 0, # Default value in run_glue.py
+                                              #  num_training_steps = total_steps)
 
     # Store the average loss after each epoch so we can plot them.
     all_loss = {'train_loss':[], 'val_loss':[]}
