@@ -1,17 +1,18 @@
 import numpy as np
 import os
 import pandas as pd
+import sys
 
 
-#list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/mono/chinese/'
-#list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/'
-list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/bert/mono/chinese/'
-all_res = [os.path.join(list_results, elem)  for elem in os.listdir(list_results)]
+if __name__ == "__main__":
 
-all_accs = []
-for data in all_res:
-    all_accs.append(pd.read_csv(data)['accuracy'].tolist()[0])
+    input_dir = sys.argv[1]
+    all_res = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
 
-print(all_accs)
-print('ACCURACY:')
-print(round(np.sum(all_accs)/len(all_accs), 2))
+    all_accs = []
+    for data in all_res:
+        all_accs.append(pd.read_csv(data)['accuracy'].tolist()[0])
+
+    print(all_accs)
+    print('ACCURACY:')
+    print(round(np.sum(all_accs)/len(all_accs), 2))
