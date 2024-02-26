@@ -97,7 +97,7 @@ for cv_num in cv_range:
         logging_steps=1,
         per_device_train_batch_size=8,
         per_device_eval_batch_size=64,
-        num_train_epochs=8,
+        num_train_epochs=6,
         weight_decay=0.01,
         load_best_model_at_end=True,
         save_total_limit=1,
