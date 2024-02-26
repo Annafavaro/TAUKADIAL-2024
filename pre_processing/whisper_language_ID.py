@@ -1,4 +1,4 @@
-OUT_PATH = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/lang_id_train/'
+OUT_PATH = '/scratch4/lmorove1/afavaro/data/New_NLS/id/'
 import json
 import os
 import pandas as pd
@@ -10,7 +10,7 @@ batch_size = 16  # reduce if low on GPU mem
 compute_type = "float16"
 model = whisperx.load_model("large-v2", device, compute_type=compute_type)
 
-root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
+root2 = '/scratch4/lmorove1/afavaro/data/New_NLS/test_set_IS/'
 
 all_files_audio = []
 for path, subdirs, files in os.walk(root2):
