@@ -4,13 +4,13 @@
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
 
-feats_names = ['vgg']#['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
-              # 'multilingual-e5-large', 'whisper',
-              # 'text2vec-base-multilingual', 'xlm-roberta-base',
-              # 'distiluse-base-multilingual-cased',
-              # 'distiluse-base-multilingual-cased-v1',
-              # 'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
-              # 'wav2vec_53', 'trillsson', 'xvector']
+feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
+               'multilingual-e5-large', 'whisper',
+               'text2vec-base-multilingual', 'xlm-roberta-base',
+               'distiluse-base-multilingual-cased',
+               'distiluse-base-multilingual-cased-v1',
+               'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
+               'wav2vec_53', 'trillsson', 'xvector']
 
 names_to_keep_cn = [
 
