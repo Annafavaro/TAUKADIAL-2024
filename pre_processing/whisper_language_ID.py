@@ -36,10 +36,10 @@ for audio_file in all_files_audio:
 
         audio = whisperx.load_audio(audio_file)
         result = model.transcribe(audio, batch_size=batch_size)
-        if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
-            result_lang = 'zh'
-        else:
-            result_lang = str(result["language"])
+        #if 'taukdial-004-1' in audio_file or 'taukdial-110-2' in audio_file or 'taukdial-161-3' in audio_file:
+        #    result_lang = 'zh'
+       # else:
+        result_lang = str(result["language"])
         ids.append(result_lang)
 
 dict = {'names': names, 'lang': ids}
