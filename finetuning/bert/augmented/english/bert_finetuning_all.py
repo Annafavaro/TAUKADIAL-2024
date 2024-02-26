@@ -14,7 +14,6 @@ import torch
 torch.manual_seed(40)
 
 device = torch.device("cuda") if torch.cuda.is_available() else torch.device("cpu")
-#checkpoint = 'distilbert-base-cased'
 checkpoint='bert-base-cased'
 print(checkpoint)
 #checkpoint = "bert-base-cased"
@@ -79,7 +78,6 @@ for cv_num in cv_range:
         print(f"Sentence 1: {dataset['train'][0][sentence1_key]}")
         print(f"Sentence 2: {dataset['train'][0][sentence2_key]}")
 
-
     encoded_dataset = dataset.map(preprocess_function, batched=True, load_from_cache_file=False)
     num_labels = 2 # (cn or ad)
     model = AutoModelForSequenceClassification.from_pretrained(checkpoint, num_labels=num_labels)
@@ -119,7 +117,6 @@ for cv_num in cv_range:
 
 
     model = AutoModelForSequenceClassification.from_pretrained(trainer.state.best_model_checkpoint, num_labels=2)
-
     eval_trainer = Trainer(model, args, tokenizer=tokenizer, compute_metrics=compute_metrics)
 
     print('best model loaded')
