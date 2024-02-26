@@ -16,10 +16,8 @@ if __name__ == "__main__":
         print(f"Vggish audio {audio_file}...")
         base = os.path.basename(audio_file).split('.wav')[0]
         features_vggish = model_vggish.forward(audio_file)
-        features_vggish_cpu = features_vggish.cpu()
-        # Convert to numpy
-        features_vggish_np = features_vggish_cpu.detach().numpy()
-        features_vggish_np = features_vggish.detach().numpy() # Convert to numpy
+        features_vggish = features_vggish.cpu()
+        features_vggish_np = features_vggish.detach().numpy()
         print(features_vggish_np.shape)
         print(type(features_vggish_np))
         save(output_dir + base + '.npy', features_vggish_np)
