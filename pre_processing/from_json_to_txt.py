@@ -1,6 +1,6 @@
 
-fold = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_and_diarization/'
-out = '/export/b01/afavaro/IS_2024/TAUKADIAL-24/train_transcriptions_diarization/'
+out = '/export/c06/afavaro/DementiaBank/Delaware/transcripts_and_diarization_original/Transcripts_only/MCI/'
+fold = '/export/c06/afavaro/DementiaBank/Delaware/transcripts_and_diarization_original/MCI/'
 
 import json
 import os
