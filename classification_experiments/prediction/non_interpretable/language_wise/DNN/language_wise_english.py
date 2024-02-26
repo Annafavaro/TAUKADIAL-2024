@@ -18,7 +18,7 @@ import torch.nn as nn
 import json
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-seed = 120
+seed = 21
 torch.manual_seed(seed)
 
 def normalize_and_split(train_split, val_split, test_split):
