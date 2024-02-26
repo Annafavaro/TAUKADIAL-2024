@@ -20,4 +20,5 @@ if __name__ == "__main__":
         features_vggish_np = features_vggish.detach().numpy()
         print(features_vggish_np.shape)
         print(type(features_vggish_np))
+        print(output_dir + base + '.npy')
         save(output_dir + base + '.npy', features_vggish_np)
