@@ -41,15 +41,15 @@ for audio_file in all_files_audio:
     if file_size_mb <= limit_mb:
         base_name = os.path.basename(audio_file).split(".wav")[0]
       #  if base_name in set_of_sps:
-            print(f'yes----> {base_name}')
-            OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
-            transcript = transcribe(audio_file,
-            prompt="这是在一个公园，两个女孩在打网球或者羽毛球，那，有一个人牵着一只狗，还有那个小狗，小狗就很调皮的抓着那个打那个羽毛球的小朋友，咬住其中一个女孩的衣服，\
-            那个女孩是一脸惊恐。另外，有两个老人家下，下棋，下象棋，然后就很开心。旁边还有泡的茶，茶还冒着烟。另外两个年纪更小的小朋友在稍远的院子里，\
-            在溜滑梯荡秋千，也很开心。")
-            with open(OUT_PATH_FILE, 'w') as output:
-                for line in transcript:
-                    output.write(line)
+        print(f'yes----> {base_name}')
+        OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
+        transcript = transcribe(audio_file,
+        prompt="这是在一个公园，两个女孩在打网球或者羽毛球，那，有一个人牵着一只狗，还有那个小狗，小狗就很调皮的抓着那个打那个羽毛球的小朋友，咬住其中一个女孩的衣服，\
+        那个女孩是一脸惊恐。另外，有两个老人家下，下棋，下象棋，然后就很开心。旁边还有泡的茶，茶还冒着烟。另外两个年纪更小的小朋友在稍远的院子里，\
+        在溜滑梯荡秋千，也很开心。")
+        with open(OUT_PATH_FILE, 'w') as output:
+            for line in transcript:
+                output.write(line)
     if file_size_mb > limit_mb:
         print(f"This file is too big: {audio_file}")
         convert_to_ogg.append(audio_file)
