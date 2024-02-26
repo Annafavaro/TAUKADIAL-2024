@@ -5,7 +5,7 @@ import pandas as pd
 
 #list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/mono/chinese/'
 #list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/chatgpt_pytorch/mono/english/'
-list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/bert/mono/english/'
+list_results = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/finetuning/results/bert/mono/chinese/'
 all_res = [os.path.join(list_results, elem)  for elem in os.listdir(list_results)]
 
 all_accs = []
