@@ -203,7 +203,7 @@ def feature_extraction_db_extra(sdir, task_inds, id_inds, out_dir, db_name, tril
     print('Extracting features from all target train/test data...')
 
 
-    for wav_dict in wav_dicts[60:]:
+    for wav_dict in wav_dicts[67:]:
         # get info of the to-be-extracted file 
         filename = wav_dict.name
         print(filename)
