@@ -36,7 +36,7 @@ def compute_metrics(pred):
         'recall': recall }
 
 
-cv_range = range(1, 11)
+cv_range = range(8, 11)
 
 for cv_num in cv_range:
     print(f'fold number {cv_num}')
