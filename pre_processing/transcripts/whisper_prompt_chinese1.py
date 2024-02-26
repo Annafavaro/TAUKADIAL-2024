@@ -1,14 +1,16 @@
 
-OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/chinese/'
-root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/chinese/'
+#OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/chinese/'
+OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/testing/data_divided_by_language/transcripts_with_prompt/chinese/'
+#root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/chinese/'
+root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/testing/data_divided_by_language/audios/chinese/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import os
 
-#token = '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'
+token = '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'
 #token = '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' #yuzhe paid
 #token = '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'
-token = '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'
+#token = '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'
 #token = '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'
 #token= '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'
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
@@ -25,7 +27,7 @@ def transcribe(audio_filepath, prompt: str) -> str:
     )
     return transcript.text
 
-set_of_sps = ['taukdial-064-1', 'taukdial-004-1', 'taukdial-136-1', 'taukdial-164-1' ]
+#set_of_sps = ['taukdial-064-1', 'taukdial-004-1', 'taukdial-136-1', 'taukdial-164-1' ]
 # change here the -1.wav depending on the task
 all_files_audio = [os.path.join(root2, elem) for elem in os.listdir(root2) if '.wav' in elem  and '-1.wav' in elem]
 print(len(all_files_audio))
@@ -38,7 +40,7 @@ for audio_file in all_files_audio:
     file_size_mb = file_size_bytes / (1024 * 1024)
     if file_size_mb <= limit_mb:
         base_name = os.path.basename(audio_file).split(".wav")[0]
-        if base_name in set_of_sps:
+       # if base_name in set_of_sps:
             print(f'yes----> {base_name}')
             OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
             transcript = transcribe(audio_file,

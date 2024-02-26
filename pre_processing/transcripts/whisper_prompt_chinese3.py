@@ -1,7 +1,7 @@
-
-
-OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/chinese/'
-root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/chinese/'
+#OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/chinese/'
+OUT_PATH = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/testing/data_divided_by_language/transcripts_with_prompt/chinese/'
+#root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/chinese/'
+root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/testing/data_divided_by_language/audios/chinese/'
 
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
@@ -40,7 +40,7 @@ for audio_file in all_files_audio:
     file_size_mb = file_size_bytes / (1024 * 1024)
     if file_size_mb <= limit_mb:
         base_name = os.path.basename(audio_file).split(".wav")[0]
-        if base_name in set_of_sps:
+       # if base_name in set_of_sps:
             print(f'yes----> {base_name}')
             OUT_PATH_FILE = os.path.join(OUT_PATH, base_name + '.txt')
             transcript = transcribe(audio_file,
