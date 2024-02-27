@@ -187,7 +187,6 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
-        #class_weights = dict(zip(np.unique(y_train), class_weights))
         class_weights = compute_class_weight(
             class_weight="balanced",
             classes=np.unique(y_train),
