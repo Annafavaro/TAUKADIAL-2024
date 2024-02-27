@@ -197,7 +197,7 @@ for feat_name in feats_names:
         model = SingleLayerClassifier(input_dim, output_dim)
         # model = BinaryClassifier(input_dim, input_dim)
         model.apply(reset_weights)
-        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+        optimizer = torch.optim.Adamax(model.parameters(), lr=learning_rate)
 
         # DATA
         Xtrain, Xval, Xtest, y_train, y_val, y_test = normalize_and_split(
