@@ -18,7 +18,7 @@ for word in words:
 pair_lists = [[pair[0], pair[1]] for pair in combinations]
 
 similarity_matrix = []
-for pair_list in pair_lists[:2]:
+for pair_list in pair_lists:
     vec1 = model[pair_list[0]]
     vec2 = model[pair_list[1]]
     cos_val = cosine_similarity([vec1], [vec2])
