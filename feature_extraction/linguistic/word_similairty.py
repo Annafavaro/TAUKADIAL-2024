@@ -23,9 +23,8 @@ for word in words:
 # Store combinations as lists
 pair_lists = [[pair[0], pair[1]] for pair in combinations]
 
-
 for pair_list in pair_lists[:2]:
     vec1 = model[pair_list[0]]
     vec2 = model[pair_list[1]]
-    cosine_similarity([vec1], [vec2])
-    print(cosine_similarity)
+    cos_val = cosine_similarity([vec1], [vec2])
+    print(cos_val)
