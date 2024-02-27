@@ -1,7 +1,8 @@
 from gensim.models import Word2Vec
 from sklearn.metrics.pairwise import cosine_similarity
 import itertools
-
+import gensim.downloader as api
+from gensim.models import KeyedVectors
 
 words = ['CookieJar', 'Curtain', 'Cupboard', 'Dishware', 'Dishcloth', 'Window', 'Water',
          'Stool', 'Girl', 'Mother', 'Outside', 'Boy', 'Cookie']
