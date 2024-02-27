@@ -5,7 +5,7 @@ import os
 import gensim.downloader as api
 import pandas as pd
 
-words = ['cookie-jar', 'drape', 'cupboard', 'counter', 'cloth', 'window', 'water',
+words = ['jar', 'drape', 'cupboard', 'counter', 'cloth', 'window', 'water',
          'stool', 'girl', 'mother', 'outside', 'boy', 'cookie']
 
 model = api.load("word2vec-google-news-300")
