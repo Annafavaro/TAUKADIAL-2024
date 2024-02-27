@@ -195,7 +195,9 @@ for feat_name in feats_names:
         )
 
         class_weights_dict = {label: weight for label, weight in zip(np.unique(y_train), class_weights)}
-        pos_weight = torch.tensor(class_weights_dict[0])
+        print('class weights')
+        print(class_weights_dict)
+        pos_weight = torch.tensor(class_weights_dict[1])
         # criterion = nn.BCELoss()
         criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 
