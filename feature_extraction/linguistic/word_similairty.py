@@ -5,13 +5,11 @@ import os
 import gensim.downloader as api
 import pandas as pd
 
-words = ['Jar', 'Curtain', 'Cupboard', 'Counter', 'Cloth', 'Window', 'Water',
-         'Stool', 'Girl', 'Mother', 'Outside', 'Boy', 'Cookie']
+words = ['jar', 'curtains', 'cupboard', 'counter', 'cloth', 'window', 'water',
+         'stool', 'girl', 'mother', 'outside', 'boy', 'cookie']
 
 model = api.load("word2vec-google-news-300")
 combinations = list(itertools.combinations(words, 2))
-
-
 # Include combinations of each word with itself
 for word in words:
     combinations.append((word, word))
