@@ -4,7 +4,7 @@ import itertools
 import gensim.downloader as api
 from gensim.models import KeyedVectors
 
-words = ['CookieJar', 'Curtain', 'Cupboard', 'Dishware', 'Dishcloth', 'Window', 'Water',
+words = ['Jar', 'Curtain', 'Cupboard', 'Dishware', 'Dishcloth', 'Window', 'Water',
          'Stool', 'Girl', 'Mother', 'Outside', 'Boy', 'Cookie']
 
 model = api.load("word2vec-google-news-300")
