@@ -28,3 +28,4 @@ for pair_list in pair_lists[:2]:
     vec1 = model[pair_list[0]]
     vec2 = model[pair_list[1]]
     cosine_similarity([vec1], [vec2])
+    print(cosine_similarity)
