@@ -12,8 +12,9 @@ pair_lists = [[pair[0], pair[1]] for pair in combinations]
 model = api.load("word2vec-google-news-300")
 #Word2Vec.load("word2vec.model")
 word_vectors = model.wv
-
-print('compute similarity')
-
-for pair_list in pair_lists:
-    print(pair_list)
+v_mango = word_vectors['mango']
+pritn(v_mango)
+#print('compute similarity')
+#
+#for pair_list in pair_lists:
+#    print(pair_list)
