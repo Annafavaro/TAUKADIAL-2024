@@ -15,15 +15,14 @@ combinations = list(itertools.combinations(words, 2))
 # Include combinations of each word with itself
 for word in words:
     combinations.append((word, word))
-pair_lists = [[pair[0], pair[1]] for pair in combinations]
 
 similarity_matrix = []
-for pair_list in pair_lists:
-    vec1 = model[pair_list[0]]
-    vec2 = model[pair_list[1]]
-    cos_val = cosine_similarity([vec1], [vec2])
-    similarity_matrix.append([pair_list[0], pair_list[1], cos_val[0][0] ])
-    print(f'similarity between {pair_list[0]} and {pair_list[1]} is ---> {cos_val}')
+for word1, word2 in combinations:
+    vec1 = model[word1]
+    vec2 = model[word2]
+    cos_val = cosine_similarity([vec1], word2)
+    similarity_matrix.append([word1, word2, cos_val[0][0] ])
+    print(f'similarity between {word1} and {word2} is ---> {cos_val}')
 
 
 out_path_file = os.path.join(out_path, 'sim_scores.csv')
