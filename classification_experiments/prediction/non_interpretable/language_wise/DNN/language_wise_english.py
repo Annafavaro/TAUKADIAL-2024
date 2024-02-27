@@ -167,7 +167,7 @@ for feat_name in feats_names:
     # Subtract 1 for the label column and 1 for mmse
     output_dim = 1  # Output dimension for binary classification (1 for binary)
     learning_rate = 0.001
-    #criterion = nn.BCELoss()  # Binary Cross Entropy Loss
+    criterion = nn.BCELoss()  # Binary Cross Entropy Loss
 
     results = {}
     test_scores = []
@@ -185,13 +185,17 @@ for feat_name in feats_names:
         model = SingleLayerClassifier(input_dim, output_dim)
         model.apply(reset_weights)
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
+
+
+        #class_weights = dict(zip(np.unique(y_train), class_weights))
         class_weights = compute_class_weight(
             class_weight="balanced",
             classes=np.unique(y_train),
             y=y_train
         )
-        class_weights = dict(zip(np.unique(y_train), class_weights))
-        pos_weight = torch.tensor(class_weights[1])
+
+        class_weights_dict = {label: weight for label, weight in zip(np.unique(y_train), class_weights)}
+        pos_weight = torch.tensor(class_weights_dict[1])
         # criterion = nn.BCELoss()
         criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 
