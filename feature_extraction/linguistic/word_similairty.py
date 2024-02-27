@@ -7,8 +7,8 @@ from gensim.models import KeyedVectors
 words = ['CookieJar', 'Curtain', 'Cupboard', 'Dishware', 'Dishcloth', 'Window', 'Water',
          'Stool', 'Girl', 'Mother', 'Outside', 'Boy', 'Cookie']
 
-#model = api.load("word2vec-google-news-300")
-#Word2Vec.load("word2vec.model")
+model = api.load("word2vec-google-news-300")
+
 #word_vectors = model.wv
 #v_mango = model['mango']
 #print(v_mango)
@@ -23,6 +23,8 @@ for word in words:
 # Store combinations as lists
 pair_lists = [[pair[0], pair[1]] for pair in combinations]
 
-# Print all combinations
-for pair_list in pair_lists:
-    print(pair_list)
+
+for pair_list in pair_lists[:2]:
+    vec1 = model[pair_list[0]]
+    vec2 = model[pair_list[1]]
+    cosine_similarity([vec1], [vec2])
