@@ -18,7 +18,7 @@ similarity_matrix = []
 for word1, word2 in combinations:
     vec1 = model[word1]
     vec2 = model[word2]
-    cos_val = cosine_similarity([vec1], word2)
+    cos_val = cosine_similarity([vec1], [vec2])
     similarity_matrix.append([word1, word2, cos_val[0][0] ])
     print(f'similarity between {word1} and {word2} is ---> {cos_val}')
 
