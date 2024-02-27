@@ -184,21 +184,7 @@ for feat_name in feats_names:
         input_dim = Xtrain.shape[1]
         model = SingleLayerClassifier(input_dim, output_dim)
         model.apply(reset_weights)
-        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
-
-
-       # class_weights = compute_class_weight(
-       #     class_weight="balanced",
-       #     classes=np.unique(y_train),
-       #     y=y_train
-       # )
-#
-       # class_weights_dict = {label: weight for label, weight in zip(np.unique(y_train), class_weights)}
-       # print('class weights')
-       # print(class_weights_dict)
-       # pos_weight = torch.tensor(class_weights_dict[1])
-       # # criterion = nn.BCELoss()
-       # criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+        optimizer = torch.optim.Adamax(model.parameters(), lr=learning_rate)
 
         batches_per_epoch = len(Xtrain) // batch_size
 
