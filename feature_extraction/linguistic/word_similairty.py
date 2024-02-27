@@ -22,7 +22,7 @@ for pair_list in pair_lists[:2]:
     vec1 = model[pair_list[0]]
     vec2 = model[pair_list[1]]
     cos_val = cosine_similarity([vec1], [vec2])
-    similarity_matrix.append([pair_list[0], pair_list[1], cos_val.item])
+    similarity_matrix.append([pair_list[0], pair_list[1], cos_val[0][0] ])
     print(f'similarity between {pair_list[0]} and {pair_list[1]} is ---> {cos_val}')
 
 
@@ -30,5 +30,5 @@ out_path_file = os.path.join(out_path, 'sim_scores.csv')
 df_similarity = pd.DataFrame(similarity_matrix, columns=['Word 1', 'Word 2', 'Similarity'])
 similarity_matrix_df = df_similarity.pivot(index='Word 1', columns='Word 2', values='Similarity')
 
-similarity_matrix_df.to_csv('similarity_matrix.csv')
+similarity_matrix_df.to_csv(out_path_file)
 print("Similarity matrix saved to similarity_matrix.csv")
