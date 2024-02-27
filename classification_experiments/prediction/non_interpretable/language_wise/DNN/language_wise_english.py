@@ -187,18 +187,18 @@ for feat_name in feats_names:
         optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
 
-        class_weights = compute_class_weight(
-            class_weight="balanced",
-            classes=np.unique(y_train),
-            y=y_train
-        )
-
-        class_weights_dict = {label: weight for label, weight in zip(np.unique(y_train), class_weights)}
-        print('class weights')
-        print(class_weights_dict)
-        pos_weight = torch.tensor(class_weights_dict[1])
-        # criterion = nn.BCELoss()
-        criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
+       # class_weights = compute_class_weight(
+       #     class_weight="balanced",
+       #     classes=np.unique(y_train),
+       #     y=y_train
+       # )
+#
+       # class_weights_dict = {label: weight for label, weight in zip(np.unique(y_train), class_weights)}
+       # print('class weights')
+       # print(class_weights_dict)
+       # pos_weight = torch.tensor(class_weights_dict[1])
+       # # criterion = nn.BCELoss()
+       # criterion = nn.BCEWithLogitsLoss(pos_weight=pos_weight)
 
         batches_per_epoch = len(Xtrain) // batch_size
 
