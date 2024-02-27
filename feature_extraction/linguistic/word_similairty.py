@@ -8,7 +8,7 @@ words = ['CookieJar', 'Curtain', 'Cupboard', 'Dishware', 'Dishcloth', 'Window', 
 
 combinations = list(itertools.combinations(words, 2))
 pair_lists = [[pair[0], pair[1]] for pair in combinations]
-model = model = api.load("word2vec-google-news-300")
+model = api.load("word2vec-google-news-300")
 #Word2Vec.load("word2vec.model")
 
 
