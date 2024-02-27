@@ -9,12 +9,12 @@ words = ['CookieJar', 'Curtain', 'Cupboard', 'Dishware', 'Dishcloth', 'Window', 
 
 combinations = list(itertools.combinations(words, 2))
 pair_lists = [[pair[0], pair[1]] for pair in combinations]
-model = api.load("word2vec-google-news-300")
+#model = api.load("word2vec-google-news-300")
 #Word2Vec.load("word2vec.model")
 #word_vectors = model.wv
-v_mango = model['mango']
-print(v_mango)
+#v_mango = model['mango']
+#print(v_mango)
 #print('compute similarity')
 #
-#for pair_list in pair_lists:
-#    print(pair_list)
+for pair_list in pair_lists:
+    print(pair_list)
