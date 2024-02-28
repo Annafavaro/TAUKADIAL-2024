@@ -217,16 +217,25 @@ for feat_name in feats_names:
                 y_val_pred = model(Xval_tensor)
                 val_loss = criterion(y_val_pred.flatten(), y_val_tensor)
 
-            # Early stopping
-            if val_loss < best_val_loss:
+            if val_loss < best_val_loss and accuracy > best_accuracy:
                 best_val_loss = val_loss
+                best_accuracy = accuracy
                 num_epochs_no_improve = 0
             else:
                 num_epochs_no_improve += 1
                 if num_epochs_no_improve >= patience:
                     print(f"Early stopping at epoch {epoch}")
                     break
-
+            # Early stopping
+            #if val_loss < best_val_loss:
+            #    best_val_loss = val_loss
+            #    num_epochs_no_improve = 0
+            #else:
+            #    num_epochs_no_improve += 1
+            #    if num_epochs_no_improve >= patience:
+            #        print(f"Early stopping at epoch {epoch}")
+            #        break
+#
         # Evaluation on the test set
         model.eval()
         with torch.no_grad():
