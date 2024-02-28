@@ -219,9 +219,9 @@ for feat_name in feats_names:
                 val_loss = criterion(y_val_pred.flatten(), y_val_tensor)
                 accuracy = (y_val_pred.round() == y_val_tensor).float().mean()
             # Early stopping
-            if val_loss < best_val_loss and accuracy > best_accuracy:
+            if val_loss < best_val_loss: #and accuracy > best_accuracy:
                 best_val_loss = val_loss
-                best_accuracy = accuracy
+                #best_accuracy = accuracy
                 num_epochs_no_improve = 0
             else:
                 num_epochs_no_improve += 1
