@@ -181,7 +181,7 @@ for feat_name in feats_names:
 
     n_epochs = 15
     batch_size = 32
-    input_dim = data_train_1.shape[1] - 2  # Subtract 1 for the label column and 1 for mmse
+      # Subtract 1 for the label column and 1 for mmse
     # hidden_dim = 40  # Hidden dimension of the fully connected layer
     output_dim = 1  # Output dimension for binary classification (1 for binary)
     learning_rate = 0.001
@@ -194,14 +194,15 @@ for feat_name in feats_names:
 
     for n_fold in range(1, 11):
         # print(n_fold)
-        model = SingleLayerClassifier(input_dim, output_dim)
-        # model = BinaryClassifier(input_dim, input_dim)
-        model.apply(reset_weights)
-        optimizer = torch.optim.Adamax(model.parameters(), lr=learning_rate)
 
         # DATA
         Xtrain, Xval, Xtest, y_train, y_val, y_test = normalize_and_split(
             eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
+
+        input_dim = Xtrain.shape[1]
+        model = SingleLayerClassifier(input_dim, output_dim)
+        model.apply(reset_weights)
+        optimizer = torch.optim.Adamax(model.parameters(), lr=learning_rate)
 
         batches_per_epoch = len(Xtrain) // batch_size
 
