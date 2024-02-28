@@ -20,7 +20,7 @@ import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
 
-seed = 21
+seed = 120
 torch.manual_seed(seed)
 
 def intersection(lst1, lst2):
@@ -212,6 +212,8 @@ for feat_name in feats_names:
         best_val_loss = float('inf')
         patience = 5
         num_epochs_no_improve = 0
+        best_accuracy = 0.0
+
         for epoch in range(n_epochs):
             model.train()
             for i in range(batches_per_epoch):
@@ -234,16 +236,26 @@ for feat_name in feats_names:
                 y_val_tensor = torch.tensor(y_val, dtype=torch.float32)
                 y_val_pred = model(Xval_tensor)
                 val_loss = criterion(y_val_pred.flatten(), y_val_tensor)
-
+                accuracy = (y_val_pred.round() == y_val_tensor).float().mean()
             # Early stopping
-            if val_loss < best_val_loss:
+            if val_loss < best_val_loss and accuracy > best_accuracy:
                 best_val_loss = val_loss
+                best_accuracy = accuracy
                 num_epochs_no_improve = 0
             else:
                 num_epochs_no_improve += 1
                 if num_epochs_no_improve >= patience:
                     print(f"Early stopping at epoch {epoch}")
                     break
+
+            #if val_loss < best_val_loss:
+            #    best_val_loss = val_loss
+            #    num_epochs_no_improve = 0
+            #else:
+            #    num_epochs_no_improve += 1
+            #    if num_epochs_no_improve >= patience:
+            #        print(f"Early stopping at epoch {epoch}")
+            #        break
 
         # Evaluation on the test set
         model.eval()
