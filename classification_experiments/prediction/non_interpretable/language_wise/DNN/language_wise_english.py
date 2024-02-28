@@ -192,6 +192,7 @@ for feat_name in feats_names:
         batches_per_epoch = len(Xtrain) // batch_size
 
         best_val_loss = float('inf')
+        best_accuracy = 0.0
         patience = 5
         num_epochs_no_improve = 0
         for epoch in range(n_epochs):
