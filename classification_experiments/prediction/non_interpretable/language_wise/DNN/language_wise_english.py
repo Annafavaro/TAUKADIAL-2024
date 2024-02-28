@@ -45,8 +45,11 @@ def normalize_and_split(train_split, val_split, test_split):
     y_test = y_test.ravel()
     y_train = y_train.ravel()
     y_val = y_val.ravel()
+
     X_train = X_train.astype('float')
     X_test = X_test.astype('float')
+    X_val = X_val.astype('float')
+
     normalized_test_X = (X_test - X_train.mean(0)) / (X_train.std(0) + 0.01)
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
     normalized_val_X = (X_val - X_train.mean(0)) / (X_train.std(0) + 0.01)
