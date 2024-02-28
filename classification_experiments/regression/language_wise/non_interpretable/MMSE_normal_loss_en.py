@@ -48,10 +48,6 @@ def reset_weights(m):
             nn.init.zeros_(m.bias)
 
 
-# Function to compute RMSE
-def rmse_function(predictions, targets):
-    return torch.sqrt(torch.mean((predictions - targets) ** 2))
-
 def normalize(train_split, val_split, test_split):  ## when prediction
     train_set = train_split
     val_set = val_split
@@ -206,18 +202,17 @@ for feat_name in feats_names:
     for n_fold in range(1, 11):
         print(n_fold)
 
-        model = MMSE_ModelBasic(input_size, hidden_size)
-        model.apply(reset_weights)
-        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
         # DATA
         Xtrain, Xval, Xtest, mmse_labels_train, mmse_labels_val, mmse_labels_test = normalize(
             eval(f"data_train_{n_fold}"), eval(f"data_val_{n_fold}"), eval(f"data_test_{n_fold}"))
 
-        #print(mmse_labels_val)
-        #print(mmse_labels_train)
-        #print(mmse_labels_test)
+        input_size = data_train_1.shape[1] - 2
+        model = MMSE_ModelBasic(input_size, hidden_size)
+        model.apply(reset_weights)
+        optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
         batches_per_epoch = len(Xtrain) // batch_size
+
         best_val_loss = float('inf')
         for epoch in range(num_epochs):
             print(f'epoch-->{epoch}')
