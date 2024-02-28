@@ -20,7 +20,7 @@ import pandas as pd
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
 
-seed = 120
+seed = 21
 torch.manual_seed(seed)
 
 def intersection(lst1, lst2):
