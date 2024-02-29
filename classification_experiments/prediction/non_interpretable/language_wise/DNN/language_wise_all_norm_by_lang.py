@@ -280,7 +280,7 @@ for feat_name in feats_names:
     data_val_10_en = np.concatenate(folds[7:8])
     data_test_10_en = np.concatenate(folds[8:9])
 
-    data_test_1_names_en = np.concatenate(n_folds_names[-1:])
+    data_test_1_names_en = np.concatenate(n_folds_names[9:])
     data_test_2_names_en = np.concatenate(n_folds_names[:1])
     data_test_3_names_en = np.concatenate(n_folds_names[1:2])
     data_test_4_names_en = np.concatenate(n_folds_names[2:3])
@@ -370,7 +370,7 @@ for feat_name in feats_names:
     data_val_10_zh = np.concatenate(folds_zh[7:8])
     data_test_10_zh = np.concatenate(folds_zh[8:9])
 
-    data_test_1_names_zh = np.concatenate(n_folds_names_zh[-1:])
+    data_test_1_names_zh = np.concatenate(n_folds_names_zh[9:])
     data_test_2_names_zh = np.concatenate(n_folds_names_zh[:1])
     data_test_3_names_zh = np.concatenate(n_folds_names_zh[1:2])
     data_test_4_names_zh = np.concatenate(n_folds_names_zh[2:3])
