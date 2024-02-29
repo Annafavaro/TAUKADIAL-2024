@@ -290,7 +290,23 @@ for feat_name in feats_names:
     data_test_8_names_en = np.concatenate(n_folds_names[6:7])
     data_test_9_names_en = np.concatenate(n_folds_names[7:8])
     data_test_10_names_en = np.concatenate(n_folds_names[8:9])
+    all_names_en = np.concatenate([
+        data_test_1_names_en,
+        data_test_2_names_en,
+        data_test_3_names_en,
+        data_test_4_names_en,
+        data_test_5_names_en,
+        data_test_6_names_en,
+        data_test_7_names_en,
+        data_test_8_names_en,
+        data_test_9_names_en,
+        data_test_10_names_en
+    ])
 
+    unique_names_en = set(all_names_en)
+    num_unique_names_zh = len(unique_names_en)
+
+    print(f'unique en {num_unique_names_zh}')
     ##########################################################################
 
     n_folds_names_zh = []
@@ -380,6 +396,23 @@ for feat_name in feats_names:
     data_test_8_names_zh = np.concatenate(n_folds_names_zh[6:7])
     data_test_9_names_zh = np.concatenate(n_folds_names_zh[7:8])
     data_test_10_names_zh = np.concatenate(n_folds_names_zh[8:9])
+
+    all_names_zh = np.concatenate([
+        data_test_1_names_zh,
+        data_test_2_names_zh,
+        data_test_3_names_zh,
+        data_test_4_names_zh,
+        data_test_5_names_zh,
+        data_test_6_names_zh,
+        data_test_7_names_zh,
+        data_test_8_names_zh,
+        data_test_9_names_zh,
+        data_test_10_names_zh
+    ])
+
+    unique_names_zh = set(all_names_zh)
+    num_unique_names_zh = len(unique_names_zh)
+    print(f'unique zh {num_unique_names_zh}')
 
   #  data_test, speaker_id = prepare_test_set(feat_pths_test, feat_name, lang_id_test_r_keep)
     ####################################################################
