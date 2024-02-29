@@ -532,8 +532,10 @@ for feat_name in feats_names:
                 list(data_test_8_names_en) + list(data_test_8_names_zh) + \
                 list(data_test_9_names_en) + list(data_test_9_names_zh) + \
                list(data_test_10_names_en) + list(data_test_10_names_zh)
-    print(all_names)
+   # print(all_names)
     print(len(set(sorted(all_names))))
+    print(len(truth))
+    print(len(predictions))
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions, 'score': test_scores}
     df2 = pd.DataFrame(dict)
     file_out2 = os.path.join(out_path_score, feat_name + '.csv')
