@@ -529,9 +529,7 @@ for feat_name in feats_names:
                 list(data_test_5_names_en) + list(data_test_5_names_zh) + \
                 list(data_test_6_names_en) + list(data_test_6_names_zh) + \
                 list(data_test_7_names_en) + list(data_test_7_names_zh) + \
-                list(data_test_8_names_en) + list(data_test_8_names_zh) + \
-                list(data_test_9_names_en) + list(data_test_9_names_zh) + \
-               list(data_test_10_names_en) + list(data_test_10_names_zh)
+                list(data_test_8_names_en) + list(data_test_8_names_zh) + list(data_test_9_names_en) + list(data_test_9_names_zh) +  list(data_test_10_names_en) + list(data_test_10_names_zh)
    # print(all_names)
     print(len(set(sorted(all_names))))
     print(len(truth))
