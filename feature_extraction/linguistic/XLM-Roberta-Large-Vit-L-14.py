@@ -1,4 +1,4 @@
-()# conda activate mulitlingual_clip
+# conda activate mulitlingual_clip
 
 # YES
 device = 'cpu'
