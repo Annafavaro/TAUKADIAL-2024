@@ -21,13 +21,11 @@ if __name__ == "__main__":
         # sentences = open(sentences, 'r', encoding="utf-8",errors='ignore').read().strip().lower()
         with open(sentences, 'r', encoding="utf-8", errors='ignore') as file:
             sentences = file.read().strip().lower()
-            if sentences == '<nv>':
-                print(sentences)
-                print(base_name)
-           # embeddings = model.encode(sentences)
-           # embeddings = embeddings.reshape(1, -1)
-           # print(type(embeddings))
-           # print(embeddings.shape)
-           ## numpy_array = embeddings.numpy()
-           # save(output_dir + base_name + '.npy', embeddings)
-#
+            embeddings = model.encode(sentences)
+            embeddings = embeddings.reshape(1, -1)
+            print(type(embeddings))
+            print(embeddings.shape)
+           # numpy_array = embeddings.numpy()
+            save(output_dir + base_name + '.npy', embeddings)
+
+            # conda activate mulitlingual_clip
