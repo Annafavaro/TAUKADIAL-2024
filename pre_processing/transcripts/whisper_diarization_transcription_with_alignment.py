@@ -8,7 +8,7 @@ YOUR_HF_TOKEN = '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'
 device = "cuda"
 batch_size = 16  # reduce if low on GPU mem
 compute_type = "float16"
-model = whisperx.load_model("large", device, compute_type=compute_type)
+model = whisperx.load_model("large-v2", device, compute_type=compute_type)
 
 root2 = '/scratch4/lmorove1/afavaro/data/TAUKADIAL-24/TAUKADIAL-24/train/'
 
