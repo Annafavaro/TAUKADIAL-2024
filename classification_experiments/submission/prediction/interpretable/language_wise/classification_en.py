@@ -6,7 +6,6 @@ out_bagg = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_t
 model_out_preds = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english/interpretable/prediction/'
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 
-
 import numpy as np
 import pandas as pd
 import random
@@ -23,7 +22,6 @@ from sklearn.ensemble import BaggingClassifier
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-
 
 def normalize(train_set, test_set):
     feat_train = train_set[:, :-1]

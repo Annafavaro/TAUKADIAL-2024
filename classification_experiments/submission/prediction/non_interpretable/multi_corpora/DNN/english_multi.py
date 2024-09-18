@@ -1,6 +1,3 @@
-
-
-
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_per_language/english_multi/prediction/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_per_language/english_multi/prediction/'
 
@@ -12,9 +9,7 @@ feats_names = ['XLM-Roberta-Large-Vit-L-14', 'lealla-base',
                'bert-base-multilingual-cased', 'LaBSE', 'wav2vec_128',
                'wav2vec_53', 'trillsson', 'xvector']
 
-names_to_keep_cn = [
-
-    'PEC_021', 'PEC_024', 'PEC_028', 'PEC_031', 'PEC_032', 'PEC_037', 'PEC_038', 'PEC_040',
+names_to_keep_cn = [ 'PEC_021', 'PEC_024', 'PEC_028', 'PEC_031', 'PEC_032', 'PEC_037', 'PEC_038', 'PEC_040',
     'PEC_042', 'PEC_043', 'PEC_046', 'PEC_047', 'PEC_049', 'PEC_050', 'PEC_059', 'PEC_060',
     'PEC_062']
 
@@ -23,11 +18,9 @@ names_to_keep_ad = ['AD_001', 'AD_003', 'AD_004', 'AD_006', 'AD_007', 'AD_008',
 'AD_016', 'AD_018', 'AD_019', 'AD_021', 'AD_022', 'AD_023', 'AD_024',]
 
 names_to_keep = names_to_keep_cn + names_to_keep_ad
-
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 nls = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats_other_datasets/NLS/embeddings/'
 
@@ -102,7 +95,6 @@ def normalize_and_split(train_split, val_split, test_split):
 
     return normalized_train_X, normalized_val_X, normalized_test_X, y_train, y_val, y_test
 
-
 class SingleLayerClassifier(nn.Module):
 
     def __init__(self, input_size, output_size):
@@ -121,7 +113,6 @@ class SingleLayerClassifier(nn.Module):
         x = self.fc3(x)
         x = self.sigmoid(x)
         return x.squeeze(1)
-
 
 def reset_weights(m):
     for layer in m.children():

@@ -7,11 +7,9 @@ from sklearn.metrics import accuracy_score
 
 torch.manual_seed(19)
 
-
 def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
-
 
 def get_n_folds(arrayOfSpeaker):
     data = list(arrayOfSpeaker)  # list(range(len(arrayOfSpeaker)))
@@ -20,7 +18,6 @@ def get_n_folds(arrayOfSpeaker):
     for i in range(num_of_folds):
         n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
     return n_folds
-
 
 def normalize(train_split, test_split):
     train_set = train_split
@@ -45,7 +42,6 @@ def normalize(train_split, test_split):
     normalized_train_X = (X_train - X_train.mean(0)) / (X_train.std(0) + 0.01)
 
     return normalized_train_X, normalized_test_X, y_train, y_test
-
 
 def add_labels(df, path_labels):
     path_labels_df = pd.read_csv(path_labels)

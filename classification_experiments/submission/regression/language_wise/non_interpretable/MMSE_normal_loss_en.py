@@ -25,7 +25,6 @@ from sklearn.metrics import r2_score
 seed = 100
 torch.manual_seed(seed)
 
-
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size, dropout_rate=0.5):
         super(MMSE_ModelBasic, self).__init__()

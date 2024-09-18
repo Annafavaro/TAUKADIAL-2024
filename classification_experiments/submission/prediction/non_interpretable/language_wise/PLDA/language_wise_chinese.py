@@ -4,8 +4,6 @@ feats_names = ['gpt4', 'DINO', 'XLM-Roberta-Large-Vit-L-14', 'lealla-base', 'mul
                'wav2vec_53', 'whisper', 'trillsson', 'xvector']
 
 #feats_names = ['sbert-base-chinese-nli', 'text2vec-base-chinese', 'wav2Vec2-conformer-base']
-
-
 # chinese speaker
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'

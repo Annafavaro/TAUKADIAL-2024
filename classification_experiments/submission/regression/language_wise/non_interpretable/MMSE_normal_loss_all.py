@@ -7,13 +7,10 @@ english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/traini
 lang_id = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/lang_id_train/lang_ids.csv'
 path_labels = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_labels/groundtruth.csv'
 feat_pths = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/feats/embeddings/'
-
 english_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 chinese_sps = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/zh.json'
-
 out_path_scores = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/saved_predictions/results_overall/non_interpretable/regression/'
 out_path = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/results_training/results_overall/regression/non_interpretable/'
-
 
 import json
 import torch.nn as nn
@@ -27,20 +24,6 @@ from sklearn.metrics import r2_score
 
 seed = 40
 torch.manual_seed(seed)
-
-
-# Define a custom neural network model
-#class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size, hidden_size):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.fc2 = nn.Linear(hidden_size, 1)
-#
-#    def forward(self, x):
-#        x = torch.relu(self.fc1(x))
-#        x = self.fc2(x)
-#        return x
-#
 
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size):
@@ -456,7 +439,7 @@ for feat_name in feats_names:
                  list(data_test_10_names_en) + list(data_test_10_names_zh))
 
     # print(all_names)
-    #
+
     dict = {'names': all_names, 'truth': truth, 'predictions': predictions}
     df2 = pd.DataFrame(dict)
     file_out2 = os.path.join(out_path_scores, feat_name + '.csv')

@@ -25,10 +25,8 @@ from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
-
 import numpy as np
 from sklearn.metrics import r2_score, mean_squared_error
-
 
 def selective_averaging(mmse_predictions, VA_iter, threshold):
     if VA_iter == 1:  # 1 is Controls
