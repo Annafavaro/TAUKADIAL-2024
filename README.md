@@ -1,17 +1,14 @@
-TAUKADIAL: Speech-Based Cognitive Assessment in Chinese and English
+# **TAUKADIAL: Speech-Based Cognitive Assessment in Chinese and English**
 
-To cite **TAUKADIAL: Speech-Based Cognitive Assessment in Chinese and English** in your work, please use the following format:
+This repository contains the code used to conduct the experiments for the **TAUKADIAL Challenge** at Interspeech 2024. You can find more details about the challenge on the official [TAUKADIAL Challenge website](https://taukadial-luzs-69e3bf4b9878b99a6f03aea43776344580b77b9fe54725f4.gitlab.io/).
 
-### Citation:
+### **Usage**
 
-Favaro, A., Cao, T., Dehak, N., & Moro-Velazquez, L. Leveraging Universal Speech Representations for Detecting and Assessing the Severity of Mild Cognitive Impairment Across Languages.
+If you utilize this code or the methods in your research, please include the following citation:
 
-If you use this code or method in your research, please ensure that you include this citation in your references.
-
-```text
+```bibtex
 @article{favaroleveraging,
   title={Leveraging Universal Speech Representations for Detecting and Assessing the Severity of Mild Cognitive Impairment Across Languages},
   author={Favaro, Anna and Cao, Tianyu and Dehak, Najim and Moro-Velazquez, Laureano}
 }
 ```
-
