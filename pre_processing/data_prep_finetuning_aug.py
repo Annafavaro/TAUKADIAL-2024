@@ -6,7 +6,6 @@ chinese_aug1 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_
 chinese_aug2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_augmented_samples_gpt/chinese/chineseSynonyms/'
 #chinese_aug3 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_augmented_samples_gpt/chinese/chinesePassive/'
 
-
 ### english
 #sp_subset = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/training_speaker_division_helin/en.json'
 #tr_path_all = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_prompts_refined/all/'
@@ -14,8 +13,6 @@ chinese_aug2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_
 #chinese_aug1 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_augmented_samples_gpt/english/englishParaphrase/'
 #chinese_aug2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_augmented_samples_gpt/english/englishSynonyms/'
 ##chinese_aug3 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/transcripts_augmented_samples_gpt/chinese/chinesePassive/'
-
-
 
 import json
 import numpy as np

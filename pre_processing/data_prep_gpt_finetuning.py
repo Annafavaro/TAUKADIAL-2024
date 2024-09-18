@@ -8,7 +8,6 @@ import numpy as np
 import os
 import pandas as pd
 
-
 def flatten_extend(matrix):
     flat_list = []
     for row in matrix:
@@ -111,8 +110,8 @@ data_test_9 = flatten_extend(folds[7:8])
 
 # For fold 10
 data_train_10 = flatten_extend((folds[9:] + folds[:7]))
-data_val_10 =   flatten_extend(folds[7:8])
-data_test_10 =  flatten_extend(folds[8:9])
+data_val_10 =  flatten_extend(folds[7:8])
+data_test_10 = flatten_extend(folds[8:9])
 
 for i in range(1, 11):
     print(i)

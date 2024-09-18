@@ -1,6 +1,9 @@
 from pydub import AudioSegment
 import os
 import subprocess
+import os, sys
+from pydub import AudioSegment
+
 out_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios_ogg/english/'
 input_dir = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/data_tianyu/audios/english/'
 
@@ -10,8 +13,6 @@ def convert_wav_to_ogg(input_file, output_file):
     sound = sound.set_frame_rate(16000)
     # Export the audio in OGG format
     sound.export(output_file, format="ogg")
-
-
 
 #def convert_wav_to_ogg(input_file, output_file):
 #    # Define the FFmpeg command
@@ -38,9 +39,6 @@ def convert_wav_to_ogg(input_file, output_file):
 #    base = os.path.basename(audio).split('.wav')[0]
 #    out_file = os.path.join(out, base+'.ogg')
 #    convert_wav_to_ogg(audio, out_file)
-
-import os, sys
-from pydub import AudioSegment
 
 
 all_audios = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]

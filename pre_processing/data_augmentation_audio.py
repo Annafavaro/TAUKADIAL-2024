@@ -23,7 +23,6 @@ def add_background_music(input_dir, output_path):
         out_path_final = os.path.join(output_path, basename)
         sf.write(f'{out_path_final}_music.wav', augmented_sound, sr)
 
-
 def add_background_noise(input_dir, output_path):
 
     files = [os.path.join(input_dir, elem) for elem in os.listdir(input_dir)]
@@ -77,9 +76,6 @@ def add_timemasking(input_dir, output_path):
         augmented_sound = transform(y, sample_rate=sr)
         out_path_final = os.path.join(output_path, basename)
         sf.write(f'{out_path_final}_timemask.wav', augmented_sound, sr)
-
-
-
 
 
 if __name__ == "__main__":

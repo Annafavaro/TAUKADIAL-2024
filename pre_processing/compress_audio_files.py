@@ -5,12 +5,10 @@ target_size_mb = 25
 
 import os
 from pydub import AudioSegment
-
 def compress_audio(input_file, output_file, target_size_mb):
     audio = AudioSegment.from_file(input_file)
     target_size_bytes = target_size_mb * 1024 * 1024  # convert MB to bytes
     audio.export(output_file, format="wav", bitrate=f"{target_size_bytes * 8 // audio.duration_seconds:.0f}k")
-
 
 all_files_audio = []
 for path, subdirs, files in os.walk(root2):

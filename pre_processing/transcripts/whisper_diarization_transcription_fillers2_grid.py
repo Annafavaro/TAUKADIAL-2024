@@ -5,12 +5,8 @@ root2 = '/export/b01/afavaro/INTERSPEECH_2024/TAUKADIAL-24/training/train_audios
 from openai import OpenAI  # for making OpenAI API calls
 import urllib  # for downloading example audio files
 import os
-#token = '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'
-token = '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' #yuzhe paid
-#token = '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'
-#token = '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'
-#token = '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'
-#token= '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'
+
+token = '<YOUR_TOKEN>'
 client = OpenAI(api_key=os.environ.get("OPENAI_API_KEY", token))
 limit_mb=25
 
@@ -35,14 +31,7 @@ for path, subdirs, files in os.walk(root2):
 names = []
 ids = []
 
-#base_audios = [os.path.basename(audio).split('.wav')[0] for audio in all_files_audio]
-#present_tr = [os.path.basename(tr).split('.txt')[0] for tr in os.listdir(OUT_PATH)]
-#
-#to_do_list = list(set(base_audios)^set(present_tr))
-
-
 names = ['taukdial-161-1', 'taukdial-132-3', 'taukdial-107-3', 'taukdial-105-1']
-
 
 for audio in all_files_audio:
    # audio_file_complete = os.path.join(root2, audio +'.wav')
@@ -54,8 +43,3 @@ for audio in all_files_audio:
         with open(OUT_PATH_FILE, 'w') as output:
             for line in transcript:
                 output.write(line)
-#for audio_file in all_files_audio[377:]:
-        #print(audio_file)
-       # file_size_bytes = os.path.getsize(audio_file)
-        #file_size_mb = file_size_bytes / (1024 * 1024)
-       # if file_size_mb <= limit_mb:

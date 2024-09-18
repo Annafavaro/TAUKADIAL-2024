@@ -1,4 +1,3 @@
-
 out = '/export/c06/afavaro/DementiaBank/Delaware/transcripts_and_diarization_original/Transcripts_only/MCI/'
 fold = '/export/c06/afavaro/DementiaBank/Delaware/transcripts_and_diarization_original/MCI/'
 
