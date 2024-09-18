@@ -19,7 +19,6 @@ import torch
 from speechbrain.pretrained import EncoderClassifier
 import tensorflow as tf
 import tensorflow_hub as hub
-
 from transformers import Wav2Vec2ForSequenceClassification, HubertForSequenceClassification, Wav2Vec2FeatureExtractor
 
 def get_all_sub_segment_inds(x, fs=16e3, dur=10):

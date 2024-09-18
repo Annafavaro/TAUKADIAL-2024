@@ -6,7 +6,6 @@ from transformers import Wav2Vec2FeatureExtractor, Wav2Vec2Model
 import librosa
 import sys
 
-
 def get_all_sub_segment_inds(x, fs=16e3, dur=10):
     """
         get the range of indices that can be used to run get_sub_segment()
@@ -18,7 +17,6 @@ def get_all_sub_segment_inds(x, fs=16e3, dur=10):
     N_seg = dur * fs  # number of samples in a segment with the duration we want
     ind_range = math.ceil(N / N_seg)  # possible indices: 0:ind_range exclusive
     return ind_range
-
 
 def get_sub_segment(x, fs=16e3, dur=10, index=0):
     """
@@ -42,7 +40,6 @@ def get_sub_segment(x, fs=16e3, dur=10, index=0):
         seg = np.pad(seg, ((0, pad_len)), 'constant')
 
     return seg
-
 
 if __name__ == "__main__":
 

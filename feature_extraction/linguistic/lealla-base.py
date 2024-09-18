@@ -1,6 +1,4 @@
 # conda activate lealla
-
-# YES
 device = 'cpu'
 
 import tensorflow_hub as hub

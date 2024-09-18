@@ -15,7 +15,6 @@ import spacy
 from multilingual_clip import tf_multilingual_clip
 import sys
 
-
 def get_stats_data(transcripts_path, output_dir):
 
     all_sents = sorted([os.path.join(transcripts_path, elem) for elem in os.listdir(transcripts_path)])

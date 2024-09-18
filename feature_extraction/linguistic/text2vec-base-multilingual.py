@@ -5,8 +5,6 @@ import sys
 import os
 import re
 from numpy import save
-# yes
-
 device = 'cpu'
 
 #no--> cannot be used

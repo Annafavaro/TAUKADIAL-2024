@@ -23,7 +23,6 @@ from sklearn.ensemble import RandomForestClassifier
 from sklearn.metrics import classification_report, confusion_matrix
 from sklearn.metrics import roc_auc_score
 
-
 def normalize(train_set, test_set):
     feat_train = train_set[:, :-1]
     lab_train = train_set[:, -1:]
