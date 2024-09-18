@@ -29,7 +29,6 @@ from sklearn.metrics import roc_auc_score
 import numpy as np
 from sklearn.metrics import r2_score, mean_squared_error
 
-
 def selective_averaging(mmse_predictions, VA_iter, threshold):
     if VA_iter == 1:  # 1 is Controls
         mmse_predictions_filtered = [pred for pred in mmse_predictions if pred >= threshold]
@@ -44,7 +43,6 @@ def selective_averaging(mmse_predictions, VA_iter, threshold):
             return np.min(mmse_predictions)  # No predictions for AD group or below threshold
         else:
             return np.mean(mmse_predictions_filtered)
-
 
 def majority_voting(ad_predictions):
     ad_probs = np.mean(ad_predictions, axis=0)

@@ -7,7 +7,6 @@ from torch.utils.data import DataLoader, TensorDataset
 def rmse(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
 
-
 class MMSEPredictionModel(nn.Module):
     def __init__(self, input_size, hidden_size, num_bins):
         super(MMSEPredictionModel, self).__init__()
@@ -22,7 +21,6 @@ class MMSEPredictionModel(nn.Module):
         bins_logits = self.fc2_bins(x)
         bins_probabilities = F.softmax(bins_logits, dim=1)
         return mmse_score, bins_logits, bins_probabilities
-
 
 class CustomLoss(nn.Module):
     def __init__(self):

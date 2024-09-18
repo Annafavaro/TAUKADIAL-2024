@@ -12,18 +12,15 @@ from sklearn.metrics import r2_score
 seed = 19
 torch.manual_seed(seed)
 
-
 def reset_weights(m):
     for layer in m.children():
         if hasattr(layer, 'reset_parameters'):
             #  print(f'Reset trainable parameters of layer = {layer}')
             layer.reset_parameters()
 
-
 def intersection(lst1, lst2):
     lst3 = [value for value in lst1 if value in lst2]
     return lst3
-
 
 def get_n_folds(arrayOfSpeaker):
     data = list(arrayOfSpeaker)  # list(range(len(arrayOfSpeaker)))
@@ -32,7 +29,6 @@ def get_n_folds(arrayOfSpeaker):
     for i in range(num_of_folds):
         n_folds.append(data[int(i * len(data) / num_of_folds):int((i + 1) * len(data) / num_of_folds)])
     return n_folds
-
 
 def normalize(train_split, test_split):
     feat_train = train_split[:, :-2]
@@ -54,7 +50,6 @@ def normalize(train_split, test_split):
 
     return normalized_train_X, normalized_test_X, y_train, y_test, y_train_binned, y_test_binned
 
-
 def add_labels(df, path_labels):
     path_labels_df = pd.read_csv(path_labels)
     label = path_labels_df['dx'].tolist()
@@ -74,7 +69,6 @@ def add_labels(df, path_labels):
     df['labels'] = label_new_
 
     return df
-
 
 def map_values_to_ranges(value_list):
     mapped_values = []
@@ -106,20 +100,6 @@ def map_values_to_ranges(value_list):
 
 def rmse_function(predictions, targets):
     return torch.sqrt(torch.mean((predictions - targets) ** 2))
-
-
-# class MMSE_ModelBasic(nn.Module):
-#    def __init__(self, input_size, hidden_size):
-#        super(MMSE_ModelBasic, self).__init__()
-#        self.fc1 = nn.Linear(input_size, hidden_size)
-#        self.fc2 = nn.Linear(hidden_size, 1)  # Output is a single value
-#
-#    def forward(self, x):
-#        x = torch.relu(self.fc1(x))
-#        x = self.fc2(x)
-#        return x
-#
-
 
 class MMSE_ModelBasic(nn.Module):
     def __init__(self, input_size, hidden_size):
