@@ -4,7 +4,7 @@ import os
 import pandas as pd
 import whisperx
 
-YOUR_HF_TOKEN = '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'
+YOUR_HF_TOKEN = '<YOUR_HF_TOKEN>'
 device = "cuda"
 batch_size = 16  # reduce if low on GPU mem
 compute_type = "float16"

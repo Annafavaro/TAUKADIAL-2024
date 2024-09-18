@@ -18,7 +18,6 @@ for path, subdirs, files in os.walk(root2):
             all_files_audio.append(os.path.join(path, name))
 names = []
 ids = []
-
 base_audios = [os.path.basename(audio).split('.wav')[0] for audio in all_files_audio]
 present_tr = [os.path.basename(tr).split('.txt')[0] for tr in os.listdir(OUT_PATH)]
 
